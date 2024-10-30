@@ -1,4 +1,5 @@
-*This repository acts as a template for all of Oracle’s GitHub repositories. It contains information about the guidelines for those repositories. All files and sections contained in this template are mandatory, and a GitHub app ensures alignment with these guidelines. To get started with a new repository, replace the italic paragraphs with the respective text for your project.*
+
+*Template for Helidon repositories. After creating your repository please review all files and update them*
 
 # Project name
 
@@ -38,7 +39,9 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 Copyright (c) 2023 Oracle and/or its affiliates.
 
-*Replace this statement if your project is not licensed under the UPL*
+*Replace this statement if your project is not licensed under the Apache 2*
 
-Released under the Universal Permissive License v1.0 as shown at
-<https://oss.oracle.com/licenses/upl/>.
+Copyright (c) 2024 Oracle and/or its affiliates.
+
+Released under [Apache License 2.0](./LICENSE.txt).
+
