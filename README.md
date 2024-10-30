@@ -1,29 +1,37 @@
 
-*Template for Helidon repositories. After creating your repository please review all files and update them*
+# Helidon Labs
 
-# Project name
+Hands on labs, examples, and experiments related to the [Helidon](https://github.com/helidon-io/helidon) project. 
+If you are looking for general Helidon examples please see the [Helidon Examples Repository](https://github.com/helidon-io/helidon-examples).
 
-*Describe your project's features, functionality and target audience*
+This repository is a collection of independent projects loosely organized into the following categories:
 
-## Installation
+1. `apps`: Advanced examples of Helidon applications.
+2. `benchmarks`: Benchmarks used for measuring Helidon performance.
+3. `hols`: Hands on labs for Helidon.
+4. `incubator`: Advance experimentation of Helidon related technologies.
 
-*Provide detailed step-by-step installation instructions. You can name this section **How to Run** or **Getting Started** instead of **Installation** if that's more acceptable for your project*
+## How to Run
+
+Clone this repository, then follow the README in the specific project that you are interested in.
 
 ## Documentation
 
-*Developer-oriented documentation can be published on GitHub, but all product documentation must be published on <https://docs.oracle.com>*
+Latest documentation and javadocs for Helidon are available at <https://helidon.io/docs/latest>. Each project in this repository has a README with specific instructions.
 
-## Examples
-
-*Describe any included examples or provide a link to a demo/tutorial*
+* [apps](apps/README.md)
+* [benchmarks](benchmarks/README.md)
+* [hols](hols/README.md)
+* [incubator](incubator/README.md)
 
 ## Help
 
-*Inform users on where to get help or how to receive official support from Oracle (if applicable)*
+* See the [Helidon FAQ](https://github.com/oracle/helidon/wiki/FAQ)
+* Ask questions in [Helidon Discussions](https://github.com/helidon-io/helidon/discussions)
+* Ask questions on Stack Overflow using the [helidon tag](https://stackoverflow.com/tags/helidon)
+* Join us on Slack: [#helidon-users](http://slack.helidon.io)
 
 ## Contributing
-
-*If your project has specific contribution requirements, update the CONTRIBUTING.md file to ensure those requirements are clearly explained*
 
 This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
 
@@ -32,14 +40,6 @@ This project welcomes contributions from the community. Before submitting a pull
 Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
 
 ## License
-
-*The correct copyright notice format for both documentation and software is*
-    "Copyright (c) [year,] year Oracle and/or its affiliates."
-*You must include the year the content was first released (on any platform) and the most recent year in which it was revised*
-
-Copyright (c) 2023 Oracle and/or its affiliates.
-
-*Replace this statement if your project is not licensed under the Apache 2*
 
 Copyright (c) 2024 Oracle and/or its affiliates.
 
