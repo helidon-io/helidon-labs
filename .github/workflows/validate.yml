@@ -71,3 +71,16 @@ jobs:
           cache: maven
       - name: Spotbugs
         run: etc/scripts/spotbugs.sh
+  shellcheck:
+    timeout-minutes: 10
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4.1.0
+        with:
+          distribution: ${{ env.JAVA_DISTRO }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+      - name: Shellcheck
+        run: etc/scripts/shellcheck.sh

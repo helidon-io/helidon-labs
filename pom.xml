@@ -21,11 +21,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.helidon.projects</groupId>
-    <artifactId>myproject</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>io.helidon.labs</groupId>
+    <artifactId>helidon-labs-project</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Helidon Labs</name>
+    <packaging>pom</packaging>
 
     <properties>
+        <version.java>21</version.java>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -35,9 +38,9 @@
         <spotbugs.threshold>Medium</spotbugs.threshold>
         <spotbugs.exclude>etc/spotbugs/exclude.xml</spotbugs.exclude>
 
-        <!-- Update these to latest versions -->
         <version.lib.checkstyle>10.13.0</version.lib.checkstyle>
         <version.plugin.checkstyle>3.3.1</version.plugin.checkstyle>
+        <version.plugin.compiler>3.11.0</version.plugin.compiler>
         <version.plugin.dependency-check>10.0.4</version.plugin.dependency-check>
         <version.plugin.directory>1.0</version.plugin.directory>
         <version.plugin.failsafe>3.2.5</version.plugin.failsafe>
@@ -67,53 +70,20 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-libs</id>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.plugin.compiler}</version>
                 <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${version.lib.mapstruct}</version>
-                        </path>
-                    </annotationProcessorPaths>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
+                    <release>${version.java}</release>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     <compilerArgs>
-                        <compilerArg>
-                            -Amapstruct.suppressGeneratorTimestamp=true
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.suppressGeneratorVersionInfoComment=true
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.defaultComponentModel=jakarta-cdi
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.unmappedTargetPolicy=IGNORE
-                        </compilerArg>
+                        <arg>-Xlint:unchecked</arg>
+                        <!--
+                        https://issues.apache.org/jira/browse/MCOMPILER-368
+                         -->
+                        <arg>-Xpkginfo:always</arg>
                     </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${version.plugin.failsafe}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <classesDirectory>${project.build.directory}/classes</classesDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -213,6 +183,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>apps</module>
+        <module>benchmarks</module>
+        <module>hols</module>
+        <module>incubator</module>
+    </modules>
+
     <profiles>
         <profile>
             <id>copyright</id>
