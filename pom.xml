@@ -21,9 +21,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>io.helidon.projects</groupId>
-    <artifactId>myproject</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>io.helidon.labs</groupId>
+    <artifactId>helidon-labs-project</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>Helidon Labs</name>
+    <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,7 +37,6 @@
         <spotbugs.threshold>Medium</spotbugs.threshold>
         <spotbugs.exclude>etc/spotbugs/exclude.xml</spotbugs.exclude>
 
-        <!-- Update these to latest versions -->
         <version.lib.checkstyle>10.13.0</version.lib.checkstyle>
         <version.plugin.checkstyle>3.3.1</version.plugin.checkstyle>
         <version.plugin.dependency-check>10.0.4</version.plugin.dependency-check>
@@ -64,57 +65,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-libs</id>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${version.lib.mapstruct}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <compilerArg>
-                            -Amapstruct.suppressGeneratorTimestamp=true
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.suppressGeneratorVersionInfoComment=true
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.defaultComponentModel=jakarta-cdi
-                        </compilerArg>
-                        <compilerArg>
-                            -Amapstruct.unmappedTargetPolicy=IGNORE
-                        </compilerArg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${version.plugin.failsafe}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <classesDirectory>${project.build.directory}/classes</classesDirectory>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.owasp</groupId>
@@ -213,6 +163,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>apps</module>
+        <module>benchmarks</module>
+        <module>hols</module>
+        <module>incubator</module>
+    </modules>
+
     <profiles>
         <profile>
             <id>copyright</id>

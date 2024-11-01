@@ -40,7 +40,8 @@ readonly SCRIPT_PATH
 WS_DIR=$(cd $(dirname -- "${SCRIPT_PATH}") ; cd ../.. ; pwd -P)
 readonly WS_DIR
 
-mvn ${MAVEN_ARGS} -f ${WS_DIR}/pom.xml \
+# shellcheck disable=SC2086
+mvn ${MAVEN_ARGS} -f "${WS_DIR}"/pom.xml \
     install -e \
     -DskipTests \
     -Dmaven.test.skip=true \
