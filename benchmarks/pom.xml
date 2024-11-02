@@ -26,9 +26,10 @@
         <artifactId>helidon-labs-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>helidon-labs-benchmarks</artifactId>
+    <groupId>io.helidon.labs.benchmarks</groupId>
+    <artifactId>helidon-labs-benchmarks-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs Benchmarks</name>
+    <name>Helidon Labs Benchmarks Project</name>
     <packaging>pom</packaging>
 
 <!--

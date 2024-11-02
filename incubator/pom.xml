@@ -26,9 +26,10 @@
         <artifactId>helidon-labs-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>helidon-labs-incubator</artifactId>
+    <groupId>io.helidon.labs.incubator</groupId>
+    <artifactId>helidon-labs-incubator-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs Incubator</name>
+    <name>Helidon Labs Incubator Project</name>
     <packaging>pom</packaging>
 
 <!--
