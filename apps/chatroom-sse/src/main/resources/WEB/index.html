@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+
+    Copyright (c) 2024 Oracle and/or its affiliates.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<html lang="en">
+<meta charset="utf-8"/>
+<head>
+    <title>Helidon Labs Apps ChatRoom SSE</title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <style>
+        form {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        input:first-child {
+            flex-grow: 1;
+        }
+        form input:not(:first-child) {
+            margin-left: 10px;
+        }
+        #events {
+            overflow-y: auto;
+            height: 400px;
+            margin: 10px 0 10px 0;
+            background-color: #f3f4f9;
+        }
+        #events > div span:nth-child(1) {
+            color: #808080;
+        }
+        #events > div span:nth-child(2) {
+            color: #708090;
+            margin: 0 5px 0 5px;
+        }
+        #events > div span:nth-child(3) {
+            color: #2F4F4F;
+        }
+    </style>
+</head>
+<body>
+<h1>Chat Room</h1>
+<div style="width: 400px;">
+    <form id="session">
+        <input id="user" type="text" placeholder="Username..." autocomplete="off" aria-label="user"/>
+        <input type="submit" value="connect"/>
+        <input id="disconnect" type="button" value="disconnect" disabled/>
+    </form>
+    <div id="events"></div>
+    <form id="message" target="/api" method="POST">
+        <input id="text" type="text" placeholder="Message..." aria-label="message" autocomplete="off" disabled/>
+        <input type="submit" value="send" disabled/>
+    </form>
+</div>
+<script type="text/javascript">
+  function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}/${month}/${day} @ ${hours}:${minutes}:${seconds}`
+  }
+  class Session {
+    constructor() {
+      this.id = null;
+      this.eventSource = null;
+    }
+    connect(user) {
+      $.ajax({
+        type: 'POST',
+        url: `/api`,
+        data: user,
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }).done(data => {
+        $('input').each((i, e) => {
+          e.disabled = !e.disabled;
+        });
+        $('#text').focus();
+        this.initStream(data);
+      })
+    }
+    send(text) {
+      $.ajax({
+        type: 'POST',
+        url: `/api/${this.id}`,
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        data: text
+      }).done(() => {
+        $('#text').val('')
+      });
+    }
+    initStream(id) {
+      this.id = id;
+      this.eventSource = new EventSource(`/api/${id}`)
+      this.eventSource.onmessage = event => {
+        const data = JSON.parse(event.data)
+        const model = {
+          ...data,
+          date: formatDate(data.timestamp)
+        };
+        const div = document.createElement('div');
+        $(div).append(`<span>[${formatDate(model.timestamp)}]</span>`);
+        $(div).append(`<span>&lt;${model.user}&gt;`);
+        $(div).append(`<span>${model.text}</span>`);
+        $('#events').append(div);
+      };
+    }
+    disconnect() {
+      this.eventSource.close();
+      $('#events').empty();
+      $('input').each((i, e) => {
+        e.disabled = !e.disabled;
+      });
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/${this.id}`
+      });
+    }
+  }
+  $(document).ready(() => {
+    const session = new Session();
+    $('#user').focus();
+    $('#disconnect').click(() => session.disconnect())
+    $('#session').submit((event) => {
+      session.connect($('#user').val());
+      event.preventDefault();
+    });
+    $('#message').submit((event) => {
+      session.send($('#text').val());
+      event.preventDefault();
+    });
+  });
+</script>
+</body>
+</html>

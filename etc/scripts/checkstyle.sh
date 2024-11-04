@@ -53,11 +53,10 @@ die(){ echo "${1}" ; exit 1 ;}
 rm -f "${WS_DIR}"/target/checkstyle-*
 
 # shellcheck disable=SC2086
-mvn ${MAVEN_ARGS} checkstyle:checkstyle \
+mvn ${MAVEN_ARGS} checkstyle:checkstyle-aggregate \
     -f "${WS_DIR}"/pom.xml \
     -Dcheckstyle.output.format="plain" \
-    -Dcheckstyle.output.file="${RESULT_FILE}"
-    # shellcheck disable=SC2188
+    -Dcheckstyle.output.file="${RESULT_FILE}" \
     > "${LOG_FILE}" 2>&1 || (cat "${LOG_FILE}" ; exit 1)
 
 grep "^\[ERROR\]" "${RESULT_FILE}" \

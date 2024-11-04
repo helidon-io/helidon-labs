@@ -26,9 +26,10 @@
         <artifactId>helidon-labs-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>helidon-labs-hols</artifactId>
+    <groupId>io.helidon.labs.hols</groupId>
+    <artifactId>helidon-labs-hols-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs HOLs</name>
+    <name>Helidon Labs HOLs Project</name>
     <packaging>pom</packaging>
 
 <!--
