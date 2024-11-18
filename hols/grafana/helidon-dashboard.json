@@ -126,7 +126,7 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 4,
+        "w": 3,
         "x": 0,
         "y": 0
       },
@@ -177,7 +177,7 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": " base_jvm_uptime_seconds Displays the uptime of the JVM in milliseconds.",
+      "description": " ",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -210,8 +210,8 @@
       },
       "gridPos": {
         "h": 2,
-        "w": 3,
-        "x": 4,
+        "w": 4,
+        "x": 3,
         "y": 0
       },
       "id": 26,
@@ -250,6 +250,80 @@
         }
       ],
       "title": "Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "description": "Number of CPU processors available to the JVM. This is typically the number of CPU hardware threads.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 7,
+        "y": 0
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.3.0-pre",
+      "targets": [
+        {
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "cpu_availableProcessors{job=\"$job\", instance=\"$instance\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A",
+          "useBackend": false,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        }
+      ],
+      "title": "CPUs",
       "type": "stat"
     },
     {
@@ -317,8 +391,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 8,
-        "x": 7,
+        "w": 10,
+        "x": 10,
         "y": 0
       },
       "id": 31,
@@ -362,113 +436,6 @@
         }
       ],
       "title": "Requests Per Second",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 15,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "alertThreshold": true,
-        "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.0-pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "thread_count{job=\"$job\", instance=\"$instance\"}",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Thread Count",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Thread Count",
       "type": "timeseries"
     },
     {
@@ -530,13 +497,13 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 6,
-        "w": 7,
+        "w": 10,
         "x": 0,
         "y": 2
       },
@@ -576,7 +543,7 @@
           "refId": "A"
         }
       ],
-      "title": "CPU Load",
+      "title": "CPU Load Average",
       "type": "timeseries"
     },
     {
@@ -598,7 +565,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -639,11 +606,27 @@
           },
           "unit": "decbytes"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max Heap"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 7,
+        "h": 7,
+        "w": 10,
         "x": 0,
         "y": 8
       },
@@ -687,27 +670,20 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "exemplar": true,
-          "expr": "base_memory_committedHeap_bytes{instance=\"$instance\", job=\"$serviceID\", verrazzano_cluster=~\"$vzcluster\", }",
-          "interval": "",
-          "intervalFactor": 2,
-          "legendFormat": "Commited Heap",
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "exemplar": true,
-          "expr": "base_memory_maxHeap_bytes{instance=\"$instance\", job=\"$serviceID\", verrazzano_cluster=~\"$vzcluster\"}",
-          "interval": "",
-          "intervalFactor": 2,
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "memory_maxHeap_bytes{job=\"$job\", instance=\"$instance\"}",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
           "legendFormat": "Max Heap",
-          "refId": "B"
+          "range": true,
+          "refId": "B",
+          "useBackend": false
         }
       ],
-      "title": "Heap Sizes",
+      "title": "Heap Size",
       "type": "timeseries"
     },
     {
@@ -715,7 +691,6 @@
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "description": "base_gc_total Displays the total number of collections that have occurred. This attribute lists -1 if the collection count is undefined for this collector.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -730,7 +705,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -774,12 +749,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 7,
+        "h": 7,
+        "w": 10,
+        "x": 10,
         "y": 8
       },
-      "id": 14,
+      "id": 2,
       "options": {
         "alertThreshold": true,
         "legend": {
@@ -807,122 +782,15 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "gc_total{job=\"$job\", instance=\"$instance\"}",
+          "expr": "thread_count{job=\"$job\", instance=\"$instance\"}",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "{{ name }}",
+          "legendFormat": "Thread Count",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "GC Copy & Mark Sweep Total",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "description": "base_gc_time_seconds Displays the approximate accumulated collection elapsed time in seconds. This attribute displays -1 if the collection elapsed time is undefined for this collector. The JVM implementation may use a high resolution timer to measure the elapsed time. This attribute may display the same value even if the collection count has been incremented if the collection elapsed time is very short.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 15,
-        "y": 8
-      },
-      "id": 12,
-      "options": {
-        "alertThreshold": true,
-        "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.3.0-pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": true,
-          "expr": "gc_time_seconds_total{job=\"$job\", instance=\"$instance\"}",
-          "interval": "",
-          "legendFormat": "{{ name }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "GC Copy & Mark Sweep Time",
+      "title": "Thread Count",
       "type": "timeseries"
     },
     {
@@ -932,9 +800,9 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 23,
+        "w": 20,
         "x": 0,
-        "y": 16
+        "y": 15
       },
       "id": 32,
       "options": {
@@ -1013,6 +881,7 @@
   "timezone": "",
   "title": "Helidon Monitoring Dashboard",
   "uid": "TkcxbEtWz",
-  "version": 42,
+  "version": 58,
   "weekStart": ""
 }
+
