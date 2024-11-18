@@ -142,7 +142,7 @@ These commands are based on the default install locations of `brew` on MacOS. Yo
 to match your environment.
 
 ```shell
-/usr/local/bin/promtail --config.file=${HOME}/.config/promtail-local-config.yaml
+/usr/local/bin/promtail -config.expand-env=true --config.file=${HOME}/.config/promtail-local-config.yaml
 /usr/local/bin/loki --config.file=${HOME}/.config/loki-local-config.yaml
 /usr/local/bin/prometheus --config.file=${HOME}/.config/prometheus.yaml
 
