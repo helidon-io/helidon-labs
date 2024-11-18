@@ -15,6 +15,7 @@ scrape_configs:
       - localhost
     labels:
       job: helidon-quickstart-mp
-      __path__: /Users/jdipol/logs/helidon-quickstart-mp/*.log
+      __path__: ${HOME:/var/tmp}/logs/helidon-quickstart-mp/*.log
+
       stream: accesslog
 
