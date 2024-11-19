@@ -20,7 +20,7 @@ If all you want is to grab the Grafana dashboard for Helidon then get it here: [
 
 On MacOS you should be able to install the above using `brew`.
 
-This lab does not use or assume Docker. All processes will be run natively on your system.
+This lab does not use nor assume Docker. All processes will be run natively on your system.
 
 ## Overview
 
@@ -123,7 +123,7 @@ cat ~/logs/helidon-quickstart-mp/access-0.log
 
 ## Configure and Start Promtail, Loki, Prometheus, and Grafana
 
-Next is to install and configure the monitoring stack. For convenience we put configuration for our
+Next is to install and configure the monitoring stack. For convenience we put the configuration files for the
 monitoring stack in a common directory. You can find these configuration files in the same directory as this README.
 
 ```shell
@@ -133,7 +133,7 @@ cp loki-local-config.yaml promtail-local-config.yaml prometheus.yaml ~/.config/
 
 Take a look at these configuration files. We won't go into detail here, but you should be able to see how they
 configure Prometheus to scrape metrics from our Helidon application. And how Promtail is configured to scrape
-the access log files from `~/logs/helidon-quickstart-mp/` and send them to Loki.
+the access log files from `${HOME}/logs/helidon-quickstart-mp/` and send them to Loki.
 
 Next, start the monitoring stack. Create four terminal windows and start each of
 these in the foreground so you can easily see what they are doing.
@@ -159,19 +159,17 @@ to match your environment.
 
 Now that the PLG infrastructure is up and running, log into Grafana and define the data sources for Prometheus and Loki.
 
-In a web browser connect to Grafana:
+In a web browser connect to Grafana: http://localhost:3000
 
-```text
-http://localhost:3000
-```
-
-When prompted use the username/password as documented in the Grafana installtion (possibly admin/admin).
+When prompted use the username/password as documented in the Grafana installation (possibly admin/admin).
 Once logged into Grafana:
 
 1. Click the hamburger menu icon on the left to get the menu.
 2. Click on Add new connection
 3. Search for Prometheus and click on the "Prometheus" data source, then "Add new data source". Ensure that the Connection URL is correct for your instance of Prometheus.
 4. Repeat the above for Loki.
+
+The ports used by Loki and Prometheus should be the default ports.
 
 ## Import Helidon dashboard
 
