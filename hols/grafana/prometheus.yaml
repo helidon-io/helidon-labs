@@ -1,0 +1,16 @@
+#global config
+global:
+  scrape_interval:     15s
+  evaluation_interval: 5s
+  #scrape_timeout:     1m
+  #query_log_file: <string>
+  external_labels:
+    monitor: 'helidon-monitor'
+# Scrape configs only contain one scrape target
+scrape_configs:
+  - job_name: 'helidon-quickstart-mp' # "job" label
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:8080']    # "instance" label
+

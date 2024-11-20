@@ -49,5 +49,6 @@ persistence_3_0.xsd
 ._inject_
 .helidon
 # exclude specific source files
-# src/main/java/io/helidon/samples/petclinic/service/ClinicServiceImpl.java
-# src/test/java/io/helidon/samples/petclinic/service/ClinicServiceTest.java
+loki-local-config.yaml
+prometheus.yaml
+promtail-local-config.yaml
