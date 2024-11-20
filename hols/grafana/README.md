@@ -142,11 +142,11 @@ These commands are based on the default install locations of `brew` on MacOS. Yo
 to match your environment.
 
 ```shell
-/usr/local/bin/promtail -config.expand-env=true --config.file=${HOME}/.config/promtail-local-config.yaml
-/usr/local/bin/loki --config.file=${HOME}/.config/loki-local-config.yaml
-/usr/local/bin/prometheus --config.file=${HOME}/.config/prometheus.yaml
+promtail -config.expand-env=true --config.file=${HOME}/.config/promtail-local-config.yaml
+loki --config.file=${HOME}/.config/loki-local-config.yaml
+prometheus --config.file=${HOME}/.config/prometheus.yaml
 
-/usr/local/bin/grafana server \
+grafana server \
     --config /usr/local/etc/grafana/grafana.ini \
     --homepath /usr/local/opt/grafana/share/grafana \
     --packaging\=brew \
