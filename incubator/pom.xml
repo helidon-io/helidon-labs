@@ -32,10 +32,24 @@
     <name>Helidon Labs Incubator Project</name>
     <packaging>pom</packaging>
 
+<!-- Add any new subdirectories to both modules lists below. -->
+
 <!--
     <modules>
         <module>project1</module>
     </modules>
 -->
+
+    <profiles>
+        <profile>
+            <id>java24</id>
+            <activation>
+                <jdk>[24,)</jdk>
+            </activation>
+            <modules>
+                <module>virtual-threads-metrics</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
