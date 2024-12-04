@@ -15,7 +15,7 @@ mvn clean install
 ```
 
 ### Modify the app to use the component
-Edit the `pom.xml` file to add a dependency on the component:
+Edit your project's `pom.xml` file to add a dependency on this component:
 ```xml
 <dependency>
     <groupId>io.helidon.labs.incubator</groupId>
@@ -39,7 +39,7 @@ The metrics endpoint is different for SE and MP apps.
 
 For SE:
 ```shell
-curl http://localhost:8080/metrics -H "Accept: application/json" | jq | grep vthread
+curl http://localhost:8080/observe/metrics -H "Accept: application/json" | jq | grep vthread
 ```
 The preceding command uses [`jq`](https://jqlang.github.io/jq/) to format the retrieved JSON. You do not need it but it formats its output nicely for ease of reading and searching.
 
