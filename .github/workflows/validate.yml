@@ -5,7 +5,7 @@ on: [pull_request, push]
 
 env:
   JAVA_VERSION: '24-ea'
-  JAVA_DISTRO: 'oracle'
+  JAVA_DISTRO: 'jdk.java.net'
   MAVEN_HTTP_ARGS: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.retryHandler.count=3'
 
 concurrency:
@@ -23,8 +23,8 @@ jobs:
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: oracle-actions/setup-java@v1.4.0
         with:
-          distribution: ${{ env.JAVA_DISTRO }}
-          java-version: ${{ env.JAVA_VERSION }}
+          website: ${{ env.JAVA_DISTRO }}
+          release: ${{ env.JAVA_VERSION }}
           cache: maven
       - name: Copyright
         run: etc/scripts/copyright.sh
@@ -36,8 +36,8 @@ jobs:
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: oracle-actions/setup-java@v1.4.0
         with:
-          distribution: ${{ env.JAVA_DISTRO }}
-          java-version: ${{ env.JAVA_VERSION }}
+          website: ${{ env.JAVA_DISTRO }}
+          release: ${{ env.JAVA_VERSION }}
           cache: maven
       - name: Checkstyle
         run: etc/scripts/checkstyle.sh
@@ -52,8 +52,8 @@ jobs:
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: oracle-actions/setup-java@v1.4.0
         with:
-          distribution: ${{ env.JAVA_DISTRO }}
-          java-version: ${{ env.JAVA_VERSION }}
+          website: ${{ env.JAVA_DISTRO }}
+          release: ${{ env.JAVA_VERSION }}
           cache: maven
       - name: Maven build
         run: |
@@ -66,8 +66,8 @@ jobs:
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: oracle-actions/setup-java@v1.4.0
         with:
-          distribution: ${{ env.JAVA_DISTRO }}
-          java-version: ${{ env.JAVA_VERSION }}
+          website: ${{ env.JAVA_DISTRO }}
+          release: ${{ env.JAVA_VERSION }}
           cache: maven
       - name: Spotbugs
         run: etc/scripts/spotbugs.sh
@@ -79,8 +79,8 @@ jobs:
       - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: oracle-actions/setup-java@v1.4.0
         with:
-          distribution: ${{ env.JAVA_DISTRO }}
-          java-version: ${{ env.JAVA_VERSION }}
+          website: ${{ env.JAVA_DISTRO }}
+          release: ${{ env.JAVA_VERSION }}
           cache: maven
       - name: Shellcheck
         run: etc/scripts/shellcheck.sh
