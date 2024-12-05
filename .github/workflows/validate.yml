@@ -4,7 +4,7 @@ name: "Validate"
 on: [pull_request, push]
 
 env:
-  JAVA_VERSION: '24-ea'
+  JAVA_VERSION: '24'
   JAVA_DISTRO: 'jdk.java.net'
   MAVEN_HTTP_ARGS: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.retryHandler.count=3'
 
