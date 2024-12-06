@@ -27,6 +27,9 @@ import io.helidon.metrics.spi.MetersProvider;
 
 import jdk.management.VirtualThreadSchedulerMXBean;
 
+/**
+ *  Provides virtual threads metrics.
+ */
 public class VThreadsMetersProvider implements MetersProvider {
 
     private static final String PREFIX = "vthreads.scheduler.";
