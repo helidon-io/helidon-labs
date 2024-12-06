@@ -38,6 +38,11 @@
 
 <module name="Checker">
 
+    <!-- exlude module-info because checkstyle can't process it -->
+    <module name="BeforeExecutionExclusionFileFilter">
+          <property name="fileNamePattern" value="module\-info\.java$"/>
+    </module>
+
     <!--
         If you set the basedir property below, then all reported file
         names will be relative to the specified directory. See
