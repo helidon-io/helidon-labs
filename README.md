@@ -41,7 +41,7 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 ## License
 
-Copyright (c) 2024 Oracle and/or its affiliates.
+Copyright (c) 2025 Oracle and/or its affiliates.
 
 Released under [Apache License 2.0](./LICENSE.txt).
 
