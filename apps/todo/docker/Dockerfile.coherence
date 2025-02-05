@@ -1,0 +1,84 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# 1st stage, build the app
+FROM container-registry.oracle.com/java/jdk-no-fee-term:21 as build
+
+# Install maven
+WORKDIR /usr/share
+RUN set -x && \
+    curl -O https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz && \
+    tar -xvf apache-maven-*-bin.tar.gz  && \
+    rm apache-maven-*-bin.tar.gz && \
+    mv apache-maven-* maven && \
+    ln -s /usr/share/maven/bin/mvn /bin/
+
+WORKDIR /helidon
+
+# Create a first layer to cache the "Maven World" in the local repository.
+# Incremental docker builds will always resume after that, unless you update
+# the pom
+ADD coherence/pom.xml coherence/pom.xml
+RUN mvn -f coherence/pom.xml package -Dmaven.test.skip
+
+# Do the Maven build!
+# Incremental docker builds will resume here when you change sources
+ADD coherence/src coherence/src
+RUN mvn -f coherence/pom.xml clean package -Dmaven.test.skip
+
+RUN echo "done!"
+
+# 2nd stage, build the runtime image
+FROM container-registry.oracle.com/java/jdk-no-fee-term:21
+WORKDIR /helidon
+
+# Copy the binary built in the 1st stage
+COPY --from=build /helidon/coherence/target/helidon-labs-todo-coherence.jar ./
+COPY --from=build /helidon/coherence/target/libs ./libs
+
+HEALTHCHECK  --start-period=10s --interval=30s \
+    CMD ["java", \
+    "-cp", "/helidon/helidon-labs-todo-coherence.jar", \
+    "com.tangosol.util.HealthCheckClient", \
+    "http://127.0.0.1:6676/ready", \
+    "||", "exit", "1"]
+
+# Set any environment variables
+ENV COHERENCE_GRPC_SERVER_PORT=1408
+
+## Set the health check port to a fixed value (corresponding to the command above)
+ENV COHERENCE_HEALTH_HTTP_PORT=6676
+
+## PATH where the Hibernate CONFIG file will be mounted into the container
+ENV COHERENCE_HIBERNATE_CONFIG=/hibernate/hibernate.cfg.xml
+
+# Set the Coherence log level to debug logging
+ENV COHERENCE_LOG_LEVEL=9
+
+# Enable Coherence metics
+ENV COHERENCE_METRICS_HTTP_ENABLED=true
+
+## Use POF by default
+ENV COHERENCE_POF_ENABLED=true
+
+ENV COHERENCE_SERIALIZER=pof
+
+CMD ["java", "-jar", "helidon-labs-todo-coherence.jar" ]
+
+
+EXPOSE 1408
+
+EXPOSE 9612

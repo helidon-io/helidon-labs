@@ -52,10 +52,7 @@ persistence_3_0.xsd
 loki-local-config.yaml
 prometheus.yaml
 promtail-local-config.yaml
+.ora
 cloud_init
-hols/oci-devops/init/locals.tf
-hols/oci-devops/init/variables.tf
-hols/oci-devops/init/terraform.tfvars
-hols/oci-devops/main/locals.tf
-hols/oci-devops/main/variables.tf
-hols/oci-devops/main/terraform.tfvars
+.tf
+.tfvars
