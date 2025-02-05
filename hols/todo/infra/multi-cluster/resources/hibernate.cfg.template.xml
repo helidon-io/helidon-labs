@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 5.3//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="connection.url">
+            jdbc:oracle:thin:@tasksdb_medium?TNS_ADMIN=/wallets/task_db
+        </property>
+        <property name="connection.username">task_db_user</property>
+        <property name="connection.password">
+            changeme
+        </property>
+        <property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+        <property name="hibernate.oracleucp.connectionFactoryClassName">
+            oracle.jdbc.datasource.impl.OracleDataSource
+        </property>
+
+        <property name="hibernate.oracleucp.connectionProperties">{autoCommit=false}</property>
+        <property name="hibernate.oracleucp.fastConnectionFailoverEnabled">true</property>
+        <property name="hibernate.oracleucp.validateConnectionOnBorrow">true</property>
+        <property name="hibernate.oracleucp.secondsToTrustIdleConnection">120</property>
+        <property name="hibernate.oracleucp.inactiveConnectionTimeout">180</property>
+        <property name="hibernate.oracleucp.maxStatements">20</property>
+        <property name="hibernate.oracleucp.connectionWaitTimeout">30</property>
+        <mapping class="io.helidon.labs.todo.coherence.Task"/>
+    </session-factory>
+</hibernate-configuration>
