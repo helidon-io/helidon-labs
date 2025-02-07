@@ -32,8 +32,6 @@ clusters = {
   c2 = { region = "marseille", vcn = "10.2.0.0/16", pods = "10.202.0.0/16", services = "10.102.0.0/16", enabled = true }
   # c3 = { region = "frankfurt", vcn = "10.3.0.0/16", pods = "10.203.0.0/16", services = "10.103.0.0/16", enabled = true }  
 }
-    
-}
 ```
 4. Run terraform init and apply:
 
@@ -47,7 +45,7 @@ terraform apply --auto-approve
 1. ssh to the operator host
 
 2. Deploy Cilium in all clusters:
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   helm install cilium cilium/cilium --namespace=kube-system -f $HOME/cilium/cilium-$c.yaml
@@ -56,7 +54,7 @@ done
 
 3. Delete pods not managed by Cilium:
 
-```
+```shell
 for c in c1 c2; do
   kubectx $c
   bash $HOME/cilium_delete_pods.sh
@@ -70,7 +68,7 @@ done
 
 4. Connect the clusters:
 
-```bash
+```shell
 cilium clustermesh connect --context c1 --destination-context c2
 ```
 > Note: If you have more than 2 clusters, connect all the clusters to each other in a mesh:
@@ -80,7 +78,7 @@ cilium clustermesh connect --context c1 --destination-context c2
 >   ```
 5. Check multi-cluster status:
 
-```
+```shell
 for c in c1 c2; do
   kubectx $c
   cilium clustermesh status
@@ -88,7 +86,7 @@ done
 ```
 6. Expose CoreDNS for each cluster as a Network Load Balancer:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f coredns/kubedns-$c.yaml
@@ -97,7 +95,7 @@ done
 
 6. Obtain the IP addresses of NLBs:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl -n kube-system get svc kube-dns-lb
@@ -107,7 +105,7 @@ done
 
 8. Create the CoreDNS ConfigMap and restart CoreDNS for each cluster:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f coredns/coredns-$c.yaml
@@ -116,7 +114,7 @@ done
 ```
 9. Install Istio in each cluster:
 
-```bash
+```shell
 bash $HOME/istio/install_istio.sh
 ```
 
@@ -142,13 +140,13 @@ We will use 2 Kubernetes Operators:
 ### Deploy Coherence Operator
 
 1. Add Helm chart repository for Coherence Operator:
-```bash
+```shell
 helm repo add coherence https://oracle.github.io/coherence-operator/charts
 helm repo update
 ```
 
 2. Install Coherence Operator:
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   helm install --namespace coherence-operator coherence coherence/coherence-operator --create-namespace  
@@ -158,7 +156,7 @@ done
 
 1. Create and label a namespace for the todo application in Kubernetes:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl create ns todo
@@ -168,47 +166,22 @@ done
 
 2. Create a secret to authenticate with OCIR:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
-  kubectl create secret -n todo docker-registry ocir-secret --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
+  kubectl create secret -n todo docker-registry ocir-secret --docker-server=<your-registry-server> \
+  --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
 done
 ```
 
 3. Download the Database Wallet and upload it to the database folder on the operator host:
 
-```bash
+```shell
 scp Wallet_TasksDB.zip operator:~/database/
 ```
-
-[//]: # (4. Edit the tnsnames.ora and replace `<servicename>` and the region identifiers for your database as appropriate:)
-
-[//]: # ()
-[//]: # (```txt)
-
-[//]: # (tasksdb_medium = &#40;description=)
-
-[//]: # (                        &#40;failover=on&#41;)
-
-[//]: # (                        &#40;retry_count=20&#41;&#40;retry_delay=3&#41;&#40;connect_timeout=120&#41;&#40;transport_connect_timeout=3&#41;)
-
-[//]: # (                        &#40;address_list=&#40;load_balance=on&#41;)
-
-[//]: # (                                &#40;address=&#40;protocol=tcps&#41;&#40;port=1522&#41;&#40;host=adb.ap-sydney-1.oraclecloud.com&#41;&#41;&#41;)
-
-[//]: # (                        &#40;address_list=&#40;load_balance=on&#41;)
-
-[//]: # (                                &#40;address=&#40;protocol=tcps&#41;&#40;port=1522&#41;&#40;host=adb.ap-melbourne-1.oraclecloud.com&#41;&#41;&#41;)
-
-[//]: # (                        &#40;connect_data=&#40;service_name=<servicename>_tasksdb_medium.adb.oraclecloud.com&#41;&#41;)
-
-[//]: # (                        &#40;security=&#40;ssl_server_dn_match=yes&#41;&#41;&#41;&#41;)
-
-[//]: # (```)
-
 4. Extract the Wallet and switch the tnsnames files:
 
-```bash
+```shell
 cd database
 unzip Wallet_TasksDB.zip
 mv tnsnames.ora tnsnames.ora.orig
@@ -217,7 +190,7 @@ mv tnsnames.ora.ha tnsnames.ora
  
 5. Create a secret to store the wallet:
 
-```bash
+```shell
 export OJDBC=$HOME/database/ojdbc.properties
 export TNSNAMES=$HOME/database/tnsnames.ora
 export SQLNET=$HOME/database/sqlnet.ora
@@ -240,7 +213,7 @@ done
 
 2. Store the Hibernate configuration in a secret:
 
-```bash
+```shell
 export HIBERNATE_CFG_XML=$HOME/todo/hibernate.cfg.xml
 for c in c1 c2; do
   kubectx $c
@@ -250,45 +223,45 @@ done
 
 3. Create the WKA headless service:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/wka.yaml
 done
 ```
 4. Deploy Coherence cluster with storage enabled
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/coherence-$c.yaml
 done
 ```
 5. Deploy backend service
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/backend.yaml
 done
 ```
 6. Deploy frontend service
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/frontend.yaml
 done
 ```
 7. Port-forward to the backend:
-```bash
+```shell
 kubectx c1
 kubectl -n todo port-forward svc/backend 8080:8080
 ```
 8. In another terminal, run the command to preload the data:
 
-```bash
+```shell
 curl http://localhost:8080/api/backend/preload
 ```
 9. Stop the port-forwarding to the backend and instead set up port-forwarding to frontend:
-```bash
+```shell
 kubectx c1
 kubectl -n todo port-forward svc/frontend 8080:8080
 ```
@@ -296,14 +269,14 @@ kubectl -n todo port-forward svc/frontend 8080:8080
 
 11. Setup port-forwarding to the frontend in the c2 cluster to verify the data is being shared across clusters:
 
-```bash
+```shell
 kubectx c2
 kubectl -n todo port-forward svc/frontend 8080:8080
 ```
 
 12. Set up public access by creating an Istio Gateway and a VirtualService for the frontend:
 
-```bash
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/frontend-vs.yaml
@@ -312,7 +285,7 @@ done
 
 13. Obtain the Gateway URLs:
 
-```bash
+```shell
 export INGRESS_NAME=istio-ingressgateway
 export INGRESS_NS=istio-system
 
@@ -330,7 +303,7 @@ done
 
 15. Configure locality failover using DestinationRules in each region:
 
-```
+```shell
 for c in c1 c2; do
   kubectx $c
   kubectl apply -f $HOME/todo/todo-dr-$c.yaml

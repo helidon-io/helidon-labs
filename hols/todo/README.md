@@ -42,19 +42,19 @@ mvn clean package
 
 * coherence
 
-```bash
+```shell
 mvn -pl coherence clean package -Dmaven.test.skip
 ```    
   
 * backend
 
-```bash
+```shell
 mvn -pl coherence,backend install -Dmaven.test.skip
 ```   
   
 * frontend
 
-```bash
+```shell
 mvn -pl frontend package -Dmaven.test.skip
 ```
 
@@ -63,29 +63,29 @@ mvn -pl frontend package -Dmaven.test.skip
 
 1. Set Environment variable
 
-```bash
+```shell
 export HIBERNATE_CFG_XML=/path/to/hibernate.cfg.xml
 export WALLET=/path/to/extracted/wallet
 ```
 2. Run one or more Coherence Cache Servers
    
-```bash
-./run.sh coherence
+```shell
+cd coherence && java -Doracle.jdbc.provider.traceEventListener=open-telemetry-trace-event-listener-provider -Doracle.jdbc.provider.opentelemetry.sensitive-enabled=true -Dotel.export.name=todo.coherence -Dotel.sdk.disabled=false -Dotel.service.name=todo.coherence -Dotel.traces.exporter=otlp -Dotel.java.global-autoconfigure.enabled=true -Dcoherence.tracing.ratio=1 -Dotel.metrics.exporter=none -Dcoherence.hibernate.config=$HIBERNATE_CFG_XML -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.cluster=todo -jar target/helidon-labs-todo-coherence.jar
 ```   
 
 3. Run the backend
 
-```bash
-./run.sh backend
+```shell
+cd backend && java -Xmx512m -Xms512m -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.backend -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.ttl=0 -Dcoherence.cluster=todo -Dcoherence.distributed.localstorage=false -Dcoherence.tracing.ratio=1 -jar target/helidon-labs-todo-backend.jar
 ```
 
 4. Run the frontend
 
-```bash
-./run.sh frontend
+```shell
+cd frontend && java -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.frontend -Dotel.metrics.exporter=none -Dconfig.profile=local -Xmx512m -Xms512m -jar target/helidon-labs-todo-frontend.jar
 ```
 5. Preload data
-```bash
+```shell
 curl http://localhost:8080/api/backend/preload
 ```
 6. Access
@@ -95,7 +95,7 @@ Use your browser to access http://localhost:7001/
 
 1. Run the backend
 
-```bash
+```shell
 cd backend
 export COHERENCE_HIBERNATE_CONFIG=/path/to/hibernate.cfg.xml
 export COHERENCE_WKA=127.0.0.1
@@ -106,7 +106,7 @@ helidon dev
 ```
 2. Run the frontend
 
-```bash
+```shell
 cd frontend
 helidon dev
 ```
@@ -116,15 +116,15 @@ helidon dev
 ### Build containers locally
 
 1. coherence
-```bash
+```shell
 docker buildx build --platform=linux/amd64 -t coherence -f docker/Dockerfile.coherence .
 ```
 2. backend
-````bash
+````shell
 docker buildx build --platform=linux/amd64 -t backend -f docker/Dockerfile.backend .
 ````
 3. frontend
-```bash
+```shell
 docker buildx build --platform=linux/amd64 -t frontend -f docker/Dockerfile.frontend .
 ```
 
@@ -132,25 +132,25 @@ docker buildx build --platform=linux/amd64 -t frontend -f docker/Dockerfile.fron
 
 1. Set Environment variable
 
-```bash
+```shell
 export HIBERNATE_CFG_XML=/path/to/hibernate.cfg.xml
 export WALLET=/path/to/extracted/wallet
 ```
 
 2. Run Coherence container
-```bash
+```shell
 docker run --rm -it -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml -v $WALLET:/wallets/task_db coherence
 ```
 3. Run backend container
-```bash
+```shell
 docker run --rm -it -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml -v $WALLET:/wallets/task_db  -p 8080:8080 backend
 ```
 4. Run frontend container
-```bash
+```shell
 docker run --rm -it -e HELIDON_CONFIG_PROFILE=docker -p 7001:7001 frontend
 ```
 5. Preload data
-```bash
+```shell
 curl http://localhost:8080/api/backend/preload
 ```
 6. Access 
@@ -162,7 +162,7 @@ Use your browser to access http://localhost:7001/
 
 1. Tag container images:
 
-```bash
+```shell
 docker tag coherence:latest ocir.<region>.oci.oraclecloud.com/<tenancy_namespace>/todo/coherence:v3
 docker tag backend:latest ocir.<region>.oci.oraclecloud.com/<tenancy_namespace>/todo/backend:v3
 docker tag frontend:latest ocir.<region>.oci.oraclecloud.com/<tenancy_namespace>/todo/frontend:v3
@@ -181,14 +181,14 @@ docker push ocir.<region>.oci.oraclecloud.com/<tenancy_namespace>/todo/frontend:
 
 ### Setup Oracle Database Operator
 1. Install cert-manager:
-```bash
+```shell
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.3/cert-manager.crds.yaml
 helm install cert-manager --namespace cert-manager --version v1.15.3 jetstack/cert-manager --create-namespace
 ```
 2. Install Oracle Database Operator:
-```bash
+```shell
 kubectl apply -f https://raw.githubusercontent.com/oracle/oracle-database-operator/main/oracle-database-operator.yaml
 ```
 
@@ -210,7 +210,7 @@ subjects:
 ```
 
 4. Create a ConfigMap for OCI Credentials to use API keys:
-```bash
+```shell
 kubectl create --namespace oracle-database-operator-system configmap oci-cred \
 --from-literal=tenancy=ocid1.tenancy.oc1..................67iypsmea \
 --from-literal=user=ocid1.user.oc1..aaaaaaaaxw3i...............ce6qzdrnmq \
@@ -219,44 +219,44 @@ kubectl create --namespace oracle-database-operator-system configmap oci-cred \
 ```
 
 5. Create a secret to store the private key:
-```bash
+```shell
 kubectl create secret --namespace oracle-database-operator-system generic oci-privatekey --from-file=privatekey=~/.oci/oci_rsa.pem
 ```
 
 ### Setup Coherence Operator
 
 1. Add Helm chart repository for Coherence Operator:
-```bash
+```shell
 helm repo add coherence https://oracle.github.io/coherence-operator/charts
 
 helm repo update
 ```
 
 2. Install Coherence Operator:
-```bash
+```shell
 helm install --namespace coherence-operator coherence coherence/coherence-operator --create-namespace
 ```
 
 3. Create a secret to authenticate with OCIR:
 
-```bash
+```shell
 kubectl create secret -n todo docker-registry ocir-secret --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
 ```
 
 ### Deploy to Kubernetes
 1. Create a namespace for the todo application in Kubernetes:
 
-```bash
+```shell
 kubectl create ns todo
 ``` 
 2. Create a password for the wallet:
 
-```bash 
+```shell 
 kubectl create --namespace todo secret generic tasksdb-wallet-password --from-literal=tasksdb-wallet-password='<replace_me>'
 ```
 3. Create the following manifest and replace the OCID value for the Autonomous Database:
 
-```
+```yaml
 apiVersion: database.oracle.com/v1alpha1
 kind: AutonomousDatabase
 metadata:
@@ -276,13 +276,13 @@ spec:
 ```
 4. Bind the Autonomous Database to the cluster:
 
-```bash
+```shell
 kubectl apply -f taskdb.yaml
 ```
 
 5. Store the Hibernate configuration in a secret:
 
-```bash
+```shell
 kubectl -n todo create secret generic hibernate-cfg --from-file=hibernate.cfg.xml=/path/to/hibernate.cfg.xml
 ```
 
@@ -295,28 +295,28 @@ kubectl -n todo create secret generic hibernate-cfg --from-file=hibernate.cfg.xm
 ### Deploy to Kubernetes
 
 1. Deploy Coherence cluster with storage enabled
-```bash
+```shell
 kubectl apply -f coherence-c1.yaml
 ```
 2. Deploy backend service
-```bash
+```shell
 kubectl apply -f backend.yaml
 ```
 3. Deploy frontend service
-```bash
+```shell
 kubectl apply -f frontend.yaml
 ```
 4. Set up port-forward to the backend:
 
-```bash
+```shell
 kubectl -n todo port-forward svc/backend 8080:8080
 ```
 5. In another terminal, run the command to preload the data:
-```bash
+```shell
 curl http://localhost:8080/api/backend/preload
 ```
 6. Stop the port-forwarding to the backend and instead set up port-forwarding to frontend:
-```bash
+```shell
 kubectl -n todo port-forward svc/frontend 8080:8080
 ```
 7. Use your browser to access the todo application http://localhost:8080/
@@ -343,13 +343,13 @@ spec:
 ```
 2. Install Istio:
 
-```bash
+```shell
 istioctl install -f istio.yaml
 ```
 
 3. Label the `todo` namespace that with istio-injection=enabled:
 
-```bash
+```shell
 kubectl label namespace todo istio-injection=enabled
 ```
 
@@ -377,7 +377,7 @@ spec:
 
 5. Create a VirtualService for the frontend using the following manifest:
 
-```bash
+```yaml
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -405,7 +405,7 @@ spec:
 ```
 6. Obtain the Ingress IP and Port:
 
-```bash
+```shell
 export INGRESS_HOST=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 export INGRESS_PORT=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.spec.ports[?(@.name=="http2")].port}')
 export SECURE_INGRESS_PORT=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -o jsonpath='{.spec.ports[?(@.name=="https")].port}')
@@ -413,7 +413,7 @@ export TCP_INGRESS_PORT=$(kubectl -n "$INGRESS_NS" get service "$INGRESS_NAME" -
 ```
 7. Print the Gateway URL:
 
-```bash
+```shell
 export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
 echo "http://${GATEWAY_URL}/"
 ```

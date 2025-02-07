@@ -55,10 +55,6 @@
 
 class TodoClient {
 
-  // constructor(access_token) {
-  //   this.access_token = access_token
-  // }
-
   /**
    * List all entries.
    * @return {Promise<Todo[]>}
@@ -213,30 +209,6 @@ class App {
       .on('click', '.delete', e => this.destroy(e));
   }
 
-  // signOut() {
-  //   const google = /** @type {Google} */ (window['google']);
-  //   google.accounts.id.revoke(this.token.sub);
-  //   this.client = null;
-  //   this.token = null;
-  //   $('#user-info').fadeOut();
-  //   $('.wrap').fadeOut();
-  //   google.accounts.id.prompt();
-  // }
-
-  /**
-   * Init the application.
-   */
-  // init(access_token) {
-  //   this.client = new TodoClient(access_token);
-  //   this.token = JSON.parse(atob(access_token.split(".")[1]));
-  //   const signedIn = access_token && true || false;
-  //   if (signedIn) {
-  //     this.init0().then(() => {
-  //       $('.wrap').fadeIn();
-  //       $('#user-info').fadeIn();
-  //     })
-  //   }
-  // }
   init() {
     this.client = new TodoClient();
     // this.token = JSON.parse(atob(access_token.split(".")[1]));
@@ -245,12 +217,6 @@ class App {
         $('.wrap').fadeIn();
         $('#user-info').fadeIn();
       })
-    // if (signedIn) {
-    //   this.init0().then(() => {
-    //     $('.wrap').fadeIn();
-    //     $('#user-info').fadeIn();
-    //   })
-    // }
   }
 
   init0() {
@@ -457,27 +423,6 @@ class App {
     }
   }
 }
-
-// window.onload = () => {
-//   const google = /** @type {Google} */ (window['google']);
-//   const Handlebars = /** @type {Handlebars} */ (window['Handlebars']);
-//
-//   Handlebars.registerHelper('eq', (a, b, options) => {
-//     return a === b ? options.fn(this) : options.inverse(this);
-//   });
-//
-//   const app = new App();
-//
-//   // noinspection JSUnusedGlobalSymbols,SpellCheckingInspection
-//   google.accounts.id.initialize({
-//     client_id: '1048216952820-6a6ke9vrbjlhngbc0al0dkj9qs9tqbk2.apps.googleusercontent.com',
-//     auto_select: true,
-//     callback: response => {
-//       app.init(response.credential)
-//     }
-//   });
-//   google.accounts.id.prompt();
-// }
 
 const Handlebars = /** @type {Handlebars} */ (window['Handlebars']);
 

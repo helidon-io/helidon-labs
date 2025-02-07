@@ -1,9 +1,6 @@
-# backend
-
-
+# Helidon Labs TODO backend microservice
 
 ## Build and run
-
 
 With JDK21
 ```bash

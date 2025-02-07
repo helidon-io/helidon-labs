@@ -46,7 +46,6 @@ final class BackendServiceClient {
         return Http1Client.builder()
                 .servicesDiscoverServices(false)
                 .addService(WebClientTracing.create())
-//                .addService(WebClientSecurity.create())
                 .addMediaSupport(JsonpSupport.create())
                 .baseUri(serviceEndpoint.get().resolve("/api/backend"))
                 .build();
@@ -110,11 +109,6 @@ final class BackendServiceClient {
         if (response.status().family() != Family.SUCCESSFUL) {
             throw new HttpException("backend error", response.status());
         }
-//        if(response.status() != Status.NO_CONTENT_204)
-//            return response.entity().as(clazz);
-//        else
-//            return null;
-//        return response.entity().hasEntity()
         return response.entity().as(clazz);
     }
 }

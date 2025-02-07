@@ -19,14 +19,6 @@ server:
   features:
     access-log:
       enabled: true
-#    security:
-#      paths:
-#        - path: "/api/{+}"
-#          authenticate: false
-
-#cors:
-#  allow-origins: ["https://cdnjs.cloudflare.com", "https://raw.githubusercontent.com", "*"]
-#  allow-methods: ["GET", "POST", "DELETE", "PUT"]
 
 tracing:
   components:
@@ -54,33 +46,3 @@ tracing:
 
 services:
   backend.endpoint: "http://localhost:8080"
-#  backend.endpoint: "http://host.docker.internal:8080"
-#security:
-#  config:
-#    require-encryption: false
-#    aes.insecure-passphrase: "changeit"
-#  provider-policy:
-#    type: "COMPOSITE"
-#    authentication:
-#      - name: "google-login"
-#    outbound:
-#      - name: "google-login"
-#      - name: "http-signatures"
-#  providers:
-#    - google-login:
-#        client-id: "1048216952820-6a6ke9vrbjlhngbc0al0dkj9qs9tqbk2.apps.googleusercontent.com"
-#        outbound:
-#          - name: "backend"
-#            hosts: [ "localhost" ]
-#    - abac:
-#    - http-signatures:
-#        outbound:
-#          - name: "backend"
-#            hosts: [ "localhost" ]
-#            signature:
-#              key-id: "frontend"
-#              hmac.secret: "${CLEAR=changeit}"
-#webclient:
-#  services:
-#    tracing:
-#      service: "frontend"

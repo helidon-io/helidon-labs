@@ -86,8 +86,6 @@ public final class Main {
     private static void setup(WebServerConfig.Builder server) {
         Config config = buildConfig();
 
-//        prepareOpenTelemetry(config);
-
         ConfigValue<URI> backendEndpoint = config.get("services.backend.endpoint").as(URI.class);
 
         server.config(config.get("server"))
