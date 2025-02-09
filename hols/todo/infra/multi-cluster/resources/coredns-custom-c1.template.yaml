@@ -25,6 +25,7 @@ data:
       # Change to c2 load balancer private ip
       forward . 10.2.2.14
     }
+# To connect to a 3rd cluster, un-comment the following section
 #    cluster.c3:53 {
 #      rewrite name substring cluster.c3 svc.cluster.local
 #      # Change to c3 load balancer private ip

@@ -211,8 +211,6 @@ class App {
 
   init() {
     this.client = new TodoClient();
-    // this.token = JSON.parse(atob(access_token.split(".")[1]));
-    // const signedIn = access_token && true || false;
       this.init0().then(() => {
         $('.wrap').fadeIn();
         $('#user-info').fadeIn();

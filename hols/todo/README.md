@@ -29,35 +29,16 @@ CREATE TABLE TASKS(ID VARCHAR2(255), TITLE VARCHAR2(255), COMPLETED BOOLEAN)
         <mapping class="io.helidon.labs.todo.coherence.Task"/>
     </session-factory>
 </hibernate-configuration>
-                            
+```                           
+
 ## Build modules
 
 ### Build everything locally
  
-```bash
+
+```shell
 mvn clean package
-```   
- 
-### Build individual module
-
-* coherence
-
-```shell
-mvn -pl coherence clean package -Dmaven.test.skip
-```    
-  
-* backend
-
-```shell
-mvn -pl coherence,backend install -Dmaven.test.skip
-```   
-  
-* frontend
-
-```shell
-mvn -pl frontend package -Dmaven.test.skip
 ```
-
 
 ### Run
 
@@ -70,20 +51,41 @@ export WALLET=/path/to/extracted/wallet
 2. Run one or more Coherence Cache Servers
    
 ```shell
-cd coherence && java -Doracle.jdbc.provider.traceEventListener=open-telemetry-trace-event-listener-provider -Doracle.jdbc.provider.opentelemetry.sensitive-enabled=true -Dotel.export.name=todo.coherence -Dotel.sdk.disabled=false -Dotel.service.name=todo.coherence -Dotel.traces.exporter=otlp -Dotel.java.global-autoconfigure.enabled=true -Dcoherence.tracing.ratio=1 -Dotel.metrics.exporter=none -Dcoherence.hibernate.config=$HIBERNATE_CFG_XML -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.cluster=todo -jar target/helidon-labs-todo-coherence.jar
+java \
+    -Doracle.jdbc.provider.traceEventListener=open-telemetry-trace-event-listener-provider \
+    -Doracle.jdbc.provider.opentelemetry.sensitive-enabled=true \
+    -Dotel.export.name=todo.coherence \
+    -Dotel.sdk.disabled=false \
+    -Dotel.service.name=todo.coherence \
+    -Dotel.traces.exporter=otlp \
+    -Dotel.java.global-autoconfigure.enabled=true \
+    -Dcoherence.tracing.ratio=1 \
+    -Dotel.metrics.exporter=none \
+    -Dcoherence.hibernate.config=$HIBERNATE_CFG_XML \
+    -Dcoherence.wka=127.0.0.1 \
+    -Dcoherence.pof.enabled=true \
+    -Dcoherence.cluster=todo \
+    -jar coherence/target/helidon-labs-todo-coherence.jar
 ```   
 
 3. Run the backend
 
 ```shell
-cd backend && java -Xmx512m -Xms512m -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.backend -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.ttl=0 -Dcoherence.cluster=todo -Dcoherence.distributed.localstorage=false -Dcoherence.tracing.ratio=1 -jar target/helidon-labs-todo-backend.jar
+java \
+    -Xmx512m -Xms512m -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.backend \
+    -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.ttl=0 -Dcoherence.cluster=todo \
+    -Dcoherence.distributed.localstorage=false -Dcoherence.tracing.ratio=1 \
+    -jar backend/target/helidon-labs-todo-backend.jar
 ```
 
 4. Run the frontend
 
 ```shell
-cd frontend && java -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.frontend -Dotel.metrics.exporter=none -Dconfig.profile=local -Xmx512m -Xms512m -jar target/helidon-labs-todo-frontend.jar
+java \
+    -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.frontend -Dotel.metrics.exporter=none \
+    -Dconfig.profile=local -Xmx512m -Xms512m -jar frontend/target/helidon-labs-todo-frontend.jar
 ```
+
 5. Preload data
 ```shell
 curl http://localhost:8080/api/backend/preload
@@ -117,15 +119,15 @@ helidon dev
 
 1. coherence
 ```shell
-docker buildx build --platform=linux/amd64 -t coherence -f docker/Dockerfile.coherence .
+docker build -t coherence -f docker/Dockerfile.coherence .
 ```
 2. backend
 ````shell
-docker buildx build --platform=linux/amd64 -t backend -f docker/Dockerfile.backend .
+docker build -t backend -f docker/Dockerfile.backend .
 ````
 3. frontend
 ```shell
-docker buildx build --platform=linux/amd64 -t frontend -f docker/Dockerfile.frontend .
+docker build -t frontend -f docker/Dockerfile.frontend .
 ```
 
 ### Run containers
@@ -139,15 +141,28 @@ export WALLET=/path/to/extracted/wallet
 
 2. Run Coherence container
 ```shell
-docker run --rm -it -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml -v $WALLET:/wallets/task_db coherence
+docker run \
+    --rm -it \
+    -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml \
+    -v $WALLET:/wallets/task_db \
+    coherence
 ```
 3. Run backend container
 ```shell
-docker run --rm -it -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml -v $WALLET:/wallets/task_db  -p 8080:8080 backend
+docker run \
+    --rm -it \
+    -v $HIBERNATE_CFG_XML:/hibernate/hibernate.cfg.xml \
+    -v $WALLET:/wallets/task_db  \
+    -p 8080:8080 \
+    backend
 ```
 4. Run frontend container
 ```shell
-docker run --rm -it -e HELIDON_CONFIG_PROFILE=docker -p 7001:7001 frontend
+docker run \
+    --rm -it \
+    -e HELIDON_CONFIG_PROFILE=docker \
+    -p 7001:7001 \
+    frontend
 ```
 5. Preload data
 ```shell
@@ -240,7 +255,12 @@ helm install --namespace coherence-operator coherence coherence/coherence-operat
 3. Create a secret to authenticate with OCIR:
 
 ```shell
-kubectl create secret -n todo docker-registry ocir-secret --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
+kubectl create secret docker-registry ocir-secret \
+    -n todo  \
+    --docker-server=<your-registry-server> \
+    --docker-username=<your-name> \
+    --docker-password=<your-pword> \
+    --docker-email=<your-email>
 ```
 
 ### Deploy to Kubernetes
@@ -252,7 +272,9 @@ kubectl create ns todo
 2. Create a password for the wallet:
 
 ```shell 
-kubectl create --namespace todo secret generic tasksdb-wallet-password --from-literal=tasksdb-wallet-password='<replace_me>'
+kubectl create secret generic tasksdb-wallet-password \
+    --namespace todo \
+    --from-literal=tasksdb-wallet-password='<replace_me>'
 ```
 3. Create the following manifest and replace the OCID value for the Autonomous Database:
 

@@ -4,9 +4,11 @@
 
 ### Provision OKE Clusters
 
+This section uses Terraform and the [Terraform module for OKE](https://github.com/oracle-terraform-modules/terraform-oci-oke) to create 2 OKE clusters and related infrastructure. The Terraform module will also provision 1 additional host (operator) where all relevant utilities (kubectl, helm, kubectx, istioctl, cilium) will be installed. Once provisioned, most of the shell commands will be performed on the operator host.
+
 1. Use the terraform module in infra/multi-cluster:
 
-```bash
+```shell
 cd infra/multi-cluster
 cp terraform.tfvars.example terraform.tfvars
 ```
@@ -46,10 +48,8 @@ terraform apply --auto-approve
 
 2. Deploy Cilium in all clusters:
 ```shell
-for c in c1 c2; do
-  kubectx $c
-  helm install cilium cilium/cilium --namespace=kube-system -f $HOME/cilium/cilium-$c.yaml
-done
+helm --kube-context c1 install cilium cilium/cilium --namespace=kube-system -f $HOME/cilium/cilium-c1.yaml
+helm --kube-context c2 install cilium cilium/cilium --namespace=kube-system -f $HOME/cilium/cilium-c2.yaml
 ```
 
 3. Delete pods not managed by Cilium:
@@ -131,11 +131,6 @@ bash $HOME/istio/install_istio.sh
 7. Click on 'Add Peer Database' to finish creating the Autonomous DR instance
 
 ## C. Kubernetes Operators
-
-We will use 2 Kubernetes Operators:
-
-1. Oracle Coherence Operator: this will be used to deploy the Coherence cluster to OKE.
-2. TODO: External Secrets Operator: this will be used to retrieve the Hibernate Configuration and Wallet Secret from OCI Vault.
 
 ### Deploy Coherence Operator
 

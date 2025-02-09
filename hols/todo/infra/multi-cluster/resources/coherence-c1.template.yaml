@@ -24,6 +24,7 @@ spec:
       addresses:
         - todo-wka
         - todo-wka.todo.cluster.c2
+# To connect to a 3rd cluster, un-comment the following section
 #        - todo-wka.todo.cluster.c3
   env:
     - name: "COHERENCE_GRPC_SERVER_PORT"

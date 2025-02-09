@@ -159,6 +159,4 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-    </repositories>
 </project>

@@ -15,7 +15,7 @@
 
 2. Configure the provider parameters:
 
-```
+```hcl
 # provider
 api_fingerprint = ""
 
@@ -32,7 +32,7 @@ compartment_id = "ocid1.compartment.oc1.."
 
 3. Configure an ssh key pair:
 
-```
+```hcl
 # ssh
 ssh_private_key_path = "~/.ssh/id_rsa"
 ssh_public_key_path  = "~/.ssh/id_rsa.pub"
@@ -40,7 +40,7 @@ ssh_public_key_path  = "~/.ssh/id_rsa.pub"
 
 4. Configure your clusters' regions.
 
-```
+```hcl
 # clusters
 clusters = {
   c1 = { region = "sydney", vcn = "10.1.0.0/16", pods = "10.201.0.0/16", services = "10.101.0.0/16", enabled = true }
@@ -50,7 +50,7 @@ clusters = {
 
 5. Configure additional parameters if necessary:
 
-```
+```hcl
 kubernetes_version = "v1.30.1"
 
 cluster_type = "basic"
@@ -60,7 +60,7 @@ oke_control_plane = "private"
 
 6. Configure your node pools:
 
-```
+```hcl
 nodepools = {
   np1 = {
     shape            = "VM.Standard.E4.Flex",
@@ -74,7 +74,7 @@ nodepools = {
 
 7. Run terraform to create your clusters:
 
-```
+```shell
 terraform apply --auto-approve
 ```
 
@@ -84,13 +84,13 @@ terraform apply --auto-approve
 
 1. Terraform will output an ssh convenience command. Use it to ssh to the operator host:
 
-```
+```shell
 ssh_to_operator = "ssh -o ProxyCommand='ssh -W %h:%p -i ~/.ssh/id_rsa opc@<bastion_ip>' -i ~/.ssh/id_rsa opc@<operator_ip>"
 ```
 
 2. Verify connectivity to both clusters:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   k get nodes
@@ -99,7 +99,7 @@ done
 
 3. Generate certs for each cluster:
 
-```
+```shell
 export ISTIO_HOME=/home/opc/istio-1.23.0
 cd $ISTIO_HOME/tools/certs 
 make -f Makefile.selfsigned.mk c1-cacerts
@@ -108,7 +108,7 @@ make -f Makefile.selfsigned.mk c2-cacerts
 
 4. Create and label istio-system namespace in each cluster:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   k create ns istio-system
@@ -118,7 +118,7 @@ done
 
 5. Create a secret containing the certificates in istio-system namespace for both clusters:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   kubectl create secret generic cacerts -n istio-system \
@@ -131,7 +131,7 @@ done
 
 6. Install Istio in both clusters:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   istioctl install --set profile=default -f $HOME/$cluster.yaml
@@ -140,7 +140,7 @@ done
 
 7. Verify the Istio installation in both clusters:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   istioctl verify-install
@@ -149,7 +149,7 @@ done
 
 8. Check if the load balancers have been properly provisioned:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   k -n istio-system get svc
@@ -158,7 +158,7 @@ done
 
 9. Check if Istio pods are running:
 
-```
+```shell
 for cluster in c1 c2; do
   ktx $cluster
   k -n istio-system get pods
@@ -167,7 +167,7 @@ done
 
 10. Create an Gateway to expose all services through the eastwest ingress gateway:
 
-```
+```shell
 cd $ISTIO_HOME
 for cluster in c1 c2; do
   ktx $cluster
@@ -176,14 +176,15 @@ done
 ```
 
 11. Set the environment variables to verify multi-cluster connectivity:
-```
+
+```shell
 export CTX_CLUSTER1=c1
 export CTX_CLUSTER2=c2
 ```
 
 12. Enable endpoint discovery in each cluster by creating a remote secret:
 
-```
+```shell
 istioctl create-remote-secret \
   --context="${CTX_CLUSTER1}" \
   --name="${CTX_CLUSTER1}" | \
@@ -200,7 +201,7 @@ istioctl create-remote-secret \
 
 1. Deploy the HelloWorld Service in both clusters:
 
-```
+```shell
 for c in c1 c2; do
   kubectl create --context="${c}" namespace sample
   kubectl label --context="${c}" namespace sample istio-injection=enabled
@@ -210,7 +211,7 @@ done
 
 2. Deploy v1 to cluster c1:
 
-```
+```shell
 kubectl apply --context="${CTX_CLUSTER1}" \
     -f samples/helloworld/helloworld.yaml \
     -l version=v1 -n sample
@@ -220,7 +221,7 @@ kubectl get pod --context="${CTX_CLUSTER1}" -n sample -l app=helloworld
 
 3. Deploy v2 to cluster c2:
 
-```
+```shell
 kubectl apply --context="${CTX_CLUSTER2}" \
     -f samples/helloworld/helloworld.yaml \
     -l version=v2 -n sample
@@ -230,7 +231,7 @@ kubectl get pod --context="${CTX_CLUSTER2}" -n sample -l app=helloworld
 
 4. Deploy Sleep client pod in both clusters:
 
-```
+```shell
 kubectl apply --context="${CTX_CLUSTER1}" \
     -f samples/sleep/sleep.yaml -n sample
 kubectl apply --context="${CTX_CLUSTER2}" \
@@ -239,7 +240,7 @@ kubectl apply --context="${CTX_CLUSTER2}" \
 
 5. Generate traffic from c1. The response should alternate between c1 (v1) and c2 (v2) regions:
 
-```
+```shell
 for i in $(seq 1 10); do
 kubectl exec --context="${CTX_CLUSTER1}" -n sample -c sleep \
     "$(kubectl get pod --context="${CTX_CLUSTER1}" -n sample -l \
@@ -250,7 +251,7 @@ done
 
 6. Generate traffic from c2. The response should alternate between c1 (v1) and c2 (v2) regions:
 
-```
+```shell
 for i in $(seq 1 10); do
 kubectl exec --context="${CTX_CLUSTER2}" -n sample -c sleep \
     "$(kubectl get pod --context="${CTX_CLUSTER2}" -n sample -l \
