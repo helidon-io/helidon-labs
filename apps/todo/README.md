@@ -72,9 +72,14 @@ java \
 
 ```shell
 java \
-    -Xmx512m -Xms512m -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.backend \
-    -Dcoherence.wka=127.0.0.1 -Dcoherence.pof.enabled=true -Dcoherence.ttl=0 -Dcoherence.cluster=todo \
-    -Dcoherence.distributed.localstorage=false -Dcoherence.tracing.ratio=1 \
+    -Xmx512m -Xms512m -Dotel.java.global-autoconfigure.enabled=true \
+    -Dotel.service.name=todo.backend \
+    -Dcoherence.wka=127.0.0.1 \
+    -Dcoherence.pof.enabled=true \
+    -Dcoherence.ttl=0 \
+    -Dcoherence.cluster=todo \
+    -Dcoherence.distributed.localstorage=false \
+    -Dcoherence.tracing.ratio=1 \
     -jar backend/target/helidon-labs-todo-backend.jar
 ```
 
@@ -82,8 +87,11 @@ java \
 
 ```shell
 java \
-    -Dotel.java.global-autoconfigure.enabled=true -Dotel.service.name=todo.frontend -Dotel.metrics.exporter=none \
-    -Dconfig.profile=local -Xmx512m -Xms512m -jar frontend/target/helidon-labs-todo-frontend.jar
+    -Dotel.java.global-autoconfigure.enabled=true \
+    -Dotel.service.name=todo.frontend \
+    -Dotel.metrics.exporter=none \
+    -Dconfig.profile=local \
+    -Xmx512m -Xms512m -jar frontend/target/helidon-labs-todo-frontend.jar
 ```
 
 5. Preload data
