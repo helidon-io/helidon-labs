@@ -3,6 +3,21 @@
 This project contains updated Helidon grafana dashboards and the instructions on how to 
 configure and enable additional metrics for Helidon SE and Helidon MP.
 
+> Note: This document and it's contents are work in progress only and not complete. 
+> The information and dashboards may change or be removed.
+
+## Table of Contents
+
+* [Software Pre-requisites](#software-pre-requisites)
+* [References](#references)
+* [Helidon Setup](#helidon-setup)
+  + [Application Identification](#application-identification)
+  + [Required Dependencies](#required-dependencies)
+  + [Enabling Metrics](#enabling-metrics)
+* [Prometheus Setup](#prometheus-setup)
+* [Grafana Setup](#grafana-setup)
+* [grafana Dashboard Images](#grafana-dashboard-images)
+
 ## Software Pre-requisites
 
 * JDK21 or JDK24
@@ -121,15 +136,45 @@ Additional properties are required to ensure we get the full range of metrics:
 * `-Dmetrics.built-in-meter-name-format=CAMEL` 
 * `-Dmetrics.gc-time-type=GAUGE`
 
-**SE**
-
-**MP**
+**MP Specific**
 
 * `-Dmetrics.rest-request.enabled=true` - enables REST metrics. See [here](https://helidon.io/docs/latest/mp/guides/metrics#controlling-rest-request-metrics) for more details.
 
 
-## Prometheus Endpoints
+## Prometheus Setup
 
-SE  curl http://localhost:7001//observe/metrics
+* SE Apps http://host:port/observe/metrics
+* MP Apps http://host:port/metrics
 
+## Grafana Setup
+
+TBC
+
+## Troubleshooting
+
+TBC
+
+## Grafana Dashboard Images
+
+The section below outlines the initial "work-in-progress" Grafana dashboards.
+
+### Main DashBoard
+
+![Coherence Demo](images/helidon-dashboard-main.png)
+
+### SE Details Dashboard
+
+![Coherence Demo](images/helidon-se-details-1.png)
+
+### SE Details Dashboard (Virtual Threads)
+
+![Coherence Demo](images/helidon-se-details-threads.png)
+
+### MP Details Dashboard
+
+![Coherence Demo](images/helidon-mp-details.png)
+
+### MP Details Dashboard (Threads and REST)
+
+![Coherence Demo](images/helidon-mp-details-thread-rest.png)
 
