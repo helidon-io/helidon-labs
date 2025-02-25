@@ -22,18 +22,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.helidon.labs</groupId>
-        <artifactId>helidon-labs-project</artifactId>
+        <groupId>io.helidon.labs.benchmarks</groupId>
+        <artifactId>helidon-labs-benchmarks-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <groupId>io.helidon.labs.benchmarks</groupId>
-    <artifactId>helidon-labs-benchmarks-project</artifactId>
+    <artifactId>helidon-labs-benchmarks-startup</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs Benchmarks Project</name>
+    <name>Helidon Labs Startup Benchmark</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>startup</module>
+        <module>mp-bench-app</module>
+        <module>se-bench-app</module>
     </modules>
 
 </project>

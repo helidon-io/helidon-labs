@@ -1,0 +1,105 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# syntax=docker/dockerfile:1.7-labs
+FROM container-registry.oracle.com/os/oraclelinux:9-slim AS startup-bechmark-base
+
+WORKDIR /usr/share
+
+ENV PORT=8080
+ENV ENDPOINT=http://localhost:${PORT}
+ENV STARTED_PATTERN_MP="Server started"
+ENV STARTED_PATTERN_SE="Started all channels"
+ENV RESTORED_PATTERN_MP="Server started"
+ENV RESTORED_PATTERN_SE="Started all channels"
+
+RUN microdnf -y update && \
+    microdnf --enablerepo ol9_codeready_builder install -y \
+        wget procps tar git unzip perl glibc-devel bzip2-devel ed gcc gcc-c++ gcc-gfortran gzip file fontconfig less \
+        libcurl-devel make openssl openssl-devel readline-devel tar glibc-langpack-en vi which xz-devel zlib-devel \
+        findutils glibc-static libstdc++ libstdc++-devel libstdc++-static zlib-static libxcrypt-compat && \
+    microdnf clean all
+
+RUN fc-cache -f -v
+
+# Install Maven
+RUN set -x && \
+    curl -O https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz && \
+    tar -xvf apache-maven-*-bin.tar.gz  && \
+    rm apache-maven-*-bin.tar.gz && \
+    mv apache-maven-* maven && \
+    ln -s /usr/share/maven/bin/mvn /bin/
+
+# Install wrk
+RUN git clone https://github.com/wg/wrk.git wrk && cd wrk && make && ln -s /usr/share/wrk/wrk /bin/
+
+WORKDIR /helidon
+
+RUN <<END_OF_SCRIPT
+cat <<EOF > warmup.sh
+#!/bin/bash
+# Wait until the connection is opened
+until curl --output /dev/null --silent --fail $ENDPOINT; do
+    sleep 0.1;
+done
+
+# Warm-up the server
+wrk -c 20 -t 10 -d 5s $ENDPOINT |& tee wrk-warmup.log
+
+ls -la .
+cat after-warmup.sh
+if [ -f after-warmup.sh ]; then
+    source after-warmup.sh
+fi
+
+# Wait until the process completes, returning success
+# (wait would return exit code 137)
+wait \$PID || true
+EOF
+END_OF_SCRIPT
+
+RUN <<END_OF_SCRIPT
+cat <<EOF > benchmark.sh
+#!/bin/bash -e
+# Wait until the connection is opened
+until curl --output /dev/null --silent --fail $ENDPOINT; do
+    sleep 0.1;
+done
+
+# Test the server
+wrk -c 20 -t 10 -d 5s $ENDPOINT |& tee wrk-run.log
+
+kill \$PID
+
+wait \$PID || true
+if [ "\$FLAVOR" = "mp" ];
+then
+  export STARTED_PATTERN=\$STARTED_PATTERN_MP;
+  export RESTORED_PATTERN=\$RESTORED_PATTERN_MP;
+else
+  export STARTED_PATTERN=\$STARTED_PATTERN_SE;
+  export RESTORED_PATTERN=\$RESTORED_PATTERN_SE;
+fi
+
+WARMUP_STARTUP_MS=\$(cat helidon-warmup.log | grep "\${STARTED_PATTERN}" | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
+WARMUP_REQS=\$(grep "Requests/sec:" wrk-warmup.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
+RUN_STARTUP_MS=\$(cat helidon-run.log | grep "\${RESTORED_PATTERN}" | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
+RUN_REQS=\$(grep "Requests/sec:" wrk-run.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
+echo "======= RESULTS ======="
+echo "TRAINING started in \$WARMUP_STARTUP_MS ms, \$(grep "Requests/sec:" wrk-warmup.log)"
+echo "     RUN started in \$RUN_STARTUP_MS ms, \$(grep "Requests/sec:" wrk-run.log)"
+echo "\$WARMUP_STARTUP_MS,\$RUN_STARTUP_MS,\$WARMUP_REQS,\$RUN_REQS"
+EOF
+END_OF_SCRIPT
