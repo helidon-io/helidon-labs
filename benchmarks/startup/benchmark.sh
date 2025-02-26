@@ -17,12 +17,12 @@ function runBenchmark() {
     docker run --rm -it helidon/benchmark-startup-$NAME-$FLAVOR | tail -1 >> $RESULTS_FILE
 }
 
-#runBenchmark se crac
-#runBenchmark se leyden
+runBenchmark se crac
+runBenchmark se leyden
 runBenchmark se nativeimage
-#runBenchmark mp crac
-#runBenchmark mp leyden
-#runBenchmark mp nativeimage
+runBenchmark mp crac
+runBenchmark mp leyden
+runBenchmark mp nativeimage
 
 rows="%-15s| %11s| %11s| %13s| %13s\n"
 printf "$rows" "Name" "Warmup ms" "Startup ms" "Warmup req/s" "Run req/s"
