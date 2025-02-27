@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-RESULTS_FILE=/tmp/startup-benchmark-results-$(date +%s).log
+RESULTS_FILE=/tmp/startup-benchmark-results-$(date +%s).csv
 
 mvn package
 
@@ -17,17 +17,21 @@ function runBenchmark() {
     docker run --rm -it helidon/benchmark-startup-$NAME-$FLAVOR | tail -1 >> $RESULTS_FILE
 }
 
+runBenchmark se vanilla
 runBenchmark se crac
 runBenchmark se leyden
 runBenchmark se nativeimage
+runBenchmark se nativeimage-pgo
+runBenchmark mp vanilla
 runBenchmark mp crac
 runBenchmark mp leyden
 runBenchmark mp nativeimage
+runBenchmark mp nativeimage-pgo
 
-rows="%-15s| %11s| %11s| %13s| %13s\n"
+rows="%-20s| %11s| %11s| %13s| %13s\n"
 printf "$rows" "Name" "Warmup ms" "Startup ms" "Warmup req/s" "Run req/s"
-printf "%.70s\n" "$(printf -- '-%.0s' {1..100})"
+printf "%.75s\n" "$(printf -- '-%.0s' {1..100})"
 awk -F, "{printf \"${rows}\", \$1, \$2, \$3, \$4, \$5}" $RESULTS_FILE
-printf "%.70s\n" "$(printf -- '-%.0s' {1..100})"
+printf "%.75s\n" "$(printf -- '-%.0s' {1..100})"
 
 echo "Results stored in $RESULTS_FILE"

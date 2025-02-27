@@ -58,8 +58,6 @@ done
 # Warm-up the server
 wrk -c 20 -t 10 -d 5s $ENDPOINT |& tee wrk-warmup.log
 
-ls -la .
-cat after-warmup.sh
 if [ -f after-warmup.sh ]; then
     source after-warmup.sh
 fi
@@ -93,13 +91,12 @@ else
   export RESTORED_PATTERN=\$RESTORED_PATTERN_SE;
 fi
 
-WARMUP_STARTUP_MS=\$(cat helidon-warmup.log | grep "\${STARTED_PATTERN}" | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
+WARMUP_STARTUP_MS=\$(grep "\${STARTED_PATTERN}" helidon-warmup.log | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
 WARMUP_REQS=\$(grep "Requests/sec:" wrk-warmup.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
-RUN_STARTUP_MS=\$(cat helidon-run.log | grep "\${RESTORED_PATTERN}" | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
+RUN_STARTUP_MS=\$(grep "\${RESTORED_PATTERN}" helidon-run.log | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
 RUN_REQS=\$(grep "Requests/sec:" wrk-run.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
+
 echo "======= RESULTS ======="
-echo "TRAINING started in \$WARMUP_STARTUP_MS ms, \$(grep "Requests/sec:" wrk-warmup.log)"
-echo "     RUN started in \$RUN_STARTUP_MS ms, \$(grep "Requests/sec:" wrk-run.log)"
 echo "\$WARMUP_STARTUP_MS,\$RUN_STARTUP_MS,\$WARMUP_REQS,\$RUN_REQS"
 EOF
 END_OF_SCRIPT
