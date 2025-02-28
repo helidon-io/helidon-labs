@@ -36,8 +36,6 @@ ENV FLAVOR=$FLAVOR
 
 ADD ${FLAVOR}-bench-app/pom.xml .
 ADD ${FLAVOR}-bench-app/src src
-RUN line=$(grep -n "io.helidon.integrations.crac" pom.xml | grep -Eo '^[^:]+') && \
-    sed -i -e "$((line-1)),$((line+2))d" pom.xml
 RUN mvn package -DskipTests
 
 ARG WARMUP_CACHEBUST=1

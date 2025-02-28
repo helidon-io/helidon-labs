@@ -50,10 +50,6 @@
             <artifactId>helidon-logging-jul</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>io.helidon.integrations.crac</groupId>
-            <artifactId>helidon-integrations-crac</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -72,6 +68,15 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>crac</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.helidon.integrations.crac</groupId>
+                    <artifactId>helidon-integrations-crac</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
         <profile>
             <id>native-pgo-instrumented</id>
             <build>

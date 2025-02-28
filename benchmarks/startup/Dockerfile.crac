@@ -37,7 +37,7 @@ ENV FLAVOR=$FLAVOR
 
 ADD ${FLAVOR}-bench-app/pom.xml .
 ADD ${FLAVOR}-bench-app/src src
-RUN mvn package -DskipTests
+RUN mvn package -Pcrac -DskipTests
 
 ARG WARMUP_CACHEBUST=1
 

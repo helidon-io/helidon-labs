@@ -1,7 +1,6 @@
 ## Helidon Startup Benchmark
 
 ```
-curl https://host.com/path/to/the.patch | git apply -v
 /usr/bin/time -f "%e" -o /tmp/aot-time mvn package && sleep 5 
 
 
