@@ -14,13 +14,13 @@
 # limitations under the License.
 #
 # syntax=docker/dockerfile:1.7-labs
-FROM helidon/benchmark-startup-base AS benchmark-leyden
+FROM helidon/benchmark-startup-base AS benchmark
 
 WORKDIR /usr/share
 
 ENV JDK_URL="https://download.oracle.com/graalvm"
 ENV DOWNLOAD_URL="$JDK_URL/21/latest/graalvm-jdk-21_linux-x64_bin.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-21-graal
+ENV JAVA_HOME=/usr/share/jdk
 
 # Install GraalVM
 RUN wget -O jdk.tar.gz ${DOWNLOAD_URL} && \
@@ -38,13 +38,12 @@ ENV FLAVOR=$FLAVOR
 ADD ${FLAVOR}-bench-app/pom.xml .
 ADD ${FLAVOR}-bench-app/src src
 
-# TODO: Hotfix until 4.2 is released
-RUN sed -i 's/<version>4.2.0-SNAPSHOT/<version>4.1.6/' pom.xml
 RUN line=$(grep -n "io.helidon.integrations.crac" pom.xml | grep -Eo '^[^:]+') && \
     sed -i -e "$((line-1)),$((line+2))d" pom.xml
 
+ARG WARMUP_CACHEBUST=1
+
 # AOT build and warmup
-#RUN mvn package -Pnative-image -Dnative.image.buildStatic -DskipTests
 RUN mvn package -Pnative-image -DskipTests
 
 # Runtime benchmark

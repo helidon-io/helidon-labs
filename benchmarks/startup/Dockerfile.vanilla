@@ -19,11 +19,12 @@ FROM helidon/benchmark-startup-base AS benchmark-base
 WORKDIR /usr/share
 ENV JDK_URL="https://download.oracle.com/java"
 ENV DOWNLOAD_URL="${JDK_URL}/23/archive/jdk-23.0.2_linux-x64_bin.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-23.0.2
+ENV JAVA_HOME=/usr/share/jdk
 
-# Install Leyden EA
+# Install JDK
 RUN wget -O jdk.tar.gz ${DOWNLOAD_URL} && \
-    tar zxf ./jdk.tar.gz -C /usr/share && \
+    mkdir -p $JAVA_HOME && \
+    tar zxf ./jdk.tar.gz --strip-components=1 -C $JAVA_HOME && \
     ln -sf $JAVA_HOME/bin/java /bin/ && \
     ln -sf $JAVA_HOME/bin/jcmd /bin/ && \
     ln -sf $JAVA_HOME/bin/jps /bin/
@@ -33,8 +34,13 @@ WORKDIR /helidon
 ARG FLAVOR=mp
 ENV FLAVOR=$FLAVOR
 
-ADD ${FLAVOR}-bench-app/target/*.jar .
-ADD ${FLAVOR}-bench-app/target/libs libs
+ADD ${FLAVOR}-bench-app/pom.xml .
+ADD ${FLAVOR}-bench-app/src src
+RUN line=$(grep -n "io.helidon.integrations.crac" pom.xml | grep -Eo '^[^:]+') && \
+    sed -i -e "$((line-1)),$((line+2))d" pom.xml
+RUN mvn package -DskipTests
+
+ARG WARMUP_CACHEBUST=1
 
 # Runtime benchmark
 RUN <<END_OF_SCRIPT
@@ -43,7 +49,7 @@ cat <<EOF > run.sh
 java \
 -XX:+UseG1GC \
 -XX:G1HeapRegionSize=1048576 \
--jar ./*.jar |& tee helidon-run.log &
+-jar ./target/*.jar |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 

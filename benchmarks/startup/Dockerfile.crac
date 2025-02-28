@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 # syntax=docker/dockerfile:1.7-labs
-FROM helidon/benchmark-startup-base AS benchmark-leyden
+FROM helidon/benchmark-startup-base AS benchmark
 
 WORKDIR /usr/share
 
@@ -34,11 +34,15 @@ WORKDIR /helidon
 
 ARG FLAVOR=mp
 ENV FLAVOR=$FLAVOR
+
+ADD ${FLAVOR}-bench-app/pom.xml .
+ADD ${FLAVOR}-bench-app/src src
+RUN mvn package -DskipTests
+
+ARG WARMUP_CACHEBUST=1
+
 ENV RESTORED_PATTERN_MP="Restored all channels"
 ENV RESTORED_PATTERN_SE="Restored all channels"
-
-ADD ${FLAVOR}-bench-app/target/*.jar .
-ADD ${FLAVOR}-bench-app/target/libs libs
 
 # Do the snapshot
 RUN <<END_OF_SCRIPT
@@ -56,7 +60,7 @@ RUN <<END_OF_SCRIPT
 java -XX:CPUFeatures=generic \
     -XX:CRaCEngine=warp \
     -XX:CRaCCheckpointTo=./cr \
-    -jar /helidon/benchmark.jar |& tee helidon-warmup.log &
+    -jar ./target/*.jar |& tee helidon-warmup.log &
 
 PID="$(jcmd | grep ".jar" | awk '{print $1}')"
 
@@ -70,7 +74,7 @@ cat <<EOF > run.sh
 java \
 -XX:CRaCEngine=warp \
 -XX:CRaCRestoreFrom=/helidon/cr \
--jar /helidon/benchmark.jar |& tee helidon-run.log &
+-jar ./target/*.jar |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 

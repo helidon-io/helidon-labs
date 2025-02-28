@@ -18,12 +18,12 @@ FROM container-registry.oracle.com/os/oraclelinux:9-slim AS startup-bechmark-bas
 
 WORKDIR /usr/share
 
-ENV PORT=8080
-ENV ENDPOINT=http://localhost:${PORT}
 ENV STARTED_PATTERN_MP="Server started"
 ENV STARTED_PATTERN_SE="Started all channels"
 ENV RESTORED_PATTERN_MP="Server started"
 ENV RESTORED_PATTERN_SE="Started all channels"
+ENV STARTUP_REGEX='s/.*\s([0-9]+)\smilliseconds.*$/\1/'
+ENV WRK_REGEX='s/Requests\/sec:\s([^A-Za-z]+)\s*/\1/'
 
 RUN microdnf -y update && \
     microdnf --enablerepo ol9_codeready_builder install -y \
@@ -45,7 +45,34 @@ RUN set -x && \
 # Install wrk
 RUN git clone https://github.com/wg/wrk.git wrk && cd wrk && make && ln -s /usr/share/wrk/wrk /bin/
 
+# TODO: Hotfix until 4.2 is released
+WORKDIR /tmp
+RUN DOWNLOAD_URL="https://download.oracle.com/java/21/archive/jdk-21_linux-x64_bin.tar.gz" && \
+wget -O jdk.tar.gz ${DOWNLOAD_URL} && \
+export JAVA_HOME=/tmp/jdk && \
+mkdir -p $JAVA_HOME && \
+tar zxf ./jdk.tar.gz --strip-components=1 -C ${JAVA_HOME} && \
+ls -la $JAVA_HOME && \
+git clone --single-branch --branch main https://github.com/helidon-io/helidon.git && \
+cd helidon && \
+mvn -T4 clean install -DskipTests
+
 WORKDIR /helidon
+
+ARG WARMUP_DURATION=20s
+ARG WARMUP_CONNECTIONS=20
+ARG WARMUP_THREADS=10
+ARG PORT=8080
+ARG ENDPOINT=http://localhost:${PORT}
+
+ENV PORT=$PORT
+ENV ENDPOINT=$ENDPOINT
+ENV WRK_RUN_1_DURATION=5s
+ENV WRK_RUN_1_CONNECTIONS=20
+ENV WRK_RUN_1_THREADS=10
+ENV WRK_RUN_2_DURATION=15s
+ENV WRK_RUN_2_CONNECTIONS=20
+ENV WRK_RUN_2_THREADS=10
 
 RUN <<END_OF_SCRIPT
 cat <<EOF > warmup.sh
@@ -56,7 +83,7 @@ until curl --output /dev/null --silent --fail $ENDPOINT; do
 done
 
 # Warm-up the server
-wrk -c 20 -t 10 -d 5s $ENDPOINT |& tee wrk-warmup.log
+wrk -c ${WARMUP_CONNECTIONS} -t ${WARMUP_THREADS} -d ${WARMUP_DURATION} $ENDPOINT |& tee wrk-warmup.log
 
 if [ -f after-warmup.sh ]; then
     source after-warmup.sh
@@ -72,12 +99,24 @@ RUN <<END_OF_SCRIPT
 cat <<EOF > benchmark.sh
 #!/bin/bash -e
 # Wait until the connection is opened
-until curl --output /dev/null --silent --fail $ENDPOINT; do
+until curl --output /dev/null --silent --fail \$ENDPOINT; do
     sleep 0.1;
 done
 
-# Test the server
-wrk -c 20 -t 10 -d 5s $ENDPOINT |& tee wrk-run.log
+RESP=\$(curl \$ENDPOINT)
+if [ "\$RESP" = "Hello World!" ];
+then
+  echo "Response check ... OK"
+else
+  echo "Response check ... FAILED! - \$RESP"
+  exit 1
+fi
+
+# Test the server - run 1
+wrk -c \${WRK_RUN_1_CONNECTIONS} -t \${WRK_RUN_1_THREADS} -d \${WRK_RUN_1_DURATION} \$ENDPOINT |& tee wrk-run-1.log
+
+# Test the server - run 2
+wrk -c \${WRK_RUN_2_CONNECTIONS} -t \${WRK_RUN_2_THREADS} -d \${WRK_RUN_2_DURATION} \$ENDPOINT |& tee wrk-run-2.log
 
 kill \$PID
 
@@ -91,12 +130,14 @@ else
   export RESTORED_PATTERN=\$RESTORED_PATTERN_SE;
 fi
 
-WARMUP_STARTUP_MS=\$(grep "\${STARTED_PATTERN}" helidon-warmup.log | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
-WARMUP_REQS=\$(grep "Requests/sec:" wrk-warmup.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
-RUN_STARTUP_MS=\$(grep "\${RESTORED_PATTERN}" helidon-run.log | sed -r 's/.*\s([0-9]+)\smilliseconds.*\$/\1/')
-RUN_REQS=\$(grep "Requests/sec:" wrk-run.log | sed -r 's/Requests\/sec:\s([^A-Za-z]+)\s*/\1/')
+WARMUP_STARTUP_MS=\$(grep "\${STARTED_PATTERN}" helidon-warmup.log | sed -r '$STARTUP_REGEX')
+WARMUP_REQS=\$(grep "Requests/sec:" wrk-warmup.log | sed -r '$WRK_REGEX')
+RUN_STARTUP_MS=\$(grep "\${RESTORED_PATTERN}" helidon-run.log | sed -r '$STARTUP_REGEX')
+RUN_REQS_1=\$(grep "Requests/sec:" wrk-run-1.log | sed -r '$WRK_REGEX')
+RUN_REQS_2=\$(grep "Requests/sec:" wrk-run-2.log | sed -r '$WRK_REGEX')
 
 echo "======= RESULTS ======="
-echo "\$WARMUP_STARTUP_MS,\$RUN_STARTUP_MS,\$WARMUP_REQS,\$RUN_REQS"
+echo "\$WARMUP_STARTUP_MS,\$WARMUP_REQS,\$RUN_STARTUP_MS,\$RUN_REQS_1,\$RUN_REQS_2"
 EOF
+cat benchmark.sh
 END_OF_SCRIPT

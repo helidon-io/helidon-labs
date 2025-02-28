@@ -38,14 +38,13 @@ ENV FLAVOR=$FLAVOR
 ADD ${FLAVOR}-bench-app/pom.xml .
 ADD ${FLAVOR}-bench-app/src src
 
-# TODO: Hotfix until 4.2 is released
-RUN sed -i 's/<version>4.2.0-SNAPSHOT/<version>4.1.6/' pom.xml
 RUN line=$(grep -n "io.helidon.integrations.crac" pom.xml | grep -Eo '^[^:]+') && \
     sed -i -e "$((line-1)),$((line+2))d" pom.xml
 
-# AOT build and warmup
-#RUN mvn package -Pnative-image -Dnative.image.buildStatic -DskipTests
-# RUN mvn package -Pnative-image -DskipTests
+# Extra layer with deps download
+RUN mvn package -DskipTests
+
+ARG WARMUP_CACHEBUST=1
 
 # Do the snapshot
 RUN <<END_OF_SCRIPT
@@ -55,9 +54,6 @@ cat <<EOF > after-warmup.sh
 kill \$PID
 EOF
 END_OF_SCRIPT
-
-# Extra layer with deps download
-RUN mvn package -DskipTests
 
 # AOT build and warmup
 RUN <<END_OF_SCRIPT
