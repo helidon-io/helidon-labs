@@ -54,19 +54,24 @@ END_OF_SCRIPT
 
 # AOT build and warmup
 RUN <<END_OF_SCRIPT
+cat <<EOF > aot-build.sh
 #!/bin/bash
 # Create native image with PGO instrumentation
 mvn package -Pnative-pgo-instrumented -DskipTests
 ./target/benchmark-instrumented |& tee helidon-warmup.log &
 
-PID=$(ps | grep "benchmark" | awk '{print $1}')
+PID=\$(ps | grep "benchmark" | awk '{print \$1}')
 
 # Warmup with PGO data collection
 source warmup.sh
-END_OF_SCRIPT
 
 # Crate native image again this time with PGO data (default.iprof)
-RUN mvn clean package -Pnative-pgo -DskipTests
+mvn clean package -Pnative-pgo -DskipTests
+EOF
+END_OF_SCRIPT
+
+# Run AOT script and measure time
+RUN /usr/bin/time -f "$AOT_TIME_FORMAT" -o $AOT_TIME_FILE bash aot-build.sh
 
 # Runtime benchmark
 RUN <<END_OF_SCRIPT

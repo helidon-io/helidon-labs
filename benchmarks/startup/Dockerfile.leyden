@@ -36,7 +36,6 @@ ENV FLAVOR=$FLAVOR
 
 ADD ${FLAVOR}-bench-app/pom.xml .
 ADD ${FLAVOR}-bench-app/src src
-RUN mvn package -DskipTests
 
 ARG WARMUP_CACHEBUST=1
 
@@ -51,7 +50,10 @@ END_OF_SCRIPT
 
 # AOT build and warmup
 RUN <<END_OF_SCRIPT
+cat <<EOF > aot-build.sh
 #!/bin/bash
+mvn package -DskipTests
+
 java \
 -XX:CacheDataStore=LeydenBenchmark.cds \
 `# https://openjdk.org/jeps/8325147` \
@@ -64,10 +66,14 @@ java \
 -XX:+UseG1GC \
 -jar ./target/*.jar |& tee helidon-warmup.log &
 
-PID="$(jcmd | grep ".jar" | awk '{print $1}')"
+PID="\$(jcmd | grep ".jar" | awk '{print \$1}')"
 
 source warmup.sh
+EOF
 END_OF_SCRIPT
+
+# Run AOT script and measure time
+RUN /usr/bin/time -f "$AOT_TIME_FORMAT" -o $AOT_TIME_FILE bash aot-build.sh
 
 # Runtime benchmark
 RUN <<END_OF_SCRIPT

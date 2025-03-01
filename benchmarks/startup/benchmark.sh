@@ -55,7 +55,7 @@ mkdir -p $RUN_DIR
 RESULTS_FILE=$RUN_DIR/results.csv
 
 # Base image with common pre-requisites for all the tests
-docker build -t helidon/benchmark-startup-base -f Dockerfile.base .
+docker build --build-arg WARMUP_DURATION=$WARMUP_DURATION -t helidon/benchmark-startup-base -f Dockerfile.base .
 
 # Runs single benchmark, ex:
 # runBenchmark se leyden
@@ -68,11 +68,9 @@ function runBenchmark() {
 
     printf "docker build --build-arg FLAVOR=$FLAVOR "
     printf "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
-    printf "--build-arg WARMUP_DURATION=$WARMUP_DURATION "
     printf "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
     docker build --build-arg FLAVOR=$FLAVOR \
     --build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST \
-    --build-arg WARMUP_DURATION=$WARMUP_DURATION \
     -t $IMAGE_NAME -f Dockerfile.$NAME .
 
     echo -n "$NAME_CAP $FLAVOR," >> $RESULTS_FILE
@@ -91,11 +89,11 @@ for FLAVOR in se mp ; do
 done;
 
 # Nice table with results
-ROW_PATTERN="%-25s| %9s| %12s| %12s| %12s| %13s\n"
-HEADER="Name,Warmup ms,Warmup req/s,Startup ms,${FIRST_RUN}s run req/s,${SECOND_RUN}s run req/s"
-AWK_TMPL="{printf \"$ROW_PATTERN\", \$1, \$2, \$3, \$4, \$5, \$6}"
+ROW_PATTERN="%-25s| %15s| %15s| %12s| %11s| %13s| %13s\n"
+HEADER="Name,AOT/build sec,Warmup start ms,Warmup req/s,Startup ms,${FIRST_RUN}s run req/s,${SECOND_RUN}s run req/s"
+AWK_TMPL="{printf \"$ROW_PATTERN\", \$1, \$2, \$3, \$4, \$5, \$6, \$7}"
 HEADER_LENGTH=$(echo $HEADER | awk -F, "$AWK_TMPL" | wc -c)
-SEPARATOR=$(printf "%.${HEADER_LENGTH}s\n" $(printf -- '-%.0s' {1..100}))
+SEPARATOR=$(eval "/bin/printf '-%.0s' {1..${HEADER_LENGTH}}")
 
 echo $HEADER | awk -F, "$AWK_TMPL"
 echo $SEPARATOR

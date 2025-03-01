@@ -56,16 +56,19 @@ END_OF_SCRIPT
 
 # AOT build and warmup
 RUN <<END_OF_SCRIPT
+cat <<EOF > aot-build.sh
 #!/bin/bash
 java -XX:CPUFeatures=generic \
     -XX:CRaCEngine=warp \
     -XX:CRaCCheckpointTo=./cr \
     -jar ./target/*.jar |& tee helidon-warmup.log &
-
-PID="$(jcmd | grep ".jar" | awk '{print $1}')"
-
+PID="\$(jcmd | grep ".jar" | awk '{print \$1}')"
 source warmup.sh
+EOF
 END_OF_SCRIPT
+
+# Run AOT script and measure time
+RUN /usr/bin/time -f "$AOT_TIME_FORMAT" -o $AOT_TIME_FILE bash aot-build.sh
 
 # Runtime benchmark
 RUN <<END_OF_SCRIPT

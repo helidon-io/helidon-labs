@@ -24,10 +24,12 @@ ENV RESTORED_PATTERN_MP="Server started"
 ENV RESTORED_PATTERN_SE="Started all channels"
 ENV STARTUP_REGEX='s/.*\s([0-9]+)\smilliseconds.*$/\1/'
 ENV WRK_REGEX='s/Requests\/sec:\s([^A-Za-z]+)\s*/\1/'
+ENV AOT_TIME_FILE=/tmp/aot-time
+ENV AOT_TIME_FORMAT=%e
 
 RUN microdnf -y update && \
     microdnf --enablerepo ol9_codeready_builder install -y \
-        wget procps tar git unzip perl glibc-devel bzip2-devel ed gcc gcc-c++ gcc-gfortran gzip file fontconfig less \
+        time wget procps tar git unzip perl glibc-devel bzip2-devel ed gcc gcc-c++ gcc-gfortran gzip file fontconfig less \
         libcurl-devel make openssl openssl-devel readline-devel tar glibc-langpack-en vi which xz-devel zlib-devel \
         findutils glibc-static libstdc++ libstdc++-devel libstdc++-static zlib-static libxcrypt-compat && \
     microdnf clean all
@@ -135,9 +137,11 @@ WARMUP_REQS=\$(grep "Requests/sec:" wrk-warmup.log | sed -r '$WRK_REGEX')
 RUN_STARTUP_MS=\$(grep "\${RESTORED_PATTERN}" helidon-run.log | sed -r '$STARTUP_REGEX')
 RUN_REQS_1=\$(grep "Requests/sec:" wrk-run-1.log | sed -r '$WRK_REGEX')
 RUN_REQS_2=\$(grep "Requests/sec:" wrk-run-2.log | sed -r '$WRK_REGEX')
+AOT_TIME=\$(cat $AOT_TIME_FILE)
+
 
 echo "======= RESULTS ======="
-echo "\$WARMUP_STARTUP_MS,\$WARMUP_REQS,\$RUN_STARTUP_MS,\$RUN_REQS_1,\$RUN_REQS_2"
+echo "\$AOT_TIME,\$WARMUP_STARTUP_MS,\$WARMUP_REQS,\$RUN_STARTUP_MS,\$RUN_REQS_1,\$RUN_REQS_2"
 EOF
 cat benchmark.sh
 END_OF_SCRIPT

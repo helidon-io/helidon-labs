@@ -40,8 +40,8 @@ ADD ${FLAVOR}-bench-app/src src
 
 ARG WARMUP_CACHEBUST=1
 
-# AOT build and warmup
-RUN mvn package -Pnative-image -DskipTests
+# AOT build and measure time
+RUN /usr/bin/time -f "$AOT_TIME_FORMAT" -o $AOT_TIME_FILE mvn package -Pnative-image -DskipTests
 
 # Runtime benchmark
 RUN <<END_OF_SCRIPT
