@@ -1,0 +1,53 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# This build spec is custom tailored for the Helidon version 4 MP OCI template generated via the Helidon Archetype
+version: 0.1
+component: build
+timeoutInSeconds: 900
+failImmediatelyOnError: true
+# runAs: root
+shell: bash
+env:
+  variables:
+    HELIDON_PROJECT_NAME: "oci-mp"
+  vaultVariables:
+  exportedVariables:
+    - BUILDRUN_HASH
+    - HELIDON_APP_NAME
+steps:
+  - type: Command
+    name: "Exported variables"
+    timeoutInSeconds: 140
+    command: |
+      echo "OCI_BUILD_RUN_ID: ${OCI_BUILD_RUN_ID}"
+      export BUILDRUN_HASH=`echo ${OCI_BUILD_RUN_ID} | rev | cut -c 1-7`
+      echo "BUILDRUN_HASH: " $BUILDRUN_HASH
+      export HELIDON_APP_NAME=${HELIDON_PROJECT_NAME}-server
+      echo "HELIDON_APP_NAME: " $HELIDON_APP_NAME
+
+  - type: Command
+    name: "Build the Application"
+    command: |
+      docker build --pull --rm -t ${HELIDON_APP_NAME} .
+
+outputArtifacts:
+  - name: app_base_image
+    type: DOCKER_IMAGE
+    location: ${HELIDON_APP_NAME}:latest
+  - name: deployment_kube_manifest
+    type: BINARY
+    location: deployment_oke.yaml
