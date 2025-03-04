@@ -13,10 +13,6 @@
 # limitations under the License.
 
 locals {
-  istioctl_template = templatefile("${path.module}/scripts/istioctl.template.sh", {
-    version = var.istio_version
-  })
-
   install_istio_template = templatefile("${path.module}/scripts/install_istio.template.sh", {
     version = var.istio_version
   })

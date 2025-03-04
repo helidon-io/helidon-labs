@@ -33,18 +33,8 @@ resource "null_resource" "tools" {
   }
 
   provisioner "file" {
-    content     = local.setup_template
-    destination = "/home/opc/setup.sh"
-  }
-
-  provisioner "file" {
-    content     = local.istioctl_template
-    destination = "/home/opc/install_istioctl.sh"
-  }
-
-  provisioner "file" {
-    content     = local.cilium_cli_template
-    destination = "/home/opc/install_cilium_cli.sh"
+    content = local.tools_template
+    destination = "/home/opc/tools.sh"
   }
 
   provisioner "file" {

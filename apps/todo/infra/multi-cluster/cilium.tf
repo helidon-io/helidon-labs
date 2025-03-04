@@ -14,14 +14,7 @@
 
 locals {
 
-  cilium_cli_template = templatefile("${path.module}/scripts/cilium_cli.template.sh", {
-    CILIUM_CLI_VERSION = var.cilium_version
-    CLI_ARCH           = "amd64"
-  })
-
   cilium_delete_pods_template = templatefile("${path.module}/scripts/cilium_delete_pods.template.sh", {})
-
-
 
   cilium_c1 = templatefile("${path.module}/resources/cilium.template.yaml",
     {
