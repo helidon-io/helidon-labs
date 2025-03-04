@@ -66,9 +66,9 @@ function runBenchmark() {
     NAME_CAP=$(echo $NAME | awk '{$1=toupper(substr($1,0,1))substr($1,2)}1')
     LOG_FILE=$RUN_DIR/$NAME-$FLAVOR-run.log
 
-    printf "docker build --build-arg FLAVOR=$FLAVOR "
-    printf "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
-    printf "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
+    echo -n "docker build --build-arg FLAVOR=$FLAVOR "
+    echo -n "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
+    echo -n "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
     docker build --build-arg FLAVOR=$FLAVOR \
     --build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST \
     -t $IMAGE_NAME -f Dockerfile.$NAME .
