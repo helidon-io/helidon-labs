@@ -302,8 +302,7 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -364,8 +363,7 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -670,8 +668,7 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "type": "prometheus"
       },
       "description": "Total number of instances running this application",
       "fieldConfig": {
@@ -1294,8 +1291,7 @@
       "panels": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "Current number of platform threads that the scheduler has started but have not terminated",
           "fieldConfig": {
@@ -1356,8 +1352,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -1418,8 +1413,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "",
           "fieldConfig": {
@@ -1487,8 +1481,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "Estimate of the number of virtual threads that are currently mounted by the scheduler",
           "fieldConfig": {
@@ -1549,8 +1542,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "Memory usage percentage by SE App.",
           "fieldConfig": {
@@ -1648,8 +1640,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "type": "prometheus"
           },
           "description": "Estimate of the number of virtual threads that are queued to the scheduler to start or continue execution",
           "fieldConfig": {
@@ -2000,8 +1991,7 @@
           "value": ""
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "type": "prometheus"
         },
         "definition": "",
         "hide": 0,
@@ -2023,8 +2013,7 @@
           "value": "todo-app"
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "type": "prometheus"
         },
         "definition": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},mp_app)",
         "hide": 0,
