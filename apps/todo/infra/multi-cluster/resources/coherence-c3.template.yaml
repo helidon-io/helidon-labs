@@ -1,0 +1,60 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: coherence.oracle.com/v1
+kind: Coherence
+metadata:
+  name: todo-c3
+  namespace: todo
+spec:
+  cluster: todo
+  coherence:
+    wka:
+      addresses:
+        - todo-wka
+        - todo-wka.todo.cluster.c1
+        - todo-wka.todo.cluster.c2
+  env:
+    - name: "COHERENCE_GRPC_SERVER_PORT"
+      value: "1408"
+    - name: "COHERENCE_HEALTH_HTTP_PORT"
+      value: "6676"
+    - name: "COHERENCE_HIBERNATE_CONFIG"
+      value: "/hibernate/hibernate.cfg.xml"
+    - name: "COHERENCE_LOG_LEVEL"
+      value: "9"
+    - name: "COHERENCE_METRICS_HTTP_ENABLED"
+      value: "true"
+    - name: "COHERENCE_POF_ENABLED"
+      value: "true"
+    - name: "COHERENCE_SERIALIZER"
+      value: "pof"
+  jvm:
+    useJibClasspath: false
+    classpath:
+      - "/helidon/*"
+      - "/helidon/libs/*"
+  secretVolumes:
+    - name: hibernate-cfg
+      mountPath: /hibernate
+    - name: tasksdb-wallet
+      mountPath: /wallets/task_db
+  image: ocir.${registry_region}.oci.oraclecloud.com/${tenancy_namespace}/todo/coherence:${todo_version}
+  imagePullSecrets:
+    - name: ocir-secret
+  imagePullPolicy: Always
+  replicas: 3
+  readinessProbe:
+    initialDelaySeconds: 30

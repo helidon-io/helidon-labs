@@ -1,0 +1,68 @@
+#!/usr/bin/bash
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+export ISTIO_HOME=/home/opc/istio-${version}
+cd "$ISTIO_HOME/tools/certs" || exit
+
+# Generate certs for each cluster
+for c in c1 c2; do
+  make -f Makefile.selfsigned.mk $c-cacerts
+done
+
+# Create and label istio-system namespace in each cluster:
+for c in c1 c2; do
+  kubectx $c
+  kubectl create ns istio-system
+  kubectl label namespace istio-system topology.istio.io/network=$c
+done
+
+# Create a secret containing the certificates in istio-system namespace for each cluster:
+for c in c1 c2; do
+  kubectx $c
+  kubectl create secret generic cacerts -n istio-system \
+      --from-file=$c/ca-cert.pem \
+      --from-file=$c/ca-key.pem \
+      --from-file=$c/root-cert.pem \
+      --from-file=$c/cert-chain.pem
+done
+
+# Install Istio in each cluster
+for c in c1 c2; do
+  kubectx $c
+  yes | istioctl install --set profile=default -f "$HOME/istio/istio-$c.yaml"
+done
+
+# create east-west gateway in each cluster
+for c in c1 c2; do
+  kubectx $c
+  kubectl apply -f "$HOME/istio/east-west-gateway.yaml"
+done
+
+
+# Create Istio remote secrets
+for c in c1 c2; do
+  for r in c1 c2; do
+    if [[ "$c" == "$r" ]]; then
+      echo "Same cluster. Skipping"
+    else
+      istioctl create-remote-secret \
+        --context="$${c}" \
+        --name="$${c}" | \
+        kubectl apply -f - --context="$${r}"
+    fi
+  done
+done

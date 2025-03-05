@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+
+    Copyright (c) 2025 Oracle and/or its affiliates.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 5.3//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="connection.url">
+            jdbc:oracle:thin:@tasksdb_medium?TNS_ADMIN=/wallets/task_db
+        </property>
+        <property name="connection.username">task_db_user</property>
+        <property name="connection.password">
+            changeme
+        </property>
+        <property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
+        <property name="hibernate.oracleucp.connectionFactoryClassName">
+            oracle.jdbc.datasource.impl.OracleDataSource
+        </property>
+
+        <property name="hibernate.oracleucp.connectionProperties">{autoCommit=false}</property>
+        <property name="hibernate.oracleucp.fastConnectionFailoverEnabled">true</property>
+        <property name="hibernate.oracleucp.validateConnectionOnBorrow">true</property>
+        <property name="hibernate.oracleucp.secondsToTrustIdleConnection">120</property>
+        <property name="hibernate.oracleucp.inactiveConnectionTimeout">180</property>
+        <property name="hibernate.oracleucp.maxStatements">20</property>
+        <property name="hibernate.oracleucp.connectionWaitTimeout">30</property>
+        <mapping class="io.helidon.labs.todo.coherence.Task"/>
+    </session-factory>
+</hibernate-configuration>
