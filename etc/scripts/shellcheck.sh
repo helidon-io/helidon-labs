@@ -18,7 +18,7 @@
 BASE_URL="https://github.com/koalaman/shellcheck/releases/download"
 readonly BASE_URL
 
-VERSION=0.9.0
+VERSION=0.10.0
 readonly VERSION
 
 CACHE_DIR="${HOME}/.shellcheck"
@@ -28,6 +28,9 @@ readonly CACHE_DIR
 mkdir -p "${CACHE_DIR}"
 if [ ! -e "${CACHE_DIR}/${VERSION}/shellcheck" ] ; then
     ARCH=$(uname -m | tr "[:upper:]" "[:lower:]")
+    if [ "${ARCH}" = "arm64" ] ; then
+      ARCH="aarch64"
+    fi
     PLATFORM=$(uname -s | tr "[:upper:]" "[:lower:]")
     curl -Lso "${CACHE_DIR}/sc.tar.xz" "${BASE_URL}/v${VERSION}/shellcheck-v${VERSION}.${PLATFORM}.${ARCH}.tar.xz"
     tar -xf "${CACHE_DIR}/sc.tar.xz" -C "${CACHE_DIR}"

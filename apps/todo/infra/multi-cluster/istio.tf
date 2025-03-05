@@ -15,7 +15,7 @@
 #
 
 locals {
-  install_istio_template = templatefile("${path.module}/scripts/install_istio.template.sh", {
+  install_istio_template = templatefile("${path.module}/scripts/install_istio.tftpl", {
     version = var.istio_version
   })
 

@@ -24,7 +24,7 @@ locals {
 
   kubeconfig_templates = {
     for cluster_name, cluster_id in local.all_cluster_ids :
-    cluster_name => templatefile("${path.module}/scripts/generate_kubeconfig.template.sh",
+    cluster_name => templatefile("${path.module}/scripts/generate_kubeconfig.tftpl",
       {
         cluster_id = cluster_id
         endpoint   = var.oke_control_plane == "public" ? "PUBLIC_ENDPOINT" : "PRIVATE_ENDPOINT"
@@ -35,7 +35,7 @@ locals {
 
   set_credentials_templates = {
     for cluster_name, cluster_id in local.all_cluster_ids :
-    cluster_name => templatefile("${path.module}/scripts/kubeconfig_set_credentials.template.sh",
+    cluster_name => templatefile("${path.module}/scripts/kubeconfig_set_credentials.tftpl",
       {
         cluster_id = cluster_id
         cluster_id_11 = substr(cluster_id, (length(cluster_id) - 11), length(cluster_id))
@@ -46,7 +46,7 @@ locals {
 
   set_alias_templates = {
     for cluster_name, cluster_id in local.all_cluster_ids :
-    cluster_name => templatefile("${path.module}/scripts/set_alias.template.sh",
+    cluster_name => templatefile("${path.module}/scripts/set_alias.tftpl",
       {
         cluster = cluster_name
         cluster_id_11 = substr(cluster_id, (length(cluster_id) - 11), length(cluster_id))
@@ -54,9 +54,9 @@ locals {
     )
   }
 
-  token_helper_template = templatefile("${path.module}/scripts/token_helper.template.sh", {})
+  token_helper_template = templatefile("${path.module}/scripts/token_helper.tftpl", {})
 
-  tools_template = templatefile("${path.module}/scripts/tools.template.sh", {
+  tools_template = templatefile("${path.module}/scripts/tools.tftpl", {
     istio_version      = var.istio_version
     CLI_ARCH           = "amd64"
   })

@@ -23,7 +23,7 @@ done
 # install Istio cli
 echo "Installing istioctl"
 curl -L curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${istio_version} TARGET_ARCH=x86_64 sh -
-sudo cp $HOME/istio-${istio_version}/bin/istioctl /usr/local/bin
+sudo cp $${HOME}/istio-${istio_version}/bin/istioctl /usr/local/bin
 
 # install cilium cli
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt)

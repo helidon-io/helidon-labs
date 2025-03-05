@@ -16,7 +16,7 @@
 
 locals {
 
-  cilium_delete_pods_template = templatefile("${path.module}/scripts/cilium_delete_pods.template.sh", {})
+  cilium_delete_pods_template = templatefile("${path.module}/scripts/cilium_delete_pods.tftpl", {})
 
   cilium_c1 = templatefile("${path.module}/resources/cilium.template.yaml",
     {
