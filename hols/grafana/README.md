@@ -40,7 +40,7 @@ To get log records into Loki we use Promtail to scrape log files from the local 
 Using the Helidon CLI create a basic Helidon MP application:
 
 ```shell
-helidon init --version 4.1.4 --flavor MP --archetype quickstart --batch
+helidon init --version 4.2.0 --flavor MP --archetype quickstart --batch
 ```
 
 Next build and run the application:
