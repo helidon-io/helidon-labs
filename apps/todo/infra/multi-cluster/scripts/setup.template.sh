@@ -1,4 +1,4 @@
-#
+#!/usr/bin/bash
 # Copyright (c) 2025 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-apiVersion: networking.istio.io/v1
-kind: DestinationRule
-metadata:
-  name: backend
-  namespace: todo
-spec:
-  host: backend.todo.svc.cluster.local
-  trafficPolicy:
-    connectionPool:
-      http:
-        maxRequestsPerConnection: 1
-    loadBalancer:
-      simple: ROUND_ROBIN
-      localityLbSetting:
-        enabled: true
-        failover:
-          - from: ${REGION_1}
-            to: ${REGION_2}
-    outlierDetection:
-      consecutive5xxErrors: 1
-      interval: 1s
-      baseEjectionTime: 1m
+
+for f in cilium coredns database istio todo; do
+  mkdir $f
+done

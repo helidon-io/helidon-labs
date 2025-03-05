@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+#
 # Copyright (c) 2025 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,5 +13,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 oci ce cluster create-kubeconfig --cluster-id ${cluster_id} --file $HOME/.kube/config  --region ${region} --token-version 2.0.0 --kube-endpoint ${endpoint}

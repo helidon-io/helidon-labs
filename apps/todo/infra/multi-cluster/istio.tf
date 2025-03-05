@@ -1,3 +1,4 @@
+#
 # Copyright (c) 2025 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 locals {
   install_istio_template = templatefile("${path.module}/scripts/install_istio.template.sh", {
