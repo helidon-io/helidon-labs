@@ -16,7 +16,7 @@
 #
 
 export ISTIO_HOME=/home/opc/istio-${version}
-cd $ISTIO_HOME/tools/certs
+cd "$ISTIO_HOME/tools/certs" || exit
 
 # Generate certs for each cluster
 for c in c1 c2; do
@@ -43,13 +43,13 @@ done
 # Install Istio in each cluster
 for c in c1 c2; do
   kubectx $c
-  yes | istioctl install --set profile=default -f $HOME/istio/istio-$c.yaml
+  yes | istioctl install --set profile=default -f "$HOME/istio/istio-$c.yaml"
 done
 
 # create east-west gateway in each cluster
 for c in c1 c2; do
   kubectx $c
-  kubectl apply -f $HOME/istio/east-west-gateway.yaml
+  kubectl apply -f "$HOME/istio/east-west-gateway.yaml"
 done
 
 
