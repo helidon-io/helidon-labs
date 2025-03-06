@@ -47,7 +47,7 @@ cat <<EOF > run.sh
 java \
 -XX:+UseG1GC \
 -XX:G1HeapRegionSize=1048576 \
--jar ./target/*.jar |& tee helidon-run.log &
+-jar ./target/benchmark.jar |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 

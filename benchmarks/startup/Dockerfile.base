@@ -47,18 +47,6 @@ RUN set -x && \
 # Install wrk
 RUN git clone https://github.com/wg/wrk.git wrk && cd wrk && make && ln -s /usr/share/wrk/wrk /bin/
 
-# TODO: Hotfix until 4.2 is released
-WORKDIR /tmp
-RUN DOWNLOAD_URL="https://download.oracle.com/java/21/archive/jdk-21_linux-x64_bin.tar.gz" && \
-wget -O jdk.tar.gz ${DOWNLOAD_URL} && \
-export JAVA_HOME=/tmp/jdk && \
-mkdir -p $JAVA_HOME && \
-tar zxf ./jdk.tar.gz --strip-components=1 -C ${JAVA_HOME} && \
-ls -la $JAVA_HOME && \
-git clone --single-branch --branch main https://github.com/helidon-io/helidon.git && \
-cd helidon && \
-mvn -T4 clean install -DskipTests
-
 WORKDIR /helidon
 
 ARG WARMUP_DURATION=20s

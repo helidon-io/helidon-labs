@@ -64,7 +64,7 @@ java \
 `# https://bugs.openjdk.org/browse/JDK-8335440` \
 -XX:G1HeapRegionSize=1048576 \
 -XX:+UseG1GC \
--jar ./target/*.jar |& tee helidon-warmup.log &
+-jar ./target/benchmark.jar |& tee helidon-warmup.log &
 
 PID="\$(jcmd | grep ".jar" | awk '{print \$1}')"
 
@@ -85,7 +85,7 @@ java \
 -XX:+UseG1GC \
 -XX:G1HeapRegionSize=1048576 \
 -Djdk.console=java.basebroken \
--jar ./target/*.jar |& tee helidon-run.log &
+-jar ./target/benchmark.jar |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 

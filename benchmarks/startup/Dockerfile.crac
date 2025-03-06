@@ -61,7 +61,7 @@ cat <<EOF > aot-build.sh
 java -XX:CPUFeatures=generic \
     -XX:CRaCEngine=warp \
     -XX:CRaCCheckpointTo=./cr \
-    -jar ./target/*.jar |& tee helidon-warmup.log &
+    -jar ./target/benchmark.jar |& tee helidon-warmup.log &
 PID="\$(jcmd | grep ".jar" | awk '{print \$1}')"
 source warmup.sh
 EOF
@@ -77,7 +77,7 @@ cat <<EOF > run.sh
 java \
 -XX:CRaCEngine=warp \
 -XX:CRaCRestoreFrom=/helidon/cr \
--jar ./target/*.jar |& tee helidon-run.log &
+-jar ./target/benchmark.jar |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 
