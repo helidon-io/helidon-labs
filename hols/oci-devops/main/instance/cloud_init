@@ -1,0 +1,16 @@
+#cloud-config
+# Port 8080 is required by the Helidon application, hence opening it from firewalld
+runcmd:
+  - echo "Begin firewall port 8080 update" > /var/log/firewall-update.log
+  - firewall-offline-cmd --add-port=8080/tcp &>> /var/log/firewall-update.log
+  - systemctl restart firewalld &>> /var/log/firewall-update.log
+# From https://docs.oracle.com/en-us/iaas/Content/devops/using/create_instancegroup_environment.htm#create_instance_group_environment,
+# below is needed if any of commands in the instance group deployment configuration artifact require sudo privileges. Specific to
+# this example, this will be used to enable and restart a systemd service for the Helidon application or reload systemd config.
+users:
+  - default
+  - name: ocarun
+    sudo:
+      - ALL=(ALL) NOPASSWD:/usr/bin/systemctl enable /var/lib/ocarun/helidon-app.service
+      - ALL=(ALL) NOPASSWD:/usr/bin/systemctl systemctl daemon-reload
+      - ALL=(ALL) NOPASSWD:/usr/bin/systemctl restart helidon-app.service

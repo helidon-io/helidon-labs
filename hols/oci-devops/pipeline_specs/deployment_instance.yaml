@@ -1,0 +1,139 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# This deployment spec is custom tailored fit for the Helidon version 4 MP OCI template generated via the Helidon Archetype
+version: 1.0
+component: deployment
+shell: bash
+files:
+  - source: /
+    destination: /tmp/
+steps:
+  - stepType: Command
+    name: Install OCI CLI if does not exist
+    command: |
+      export PATH=${PATH}:~/.local/bin/
+      oci > /dev/null 2>&1 
+      if [ $? -ne 0 ]; then 
+        cd ~ 
+        python3 -m pip install --quiet --user oci-cli && echo "oci cli installed successfully"
+      fi
+    timeoutInSeconds: 5000
+  - stepType: Command
+    name: Install JDK 20 if it does not exist
+    command: |
+      # Go to home directory (/var/lib/ocarun)
+      cd ~
+      JDK_TAR_GZ_INSTALLER_BASE=$(basename ${JDK_TAR_GZ_INSTALLER})
+      # If jdk installer does not exist yet, download and install it
+      ls ${JDK_TAR_GZ_INSTALLER_BASE}
+      if [ $? -ne 0 ]; then 
+        rm -f *jdk*.tar.gz
+        wget -q ${JDK_TAR_GZ_INSTALLER} && echo "JDK downloaded successfully"
+        tar xzf ${JDK_TAR_GZ_INSTALLER_BASE} && echo "JDK installed successfully"
+      fi
+    timeoutInSeconds: 5000
+  - stepType: Command
+    name: Download Helidon app artifact and set it up
+    command: |
+      # Go to home directory (/var/lib/ocarun)
+      cd ~
+      
+      # Set necessary environment variables
+      export OCI_CLI_AUTH=instance_principal
+      export PATH=${PATH}:~/.local/bin/
+      
+      # Download application artifact
+      oci artifacts generic artifact download-by-path --repository-id ${ARTIFACT_REPO_OCID} --artifact-path ${ARTIFACT_NAME} --artifact-version ${BUILDRUN_HASH} --file ${ARTIFACT_NAME}
+      
+      # Extract the artifact
+      tar -xzf ${ARTIFACT_NAME}
+    timeoutInSeconds: 5000
+  - stepType: Command
+    name: Create the Helidon application service file
+    command: |
+      # Go to home directory (/var/lib/ocarun)
+      cd ~
+
+      # Service file
+      export JAVA_BIN=$(ls -d `pwd`/jdk*/)bin
+      cat << EOF > helidon-app.service.new
+      [Unit]
+      Description=Helidon OCI-MP application service
+      After=syslog.target network.target
+      
+      [Service]
+      User=ocarun
+      Type=simple
+      WorkingDirectory=/var/lib/ocarun
+      ExecStart=/bin/bash -c '${JAVA_BIN}/java --enable-preview -jar ${HELIDON_APP_NAME} &> helidon-app.log'
+      
+      [Install]
+      WantedBy=multi-user.target
+      EOF
+  - stepType: Command
+    name: Run Helidon application as a service
+    command: |
+      # Go to home directory (/var/lib/ocarun)
+      cd ~
+      
+      # Display java version  
+      export JAVA_BIN=$(ls -d `pwd`/jdk*/)bin
+      echo "##### JAVA Version #####"
+      ${JAVA_BIN}/java --version
+      echo "########################"
+      
+      # Start the Helidon application service 
+      systemctl is-enabled helidon-app.service
+      if [ $? -ne 0 ]; then
+        echo "Enabling helidon-app.service"
+        mv -f helidon-app.service.new helidon-app.service
+        sudo systemctl enable /var/lib/ocarun/helidon-app.service
+      else
+        diff helidon-app.service helidon-app.service.new
+        # reload systemd manager configuration as helidon-app.service has changed
+        if [ $? -ne 0 ]; then
+          echo "Reloading systemd manager configuration"
+          mv -f helidon-app.service.new helidon-app.service
+          sudo systemctl daemon-reload
+        # ignore the new helidon-app.service as it has not changed
+        else
+          rm -f helidon-app.service.new
+        fi
+      fi
+      echo "Starting helidon-app.service"
+      sudo systemctl restart helidon-app.service
+
+      # Check if Helidon is ready in 60 seconds using the readiness healthcheck endpoint of the app.
+      TIMEOUT_SEC=60
+      start_time="$(date -u +%s)"
+      while true; do
+        curl -s http://localhost:8080/health/ready | grep -q '"status":"UP"'
+        if [ $? -eq 0 ]; then
+          echo "Helidon app is now running! Printing the logs..."
+          cat helidon-app.log
+          break
+        fi
+        current_time="$(date -u +%s)"
+        elapsed_seconds=$(($current_time-$start_time))
+        if [ $elapsed_seconds -gt $TIMEOUT_SEC ]; then
+          echo "Error: Helidon app failed to run successfully. Printing the logs..."
+          cat helidon-app.log
+          exit 1
+        fi
+        sleep 1
+      done
+    timeoutInSeconds: 300

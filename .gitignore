@@ -53,6 +53,16 @@ nb-configuration.xml
 .classpath
 .factorypath
 
+# Visual Studio Code
+.vscode
+
+# Code Editor
+.theia
+
+# Terraform
+.terraform*
+terraform.tfstate*
+
 # Asciidoctor
 .asciidoctor/
 
