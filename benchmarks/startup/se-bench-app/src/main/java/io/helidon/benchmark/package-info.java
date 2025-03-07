@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Oracle and/or its affiliates.
+ * Copyright (c) 2025. Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,4 @@
  * limitations under the License.
  */
 
-package io.helidon.layden.example;
-
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-
-/**
- * Main resource.
- */
-@Path("/")
-public class HelloResource {
-
-    /**
-     * Hello world GET resource.
-     * @return Hello World
-     */
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String message() {
-        return "Hello World!";
-    }
-}
+package io.helidon.benchmark;

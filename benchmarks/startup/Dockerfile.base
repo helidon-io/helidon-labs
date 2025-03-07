@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 # syntax=docker/dockerfile:1.7-labs
 FROM container-registry.oracle.com/os/oraclelinux:9-slim AS startup-bechmark-base
 

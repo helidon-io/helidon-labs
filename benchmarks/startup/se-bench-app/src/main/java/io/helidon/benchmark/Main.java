@@ -15,15 +15,23 @@
  */
 package io.helidon.benchmark;
 
-
-import io.helidon.logging.common.LogConfig;
 import io.helidon.config.Config;
+import io.helidon.logging.common.LogConfig;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
 
-
+/**
+ * Main class.
+ */
 public class Main {
 
+    private Main() {
+    }
+
+    /**
+     * Setuo Helidon server.
+     * @param args
+     */
     public static void main(String[] args) {
         LogConfig.configureRuntime();
         WebServer.builder()
@@ -33,7 +41,7 @@ public class Main {
                 .start();
     }
 
-    static void routing(HttpRouting.Builder routing) {
+    private static void routing(HttpRouting.Builder routing) {
         routing.get("/", (req, res) -> res.send("Hello World!"));
     }
 }
