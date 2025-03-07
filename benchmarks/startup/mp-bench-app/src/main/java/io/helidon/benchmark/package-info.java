@@ -14,26 +14,4 @@
  * limitations under the License.
  */
 
-package io.helidon.layden.example;
-
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
-
-/**
- * Main resource.
- */
-@Path("/")
-public class HelloResource {
-
-    /**
-     * Hello world GET resource.
-     * @return Hello World
-     */
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String message() {
-        return "Hello World!";
-    }
-}
+package io.helidon.benchmark;
