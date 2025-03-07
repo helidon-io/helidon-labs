@@ -51,11 +51,11 @@ while [ $# -gt 0 ]; do
 done
 
 RUN_DIR=$WORK_DIR/startup-benchmark-$RUN_ID
-mkdir -p $RUN_DIR
+mkdir -p "$RUN_DIR"
 RESULTS_FILE=$RUN_DIR/results.csv
 
 # Base image with common pre-requisites for all the tests
-docker build --build-arg WARMUP_DURATION=$WARMUP_DURATION -t helidon/benchmark-startup-base -f Dockerfile.base .
+docker build --build-arg WARMUP_DURATION="$WARMUP_DURATION" -t helidon/benchmark-startup-base -f Dockerfile.base .
 
 # Runs single benchmark, ex:
 # runBenchmark se leyden
@@ -63,28 +63,28 @@ function runBenchmark() {
     FLAVOR=$1
     NAME=$2
     IMAGE_NAME="helidon/benchmark-startup-$NAME-$FLAVOR"
-    NAME_CAP=$(echo $NAME | awk '{$1=toupper(substr($1,0,1))substr($1,2)}1')
+    NAME_CAP=$(echo "$NAME" | awk '{$1=toupper(substr($1,0,1))substr($1,2)}1')
     LOG_FILE=$RUN_DIR/$NAME-$FLAVOR-run.log
 
     echo -n "docker build --build-arg FLAVOR=$FLAVOR "
     echo -n "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
     echo -n "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
-    docker build --build-arg FLAVOR=$FLAVOR \
-    --build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST \
-    -t $IMAGE_NAME -f Dockerfile.$NAME .
+    docker build --build-arg FLAVOR="$FLAVOR" \
+    --build-arg WARMUP_CACHEBUST="$WARMUP_CACHEBUST" \
+    -t "$IMAGE_NAME" -f Dockerfile."$NAME" .
 
-    echo -n "$NAME_CAP $FLAVOR," >> $RESULTS_FILE
+    echo -n "$NAME_CAP $FLAVOR," >> "$RESULTS_FILE"
     echo "docker run --rm -e WRK_RUN_1_DURATION=${FIRST_RUN} -e WRK_RUN_2_DURATION=${SECOND_RUN} -i $IMAGE_NAME"
-    docker run --rm -e WRK_RUN_1_DURATION=${FIRST_RUN} -e WRK_RUN_2_DURATION=${SECOND_RUN} -i $IMAGE_NAME |& tee $LOG_FILE
-    tail -1 $LOG_FILE >> $RESULTS_FILE
+    docker run --rm -e WRK_RUN_1_DURATION="${FIRST_RUN}" -e WRK_RUN_2_DURATION="${SECOND_RUN}" -i "$IMAGE_NAME" |& tee "$LOG_FILE"
+    tail -1 "$LOG_FILE" >> "$RESULTS_FILE"
 }
 
 # Check all docker files within current folder and run se and mp tests
 for FLAVOR in se mp ; do
   for f in Dockerfile.*; do
-    TEST_NAME=$(echo $f | awk -F. '{printf $2}');
+    TEST_NAME=$(echo "$f" | awk -F. '{printf $2}');
     [ "$TEST_NAME" = "base" ] && continue
-    runBenchmark $FLAVOR $TEST_NAME
+    runBenchmark "$FLAVOR" "$TEST_NAME"
   done;
 done;
 
@@ -92,11 +92,11 @@ done;
 ROW_PATTERN="%-25s| %15s| %15s| %12s| %11s| %13s| %13s\n"
 HEADER="Name,AOT/build sec,Warmup start ms,Warmup req/s,Startup ms,${FIRST_RUN}s run req/s,${SECOND_RUN}s run req/s"
 AWK_TMPL="{printf \"$ROW_PATTERN\", \$1, \$2, \$3, \$4, \$5, \$6, \$7}"
-HEADER_LENGTH=$(echo $HEADER | awk -F, "$AWK_TMPL" | wc -c)
+HEADER_LENGTH=$(echo "$HEADER" | awk -F, "$AWK_TMPL" | wc -c)
 SEPARATOR=$(eval "/bin/printf '-%.0s' {1..${HEADER_LENGTH}}")
 
-echo $HEADER | awk -F, "$AWK_TMPL"
-echo $SEPARATOR
-awk -F, "$AWK_TMPL" $RESULTS_FILE
-echo $SEPARATOR
+echo "$HEADER" | awk -F, "$AWK_TMPL"
+echo "$SEPARATOR"
+awk -F, "$AWK_TMPL" "$RESULTS_FILE"
+echo "$SEPARATOR"
 echo "Results stored in $RESULTS_FILE"
