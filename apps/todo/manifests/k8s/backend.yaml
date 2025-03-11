@@ -1,0 +1,81 @@
+#
+# Copyright (c) 2025 Oracle and/or its affiliates.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: backend
+  namespace: todo
+  labels:
+    app: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: backend
+  namespace: todo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        version: v1
+    spec:
+      containers:
+        - name: backend
+          env:
+            - name: "COHERENCE_CLUSTER"
+              value: "todo"
+            - name: "COHERENCE_DISTRIBUTED_LOCALSTORAGE"
+              value: "false"
+            - name: "COHERENCE_HIBERNATE_CONFIG"
+              value: "/hibernate/hibernate.cfg.xml"
+            - name: "COHERENCE_POF_ENABLED"
+              value: "true"
+            - name: "COHERENCE_WKA"
+              value: "todo-wka"
+          image: ocir.<region>.oci.oraclecloud.com/<tenancy_namespace>/todo/backend:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/hibernate"
+              name: hibernate-cfg
+            - mountPath: /wallets/task_db
+              name: tasksdb-wallet
+              readOnly: true
+      imagePullSecrets:
+        - name: ocir-secret
+      volumes:
+        - name: hibernate-cfg
+          secret:
+            secretName: hibernate-cfg
+        - name: tasksdb-wallet
+          secret:
+            secretName: tasksdb-wallet

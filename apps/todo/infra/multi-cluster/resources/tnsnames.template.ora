@@ -1,0 +1,9 @@
+tasksdb_${profile} = (description=
+                        (failover=on)
+                        (retry_count=20)(retry_delay=3)(connect_timeout=120)(transport_connect_timeout=3)
+                        (address_list=(load_balance=on)
+                                (address=(protocol=tcps)(port=1522)(host=adb.${region_primary}.oraclecloud.com)))
+                        (address_list=(load_balance=on)
+                                (address=(protocol=tcps)(port=1522)(host=adb.${region_peer}.oraclecloud.com)))
+                        (connect_data=(service_name=${service_name}_tasksdb_${profile}.adb.oraclecloud.com))
+                        (security=(ssl_server_dn_match=yes))))
