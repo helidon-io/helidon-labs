@@ -42,17 +42,17 @@ following labels to your generated metrics using the system property or `applica
 
 **Helidon SE**
 
-* System Property: `-Dmetrics.tags="se_app=my-se-app"`
-* `aplication.yaml`: 
+* System Property: `-Dmetrics.app-name=my-se-app"`
+* `application.yaml`: 
   ```bash
   metrics:
-    tags: "se_app=my-se-app"
+    app-name: "my-se-app"
   ```
-  
-This will add the label to prometheus generated metrics, e.g.:
+
+This will add the label to the output for each metric, e.g.:
 
 ```bash
-jvm_uptime_seconds{instance="host.docker.internal:7001", job="helidon", scope="base", se_app="my-se-app"}
+jvm_uptime_seconds{instance="host.docker.internal:7001", job="helidon", scope="base", app="my-se-app"}
 ```
 
 **Helidon MP**
@@ -60,13 +60,13 @@ jvm_uptime_seconds{instance="host.docker.internal:7001", job="helidon", scope="b
 * System Property: `-Dmp.metrics.appName=my-mp-app`
 * `microprofile-config.properties` `
    ```bash
-   mp.metrics.tags=mp_app=my-mp-app
+   mp.metrics.appName=my-mp-app
    ```
 
-This will add the label to prometheus generated metrics, e.g.:
+This will add the label to the output for each metric, e.g.:
 
 ```bash
-REST_request_seconds{... mp_app="my-mp-add", mp_scope="base", quantile="0.5"}
+REST_request_seconds{... mp_app="my-mp-app", mp_scope="base", quantile="0.5"}
 ```
 
 ### Required Dependencies
@@ -103,6 +103,7 @@ Include the following:
 <dependency>
     <groupId>io.helidon.webclient</groupId>
     <artifactId>helidon-webclient-metrics</artifactId>
+    <scope>runtime</scope>
 </dependency>
 
 <dependency>
@@ -112,7 +113,7 @@ Include the following:
 </dependency>
 ```
 
-To include new experimental virtual threads metrics, available only in JDK 24, you can clone Helidon Labs at
+To include additional, experimental virtual threads metrics, available only in JDK 24, you can clone Helidon Labs at
 https://github.com/helidon-io/helidon-labs.git and build and include the following:
 
 ```xml
@@ -120,6 +121,7 @@ https://github.com/helidon-io/helidon-labs.git and build and include the followi
     <groupId>io.helidon.labs.incubator</groupId>
     <artifactId>helidon-labs-incubator-virtual-threads-metrics</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <scope>runtime</scope>
 </dependency>
 ```
 
@@ -127,19 +129,34 @@ https://github.com/helidon-io/helidon-labs.git and build and include the followi
 
 Additional properties are required to ensure we get the full range of metrics:
 
-> Note: These are shown as system properties by can be set using the appropriate way in SE or MP.
+> Note: These are shown as system properties but can be set using the appropriate way in SE or MP.
 
-**Common Settings**
+**Helidon SE**
 
-* `-Dmetrics.key-performance-indicator.extended=true`
-* `-Dmetrics.virtual-threads.count.enabled=true` 
-* `-Dmetrics.built-in-meter-name-format=CAMEL` 
-* `-Dmetrics.gc-time-type=GAUGE`
+*application.yaml*
+```bash
+metrics:
+  app-name: "my-se-app"
+  key-performance-indicators:
+    extended: true
+  virtual-threads:
+    enabled: true
+  gc-time-type: GAUGE
+```
 
-**MP Specific**
+**Helidon MP**
 
-* `-Dmetrics.rest-request.enabled=true` - enables REST metrics. See [here](https://helidon.io/docs/latest/mp/guides/metrics#controlling-rest-request-metrics) for more details.
+*META-INF/microprofile-config.properties*
 
+```properties
+mp.metrics.appName=my-mp-app
+metrics.key-performance-indicators.extended=true
+metrics.virtual-threads.enabled=true
+metrics.gc-time-type=GAUGE
+metrics.rest-request.enabled=true
+```
+
+See [here](https://helidon.io/docs/latest/mp/guides/metrics#controlling-rest-request-metrics) for more details on REST specific metrics for MP.
 
 ## Prometheus Setup
 
@@ -160,21 +177,21 @@ The section below outlines the initial "work-in-progress" Grafana dashboards.
 
 ### Main DashBoard
 
-![Coherence Demo](images/helidon-dashboard-main.png)
+![Main Dahsboard](images/helidon-dashboard-main.png)
 
 ### SE Details Dashboard
 
-![Coherence Demo](images/helidon-se-details-1.png)
+![SE Dashboard](images/helidon-se-details-1.png)
 
 ### SE Details Dashboard (Virtual Threads)
 
-![Coherence Demo](images/helidon-se-details-threads.png)
+![SE Dashboard VT](images/helidon-se-details-threads.png)
 
 ### MP Details Dashboard
 
-![Coherence Demo](images/helidon-mp-details.png)
+![MP Dashboard](images/helidon-mp-details.png)
 
 ### MP Details Dashboard (Threads and REST)
 
-![Coherence Demo](images/helidon-mp-details-thread-rest.png)
+![MP Dashboard VT and REST](images/helidon-mp-details-thread-rest.png)
 

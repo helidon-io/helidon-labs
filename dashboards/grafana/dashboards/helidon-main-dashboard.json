@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 25,
+  "id": 28,
   "links": [
     {
       "asDropdown": true,
@@ -134,7 +134,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(count by (se_app) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",se_app!=\"\"}))",
+          "expr": "count(count by (app) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app!=\"\"}))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -195,7 +195,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\"})",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -262,7 +262,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\"}) * 100",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) * 100",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -383,7 +383,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\"})",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -450,7 +450,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\"}) * 100",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) * 100",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -511,7 +511,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\"})",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -572,7 +572,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",se_app!=\"\"}))",
+          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app!=\"\"}))",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -632,7 +632,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\"})",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"})",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -802,7 +802,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "se_app"
+              "options": "app"
             },
             "properties": [
               {
@@ -825,7 +825,7 @@
                 "value": [
                   {
                     "title": "Drill down to SE App details for ${__data.fields[1]}",
-                    "url": "/d/helidon-se-details?var-se_app=${__data.fields[1]}&$__all_variables"
+                    "url": "/d/helidon-se-details?var-app=${__data.fields[1]}&$__all_variables"
                   }
                 ]
               }
@@ -930,7 +930,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app)",
+          "expr": "count(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -942,7 +942,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -954,7 +954,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app)",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -966,7 +966,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app)  \n",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app)  \n",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1209,7 +1209,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "count(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", se_app=\"\"}) by (mp_app)",
+          "expr": "count(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", mp_app!=\"\"}) by (mp_app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1221,7 +1221,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=\"\"}) by (mp_app)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) by (mp_app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1233,7 +1233,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", se_app=\"\"}) by (mp_app)",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", mp_app!=\"\"}) by (mp_app)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1245,7 +1245,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=\"\"}) by (mp_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", se_app=\"\"}) by (mp_app)  \n",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) by (mp_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\", mp_app!=\"\"}) by (mp_app)  \n",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1356,11 +1356,11 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app=\"\"}) by (se_app)  \n",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app!=\"\"}) by (app)  \n",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{se_app}}",
+          "legendFormat": "{{app}}",
           "range": true,
           "refId": "A"
         }
@@ -1460,7 +1460,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=\"\"}) by (mp_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=\"\"}) by (mp_app)  \n",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) by (mp_app) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",mp_app!=\"\"}) by (mp_app)  \n",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1487,8 +1487,7 @@
           "value": ""
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "type": "prometheus"
         },
         "definition": "",
         "hide": 0,
@@ -1556,6 +1555,6 @@
   "timezone": "",
   "title": "Helidon Main Dashboard",
   "uid": "helidon-main-dashboard",
-  "version": 1,
+  "version": 6,
   "weekStart": ""
 }

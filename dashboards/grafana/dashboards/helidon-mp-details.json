@@ -766,38 +766,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "mp_app"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "App"
-              },
-              {
-                "id": "unit",
-                "value": "short"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "custom.align"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "Drill down to SE App details for ${__data.fields[1]}",
-                    "url": "/d/helidon-se-details?var-se_app=${__data.fields[1]}&$__all_variables"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Value #C"
             },
             "properties": [

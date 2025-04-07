@@ -47,7 +47,7 @@
       "panels": [],
       "repeat": "instance",
       "repeatDirection": "h",
-      "title": "SE Application Details for ${se_app}",
+      "title": "SE Application Details for ${app}",
       "type": "row"
     },
     {
@@ -102,7 +102,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}))",
+          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}))",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -163,7 +163,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -230,7 +230,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) * 100",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) * 100",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -292,7 +292,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"} offset 1m)",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 1m)",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -353,7 +353,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"} offset 5m)",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 5m)",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -414,7 +414,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"} offset 15m) >= 0",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 15m) >= 0",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -475,7 +475,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -536,7 +536,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}[1m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[1m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -597,7 +597,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}[5m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[5m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -658,7 +658,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}[15m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[15m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -790,7 +790,7 @@
                 "value": [
                   {
                     "title": "Drill down to SE App details for ${__data.fields[1]}",
-                    "url": "/d/helidon-se-details?var-se_app=${__data.fields[1]}&$__all_variables"
+                    "url": "/d/helidon-se-details?var-app=${__data.fields[1]}&$__all_variables"
                   }
                 ]
               }
@@ -971,7 +971,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(thread_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -984,7 +984,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "avg(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -997,7 +997,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "avg(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1010,7 +1010,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(classloader_loadedClasses_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(classloader_loadedClasses_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1023,7 +1023,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1035,7 +1035,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1047,7 +1047,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1059,7 +1059,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(gc_total{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+          "expr": "sum(gc_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1165,7 +1165,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})  ",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})  ",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1178,7 +1178,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})  ",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})  ",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1188,7 +1188,7 @@
           "refId": "B"
         }
       ],
-      "title": "Memory Usage: ${se_app} - All JVM's",
+      "title": "Memory Usage: ${app} - All JVM's",
       "type": "timeseries"
     },
     {
@@ -1270,7 +1270,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "requests_count_total{namespace=~\"${Namespace:.*}\", se_app=~\"${se_app}\"} - requests_count_total{namespace=~\"${Namespace:.*}\", se_app=~\"${se_app}\"} offset $__interval > 0",
+          "expr": "requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\"} - requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\"} offset $__interval > 0",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -1342,7 +1342,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+              "expr": "sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
               "instant": true,
               "range": false,
               "refId": "A"
@@ -1403,7 +1403,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+              "expr": "sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
               "instant": true,
               "range": false,
               "refId": "A"
@@ -1471,7 +1471,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": " sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) / sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+              "expr": " sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) / sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
               "instant": true,
               "range": false,
               "refId": "A"
@@ -1532,7 +1532,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
               "instant": false,
               "range": true,
               "refId": "A"
@@ -1627,7 +1627,7 @@
                 "type": "prometheus"
               },
               "editorMode": "code",
-              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"}) by (instance)",
+              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
@@ -1691,7 +1691,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(vthreads_scheduler_queued_virtual_thread_count{namespace=~\"${Namespace:.*}\",se_app=~\"${se_app}\"})",
+              "expr": "sum(vthreads_scheduler_queued_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
               "instant": false,
               "range": true,
               "refId": "A"
@@ -1744,15 +1744,15 @@
         "datasource": {
           "type": "prometheus"
         },
-        "definition": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},se_app)",
+        "definition": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},app)",
         "hide": 0,
         "includeAll": false,
         "label": "SE Application",
         "multi": false,
-        "name": "se_app",
+        "name": "app",
         "options": [],
         "query": {
-          "query": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},se_app)",
+          "query": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},app)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
