@@ -20,6 +20,12 @@ If all you want is to grab the Grafana dashboard for Helidon then get it here: [
 
 On MacOS you should be able to install the above using `brew`.
 
+This lab was tested with:
+* Grafana 11.6.0
+* Prometheus 3.3.0
+* Loki 3.4.3
+* Promtail 3.4.3
+
 This lab does not use nor assume Docker. All processes will be run natively on your system.
 
 ## Overview
@@ -147,12 +153,12 @@ loki --config.file=${HOME}/.config/loki-local-config.yaml
 prometheus --config.file=${HOME}/.config/prometheus.yaml
 
 grafana server \
-    --config /usr/local/etc/grafana/grafana.ini \
-    --homepath /usr/local/opt/grafana/share/grafana \
+    --config /opt/homebrew/etc/grafana/grafana.ini \
+    --homepath /opt/homebrew/opt/grafana/share/grafana \
     --packaging\=brew \
-    cfg:default.paths.logs\=/usr/local/var/log/grafana \
-    cfg:default.paths.data\=/usr/local/var/lib/grafana \
-    cfg:default.paths.plugins\=/usr/local/var/lib/grafana/plugins
+    cfg:default.paths.logs\=/opt/homebrew/var/log/grafana \
+    cfg:default.paths.data\=/opt/homebrew/var/lib/grafana \
+    cfg:default.paths.plugins\=/opt/homebrew/var/lib/grafana/plugins
 ```
 
 ## Log into Grafana and define data sources
@@ -164,8 +170,8 @@ In a web browser connect to Grafana: http://localhost:3000
 When prompted use the username/password as documented in the Grafana installation (possibly admin/admin).
 Once logged into Grafana:
 
-1. Click the hamburger menu icon on the left to get the menu.
-2. Click on Add new connection
+1. Click the Grafana menu icon on the left to get the menu.
+2. Click on Add new data source
 3. Search for Prometheus and click on the "Prometheus" data source, then "Add new data source". Ensure that the Connection URL is correct for your instance of Prometheus.
 4. Repeat the above for Loki.
 
