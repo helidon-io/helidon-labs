@@ -149,9 +149,17 @@ to match your environment.
 
 ```shell
 promtail -config.expand-env=true --config.file=${HOME}/.config/promtail-local-config.yaml
-loki --config.file=${HOME}/.config/loki-local-config.yaml
-prometheus --config.file=${HOME}/.config/prometheus.yaml
+```
 
+```shell
+loki --config.file=${HOME}/.config/loki-local-config.yaml
+```
+
+```shell
+prometheus --config.file=${HOME}/.config/prometheus.yaml
+```
+
+```shell
 grafana server \
     --config /opt/homebrew/etc/grafana/grafana.ini \
     --homepath /opt/homebrew/opt/grafana/share/grafana \
