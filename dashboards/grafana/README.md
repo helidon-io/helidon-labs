@@ -3,7 +3,7 @@
 This project contains updated Helidon grafana dashboards and the instructions on how to 
 configure and enable additional metrics for Helidon SE and Helidon MP.
 
-> Note: This document and it's contents are work in progress only and not complete. 
+> Note: This document and its contents are work in progress only and not complete. 
 > The information and dashboards may change or be removed.
 
 ## Table of Contents
@@ -38,13 +38,13 @@ See the following for detailed information in Helidon metrics:
 ### Application Identification
 
 To ensure we can identify individual helidon applications as well as allowing drill-through, you should add the
-following labels to your generated metrics using the system property or `application.yaml` (SE) or `microprofile-config.properties` (MP):
+following labels to your generated metrics using the system property or `META-INF/application.yaml` (SE) or `META-INF/microprofile-config.properties` (MP):
 
 **Helidon SE**
 
 * System Property: `-Dmetrics.app-name=my-se-app"`
-* `application.yaml`: 
-  ```bash
+* `META-INF/application.yaml`: 
+  ```yaml
   metrics:
     app-name: "my-se-app"
   ```
@@ -129,12 +129,12 @@ https://github.com/helidon-io/helidon-labs.git and build and include the followi
 
 Additional properties are required to ensure we get the full range of metrics:
 
-> Note: These are shown as system properties but can be set using the appropriate way in SE or MP.
+> Note: These are shown as config file settings but can be set in any relevant SE or MP config source.
 
 **Helidon SE**
 
 *application.yaml*
-```bash
+```yaml
 metrics:
   app-name: "my-se-app"
   key-performance-indicators:

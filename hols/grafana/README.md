@@ -40,7 +40,7 @@ To get log records into Loki we use Promtail to scrape log files from the local 
 Using the Helidon CLI create a basic Helidon MP application:
 
 ```shell
-helidon init --version 4.1.4 --flavor MP --archetype quickstart --batch
+helidon init --version 4.2.0 --flavor MP --archetype quickstart --batch
 ```
 
 Next build and run the application:
@@ -143,9 +143,17 @@ to match your environment.
 
 ```shell
 promtail -config.expand-env=true --config.file=${HOME}/.config/promtail-local-config.yaml
-loki --config.file=${HOME}/.config/loki-local-config.yaml
-prometheus --config.file=${HOME}/.config/prometheus.yaml
+```
 
+```shell
+loki --config.file=${HOME}/.config/loki-local-config.yaml
+```
+
+```shell
+prometheus --config.file=${HOME}/.config/prometheus.yaml
+```
+
+```shell
 grafana server \
     --config /usr/local/etc/grafana/grafana.ini \
     --homepath /usr/local/opt/grafana/share/grafana \
@@ -190,7 +198,7 @@ It should look something like this:
 
 ![helidon-dashboard-image.png](./helidon-dashboard-image.png)
 
-Details about how Grafana and the PLG stack work is outside of the scope of this lab. But to hilight a couple things:
+Details about how Grafana and the PLG stack work is outside the scope of this lab. But to highlight a couple things:
 
 1. When metrics are produced by the Helidon application, and when they are ingested by Prometheus, they are tagged with labels that can be used to filter the data.
 2. When you create a visualization panel in Grafana you define an expression used to select and filter the metric you want to display.
