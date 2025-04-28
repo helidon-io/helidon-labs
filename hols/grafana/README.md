@@ -7,8 +7,7 @@ In this lab you will:
 3. Import Helidon Dashboards into Grafana
 4. View metrics and log data from the Helidon application
 
-TODO:::
-If all you want is to grab the Grafana dashboard for Helidon then get it here: [helidon_dashboard.json](helidon-dashboard.json)
+> Note: If all you want is to grab the Grafana dashboards for Helidon then they are available [here](dashboards).
 
 ## Pre-requisites
 
