@@ -1603,8 +1603,6 @@
       },
       {
         "current": {
-          "text": "localhost:8080",
-          "value": "localhost:8080"
         },
         "definition": "label_values({mp_app=\"$mp_app\"},instance)",
         "description": "",

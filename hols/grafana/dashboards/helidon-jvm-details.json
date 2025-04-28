@@ -1438,8 +1438,6 @@
       },
       {
         "current": {
-          "text": "localhost:8080",
-          "value": "localhost:8080"
         },
         "definition": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},instance)",
         "description": "",

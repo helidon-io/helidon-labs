@@ -1377,8 +1377,6 @@
       },
       {
         "current": {
-          "text": "my-se-app",
-          "value": "my-se-app"
         },
         "datasource": {
           "type": "prometheus"
