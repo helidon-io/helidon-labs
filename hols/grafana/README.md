@@ -148,8 +148,9 @@ following labels to your generated metrics using the system property or `META-IN
 
 Add the following to your `META-INF/microprofile-config.properties` in the `quickstart-mp` application to identify the application and enable additional metrics.
 
-> Note: The `mp.metrics.appName` setting will add a label to all prometheus metrics with `mp_app="my-mp-app"` which is used by the dashboards to display SE specific information.
+> Note: The `mp.metrics.appName` setting will add a label to all prometheus metrics with `mp_app="my-mp-app"` which is used by the dashboards to display MP specific information.
 
+*META-INF/microprofile-config.properties*
 ```properties
 mp.metrics.appName=my-mp-app
 metrics.key-performance-indicators.extended=true
@@ -237,7 +238,10 @@ cat ~/logs/helidon-quickstart-mp/access-0.log
 ## Start both Helidon applications
 
 1. Start the Helidon MP application, as described in the previous step if it is not already started
-2. Rebuild and start the Helidon SE application using `java -Xmx256m -Xmx256m -Dserver.port=8082 -jar target/quickstart-se.jar`
+2. Rebuild and start the Helidon SE application using the following:
+   ```bash
+    java -Xmx256m -Xmx256m -Dserver.port=8082 -jar target/quickstart-se.jar
+    ```
 
 ## Configure and start Promtail, Loki, Prometheus, and Grafana
 
