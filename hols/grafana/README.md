@@ -1,4 +1,4 @@
-# Grafana Dashboard for Helidon
+# Grafana Dashboards for Helidon
 
 In this lab you will:
 
