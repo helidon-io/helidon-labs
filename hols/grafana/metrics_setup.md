@@ -166,28 +166,31 @@ The section below outlines the current dashboards.
 
 **Helidon Main Dashboard**
 
+This dashboard shows a summary of all running SE and MP applications and allows drill down to specific
+applications for more insight.
+
 ![helidon-main-dashboard.png](./images/helidon-main-dashboard.png)
 
 **Helidon MP Details**
 
-*MP Application Details*
+This dashboard shows specific information about the selected MP application as well as details of REST calls as shown in the next image.
+You can drill down to individual instances for more JVM details.
 
 ![helidon-mp-details-1.png](./images/helidon-mp-details-2.png)
-
-*MP Application REST Calls*
 
 ![helidon-mp-details-2.png](./images/helidon-mp-details-2.png)
 
 **Helidon SE Details**
 
+You can drill down to individual instances for more JVM details.
+
 ![helidon-se-details.png](./images/helidon-se-details.png)
 
 **Helidon JVM Details**
 
-*Main JVM Details*
+This dashboard shows individual JVM details including memory, thread counts, JVM uptime, detailed GC details and
+JDK24+ virtual threads information if enabled, as show in the second image.
 
 ![helidon-jvm-details-1.png](./images/helidon-jvm-details-1.png)
-
-*Virtual Threads (if Configured)*
 
 ![helidon-jvm-details-vt.png](./images/helidon-jvm-details-vt.png)

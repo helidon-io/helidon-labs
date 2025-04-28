@@ -298,7 +298,7 @@ Once logged into Grafana:
 
 1. Click the Grafana menu icon on the left to get the menu.
 2. Click on Add new data source
-3. Search for Prometheus and click on the "Prometheus" data source, then "Add new data source". Ensure that the Connection URL is correct for your instance of Prometheus.
+3. Search for Prometheus and click on the `Prometheus` data source, then `Add new data source`. Ensure that the Connection URL is correct for your instance of Prometheus.
 4. Repeat the above for Loki.
 
 The ports used by Loki and Prometheus should be the default ports.
@@ -318,7 +318,7 @@ For each dashboard file:
 
 1. Click on Dashboards
 2. Click on New->Import
-3. Import the dashboard by either dragging and dropping [helidon-dashboard.json](./helidon-dashboard.json) or Load the contents using copy past.
+3. Import the dashboard by either dragging and dropping the dashboard file or Load the contents using copy and paste.
 
 ### View the Helidon dashboards
 
@@ -345,29 +345,32 @@ Details about how Grafana and the PLG stack work is outside the scope of this la
 
 **Helidon Main Dashboard**
 
+This dashboard shows a summary of all running SE and MP applications and allows drill down to specific
+applications for more insight.
+
 ![helidon-main-dashboard.png](./images/helidon-main-dashboard.png)
 
 **Helidon MP Details**
 
-*MP Application Details*
+This dashboard shows specific information about the selected MP application as well as details of REST calls as shown in the next image.
+You can drill down to individual instances for more JVM details.
 
 ![helidon-mp-details-1.png](./images/helidon-mp-details-2.png)
-
-*MP Application REST Calls*
 
 ![helidon-mp-details-2.png](./images/helidon-mp-details-2.png)
 
 **Helidon SE Details**
 
+This dashboard shows specific information about the selected SE application. You can drill down to individual instances for more JVM details.
+
 ![helidon-se-details.png](./images/helidon-se-details.png)
 
 **Helidon JVM Details**
 
-*Main JVM Details*
+This dashboard shows individual JVM details including memory, thread counts, JVM uptime, detailed GC details and 
+JDK24+ virtual threads information if enabled, as show in the second image.
 
 ![helidon-jvm-details-1.png](./images/helidon-jvm-details-1.png)
-
-*Virtual Threads (if Configured)*
 
 ![helidon-jvm-details-vt.png](./images/helidon-jvm-details-vt.png)
 
