@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 27,
+  "id": 11,
   "links": [
     {
       "asDropdown": false,
@@ -33,7 +33,6 @@
       "url": "/d/helidon-main-dashboard"
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -45,8 +44,6 @@
       },
       "id": 55,
       "panels": [],
-      "repeat": "instance",
-      "repeatDirection": "h",
       "title": "SE Application Details for ${app}",
       "type": "row"
     },
@@ -64,8 +61,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -85,6 +81,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -92,9 +89,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -102,7 +101,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}))",
+          "expr": "count(count by (instance) (jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}))",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -125,8 +124,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -146,6 +144,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -153,9 +152,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -163,7 +164,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -186,8 +187,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "#EAB839",
@@ -211,6 +211,8 @@
       },
       "id": 39,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -220,9 +222,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -230,7 +233,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) * 100",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) * 100",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -254,8 +257,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -275,6 +277,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -282,9 +285,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -292,7 +297,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 1m)",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"} offset 1m)",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -315,8 +320,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -336,6 +340,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -343,9 +348,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -353,7 +360,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 5m)",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"} offset 5m)",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -376,8 +383,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -397,6 +403,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -404,9 +411,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -414,7 +423,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"} offset 15m) >= 0",
+          "expr": "sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) - sum(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"} offset 15m) >= 0",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -437,8 +446,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -458,6 +466,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -465,9 +474,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -475,7 +486,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -498,8 +509,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -519,6 +529,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -526,9 +537,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -536,7 +549,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[1m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}[1m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -559,8 +572,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -580,6 +592,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -587,9 +600,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -597,7 +612,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[5m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}[5m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -620,8 +635,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -641,6 +655,7 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -648,9 +663,11 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -658,7 +675,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}[15m]))",
+          "expr": "avg(rate(requests_count_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}[15m]))",
           "instant": false,
           "range": true,
           "refId": "A"
@@ -691,12 +708,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "green"
               }
             ]
           },
@@ -808,7 +820,7 @@
               },
               {
                 "id": "unit",
-                "value": "short"
+                "value": "none"
               },
               {
                 "id": "custom.align"
@@ -852,8 +864,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "rgba(50, 172, 45, 0.97)",
-                      "value": null
+                      "color": "rgba(50, 172, 45, 0.97)"
                     },
                     {
                       "color": "rgba(237, 129, 40, 0.89)"
@@ -941,6 +952,47 @@
                 "value": "none"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Instance"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Drill down to JVM  details for ${__data.fields[1]}",
+                    "url": "/d/helidon-jvm-details?var-instance=${__data.fields[1]}&$__all_variables"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #I"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "displayName",
+                "value": "JVM Uptime"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
           }
         ]
       },
@@ -951,7 +1003,6 @@
         "y": 9
       },
       "id": 63,
-      "links": [],
       "options": {
         "cellHeight": "sm",
         "footer": {
@@ -964,14 +1015,14 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -984,7 +1035,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "avg(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -997,7 +1048,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "avg(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "avg(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1010,7 +1061,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(classloader_loadedClasses_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(classloader_loadedClasses_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1023,7 +1074,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1035,7 +1086,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1047,7 +1098,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance) / sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -1059,13 +1110,26 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(gc_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
+          "expr": "sum(gc_total{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"}) by (instance)",
           "format": "table",
           "hide": false,
           "instant": true,
           "intervalFactor": 1,
           "legendFormat": "",
           "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "avg(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"})   by (instance)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "I"
         }
       ],
       "title": "Instances",
@@ -1090,11 +1154,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -1103,6 +1169,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1125,8 +1192,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1141,8 +1207,6 @@
         "y": 15
       },
       "id": 52,
-      "interval": "",
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1154,18 +1218,19 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "10.0.13",
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})  ",
+          "expr": "sum(memory_usedHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"})  ",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1178,7 +1243,7 @@
             "type": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})  ",
+          "expr": "sum(memory_maxHeap_bytes{namespace=~\"${Namespace:.*}\",app=~\"${app}\",mp_app=~\"\"})  ",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1201,11 +1266,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -1214,6 +1281,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1236,8 +1304,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -1259,10 +1326,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "11.6.0-pre",
       "targets": [
         {
           "datasource": {
@@ -1270,7 +1339,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\"} - requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\"} offset $__interval > 0",
+          "expr": "requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\", mp_app=~\"\"} - requests_count_total{namespace=~\"${Namespace:.*}\", app=~\"${app}\",mp_app=~\"\"} offset $__interval > 0",
           "instant": false,
           "legendFormat": "{{instance}}",
           "range": true,
@@ -1279,435 +1348,11 @@
       ],
       "title": "HTTP Requests - All JVM's",
       "type": "timeseries"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 22
-      },
-      "id": 64,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "Current number of platform threads that the scheduler has started but have not terminated",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 0,
-            "y": 23
-          },
-          "id": 65,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
-              "instant": true,
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Total VT Pool Size",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 3,
-            "x": 3,
-            "y": 23
-          },
-          "id": 66,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "none",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
-              "instant": true,
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Target Parallelism",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "max": 1,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "orange",
-                    "value": 0.5
-                  },
-                  {
-                    "color": "red",
-                    "value": 0.9
-                  }
-                ]
-              },
-              "unit": "percentunit"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 5,
-            "x": 6,
-            "y": 23
-          },
-          "id": 67,
-          "options": {
-            "orientation": "horizontal",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "showThresholdLabels": false,
-            "showThresholdMarkers": true
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": " sum(vthreads_scheduler_pool_size{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) / sum(vthreads_scheduler_parallelism{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
-              "instant": true,
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "title": "Total VT Pool Used All JVMs",
-          "type": "gauge"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "Estimate of the number of virtual threads that are currently mounted by the scheduler",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 11,
-            "y": 23
-          },
-          "id": 68,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
-              "instant": false,
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Mounted VT",
-          "type": "stat"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "Memory usage percentage by SE App.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "lineInterpolation": "linear",
-                "lineWidth": 2,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 10,
-            "x": 14,
-            "y": 23
-          },
-          "id": 70,
-          "interval": "",
-          "links": [],
-          "options": {
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "max"
-              ],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "multi",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "expr": "sum(vthreads_scheduler_mounted_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"}) by (instance)",
-              "format": "time_series",
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "{{instance}}",
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Current Virtual Threads Mounted - All JVM's",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "description": "Estimate of the number of virtual threads that are queued to the scheduler to start or continue execution",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 4,
-            "w": 3,
-            "x": 11,
-            "y": 27
-          },
-          "id": 69,
-          "options": {
-            "colorMode": "value",
-            "graphMode": "area",
-            "justifyMode": "auto",
-            "orientation": "auto",
-            "reduceOptions": {
-              "calcs": [
-                "lastNotNull"
-              ],
-              "fields": "",
-              "values": false
-            },
-            "textMode": "auto"
-          },
-          "pluginVersion": "10.0.13",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "sum(vthreads_scheduler_queued_virtual_thread_count{namespace=~\"${Namespace:.*}\",app=~\"${app}\"})",
-              "instant": false,
-              "range": true,
-              "refId": "A"
-            }
-          ],
-          "title": "Total Queued VT",
-          "type": "stat"
-        }
-      ],
-      "title": "JDK24 Virtual Threads",
-      "type": "row"
     }
   ],
+  "preload": false,
   "refresh": "10s",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 41,
   "tags": [
     "helidon"
   ],
@@ -1715,40 +1360,32 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "None",
+          "text": "",
           "value": ""
         },
         "datasource": {
           "type": "prometheus"
         },
         "definition": "",
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "Namespace",
         "options": [],
         "query": "",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
-          "text": "todo-frontend",
-          "value": "todo-frontend"
+          "text": "my-se-app",
+          "value": "my-se-app"
         },
         "datasource": {
           "type": "prometheus"
         },
         "definition": "label_values(jvm_uptime_seconds{namespace=~\"${Namespace:.*}\"},app)",
-        "hide": 0,
         "includeAll": false,
         "label": "SE Application",
-        "multi": false,
         "name": "app",
         "options": [],
         "query": {
@@ -1757,20 +1394,17 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
-  "timezone": "",
+  "timezone": "Australia/Perth",
   "title": "Helidon SE Details Dashboard",
   "uid": "helidon-se-details",
-  "version": 5,
-  "weekStart": ""
+  "version": 8
 }

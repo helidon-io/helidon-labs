@@ -1,6 +1,6 @@
 # Grafana Dashboards
 
-This project contains updated Helidon grafana dashboards and the instructions on how to 
+This project contains updated Helidon Grafana dashboards and the instructions on how to 
 configure and enable additional metrics for Helidon SE and Helidon MP.
 
 > Note: This document and its contents are work in progress only and not complete. 
@@ -58,7 +58,7 @@ jvm_uptime_seconds{instance="host.docker.internal:7001", job="helidon", scope="b
 **Helidon MP**
 
 * System Property: `-Dmp.metrics.appName=my-mp-app`
-* `microprofile-config.properties` `
+* `META-INF/microprofile-config.properties` `
    ```bash
    mp.metrics.appName=my-mp-app
    ```
@@ -177,7 +177,7 @@ The section below outlines the initial "work-in-progress" Grafana dashboards.
 
 ### Main DashBoard
 
-![Main Dahsboard](images/helidon-dashboard-main.png)
+![Main Dashboard](images/helidon-dashboard-main.png)
 
 ### SE Details Dashboard
 
