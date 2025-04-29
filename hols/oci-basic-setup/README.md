@@ -50,7 +50,14 @@ The goal of this task is to prepare a basic infrastructure environment comprised
 2. From the root directory of the repository, open `terraform.tfvars` and set the values of the following variables: 
    * `tenancy_ocid` - This can be retrieved by opening the `Profile` menu (click the User icon on the top most right corner of the console window) and click `Tenancy: <your_tenancy_name>`. The tenancy OCID is shown under `Tenancy Information`. Click `Show` to display the entire ID or click `Copy` to copy it to your clipboard.
    * `region` - From OCI Console's home screen, open the `Region` menu, and then click `Manage Regions`. Locate the Home Region and copy the Region identifier.
-   * `instance_*` - Use these parameters to specify the size and shape of the OCI compute instance that you would like to be provisioned. T Currently defaults to an available shape from an [Always Free Resources of an OCI Free Tier Tenancy](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm).
+   * `instance_*` - Use these parameters to specify the size and shape of the OCI compute instance that you would like to be provisioned. Currently defaults to an available shape from an [Always Free Resources of an OCI Free Tier Tenancy](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm).
+     ```terraform
+     instance_shape                      = "VM.Standard.E2.1.Micro"
+     instance_ocpus                      = 1
+     instance_shape_config_memory_in_gbs = 1
+     instance_os                         = "Oracle Linux"
+     instance_os_version                 = "8"
+     ```
 4. Use Terraform to execute the scripts to provision the OCI resources.
    ```bash
    terraform init
@@ -69,9 +76,6 @@ The goal of this task is to prepare a basic infrastructure environment comprised
    unzip helidon-cli.zip
    ```
 3. Make sure that JDK 21 exist in the path.
-   ```shell
-   cd ~
-   ```
 4. Execute the cli to generate a Helidon Microprofile application project.
    ```shell
    ~/helidon-3.0.6/bin/helidon init
@@ -103,8 +107,7 @@ The goal of this task is to prepare a basic infrastructure environment comprised
    (4) oci        | OCI
    Enter selection (default: 1): 4
    ```
-8. When prompted for `Project groupId`, `Project artifactId`, `Project version` and `Java package name`, just accept the default values.
-9. Once completed, this will generate an `oci-mp` project.
+8. When prompted for `Project groupId`, `Project artifactId`, `Project version` and `Java package name`, just accept the default values. Once completed, this will generate an `oci-mp` project.
 10. Go to the `oci-mp` directory.
     ```shell
     cd ~/oci-mp
@@ -129,8 +132,8 @@ The goal of this task is to prepare a basic infrastructure environment comprised
     mvn clean package
     ```
 
-### Deploy the Helidon application:
-1. Go back to oci-basic-setup local repository directory.
+### Deploy the Helidon OCI application:
+1. Go back to `oci-basic-setup` local repository directory.
    ```shell
    cd ~/helidon-labs/hols/oci-basic-setup
    ```
@@ -142,39 +145,35 @@ The goal of this task is to prepare a basic infrastructure environment comprised
 
 ### Exercise the deployed Helidon application:
 1. Access the application by using curl to do a GET & PUT http requests.
-    1. Go to the home directory from a Cloud Shell console:
+    1. Set the endpoint using the instance's public ip which can be retrieved using `get.sh` utility script from the `oci-basic-setup` local repository directory.
        ```shell
-       cd ~
-       ```  
-    2. Set the endpoint using the instance's public ip:
-       ```shell
-       export ENDPOINT_IP=$(~/oci-basic-setup/get.sh public_ip)
+       export ENDPOINT_IP=$(~/helidon-labs/hols/oci-basic-setup/get.sh public_ip)
        echo "Instance public ip is $ENDPOINT_IP"
        ```
-    3. Test Hello world request:
+    2. Test Hello world request.
        ```shell
        curl http://$ENDPOINT_IP:8080/greet
        ```
        results to:
        ```shell
-       {"message":"Hello World!","date":[2023,5,10]}
+       {"message":"Hello World!","date":[2025,4,29]}
        ```
-    4. Test Hello to a name, i.e. to `Joe`:
+    3. Test Hello to a name, i.e. to `Joe`.
        ```shell
        curl http://$ENDPOINT_IP:8080/greet/Joe
        ```
        results to:
        ```shell
-       {"message":"Hello Joe!","date":[2023,5,10]}
+       {"message":"Hello Joe!","date":[2025,4,29]}
        ```
-    5. Replace Hello with another greeting word, i.e. `Hola`:
+    4. Replace Hello with another greeting word, i.e. `Hola`.
        ```shell
        curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://$ENDPOINT_IP:8080/greet/greeting 
        curl http://$ENDPOINT_IP:8080/greet
        ```
        results to:
        ```shell
-       {"message":"Hola World!","date":[2023,5,10]}
+       {"message":"Hola World!","date":[2025,4,29]}
        ```
 2. Validate that the Helidon Metrics are pushed to the OCI Monitoring Service using the OCI metric integration that was added in the Helidon application:
    1. From the OCI Console, go to `Observability & Management` -> `Metrics Explorer (under Monitoring)`.
