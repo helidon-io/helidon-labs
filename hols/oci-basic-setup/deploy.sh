@@ -20,7 +20,8 @@ JDK_TAR_GZ_INSTALLER="https://download.oracle.com/java/21/latest/jdk-21_linux-x6
 
 HELIDON_MP_APP_ZIP=oci-mp-server.zip
 DEFAULT_PROJECT_PATH=~/oci-mp
-SCRIPT_DIR=$(dirname $0)
+SCRIPT_DIR=$(dirname "$0")
+# shellcheck disable=SC1091
 source "${SCRIPT_DIR}"/get_common.sh
 
 # Main routine

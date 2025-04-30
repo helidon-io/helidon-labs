@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-SCRIPT_DIR=$(dirname $0)
+SCRIPT_DIR=$(dirname "$0")
 
 # Generate private key file that will be use to ssh or scp to the instance
 "${SCRIPT_DIR}"/get.sh create_ssh_private_key
