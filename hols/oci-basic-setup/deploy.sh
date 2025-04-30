@@ -57,8 +57,15 @@ ssh -i private.key opc@"${PUBLIC_IP}" "bash -s ${HELIDON_MP_APP_ZIP} ${JDK_TAR_G
 HELIDON_MP_APP_ZIP=${1}
 JDK_TAR_GZ_INSTALLER=${2}
 
+# Create application and log directory
+export APP_DIR=~/oci-mp/app
+export LOG_DIR=~/oci-mp/log
+mkdir -p "${APP_DIR}"
+mkdir -p "${LOG_DIR}"
+
 # Unzip the application binary
-unzip -o "${HELIDON_MP_APP_ZIP}"
+unzip -o "${HELIDON_MP_APP_ZIP}" -d "${APP_DIR}"
+rm "${HELIDON_MP_APP_ZIP}"
 
 #  Download and extract JDK
 JDK_TAR_GZ_INSTALLER_BASE=$(basename ${JDK_TAR_GZ_INSTALLER})
@@ -69,9 +76,6 @@ if ! ls "${JDK_TAR_GZ_INSTALLER_BASE}" ; then
     curl -O "${JDK_TAR_GZ_INSTALLER}" && echo "JDK downloaded successfully"
     tar xzf ${JDK_TAR_GZ_INSTALLER_BASE} && echo "JDK installed successfully"
 fi
-
-# export PATH=~/jdk-21.0.7/bin:$PATH
-# nohup java -jar oci-mp-server.jar &> oci-mp-server.log &
 
 # Create Service file
 export JAVA_BIN=$(ls -d "$(pwd)"/jdk*/)bin
@@ -84,7 +88,7 @@ After=syslog.target network.target
 User=opc
 Type=simple
 WorkingDirectory=/home/opc
-ExecStart=/bin/bash -c '${JAVA_BIN}/java -jar oci-mp-server.jar &> helidon-app.log'
+ExecStart=/bin/bash -c '${JAVA_BIN}/java -jar ${APP_DIR}/oci-mp-server.jar &> ${LOG_DIR}/oci-mp-server.log'
 
 [Install]
 WantedBy=multi-user.target

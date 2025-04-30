@@ -1,17 +1,17 @@
-# Deploying Helidon OCI MP Application on a Basic OCI Infrastructure Setup
+# Deploying a Helidon OCI MP Application on a Basic OCI Setup
 
-This example will demonstrate how to create a basic OCI infrastructure setup that can be used to deploy a Helidon MP OCI application.
+This example demonstrates how to create a basic OCI infrastructure setup that can be used to deploy a Helidon MP OCI application.
 
 ## Objective
 1. Use Terraform to create automation of OCI resources provisioning that can build a basic OCI infrastructure setup composed of the following:
-   1. OCI Compute Instance with firewall opened at port 8080.
+   1. OCI Compute instance with firewall opened at port 8080.
    2. OCI Virtual Cloud Network with Security List containing an Ingress at port 8080.
-   3. Policies to allow OCI Logging and Monitoring services to be accessed from the provisioned OCI Compute Instance.
+   3. Policies to allow OCI Logging and Monitoring services to be accessed from the provisioned OCI Compute instance.
 2. Generate a Helidon MP OCI project using Helidon cli. 
 3. Use OCI cloud-shell to run this example through. 
 
 ## Prerequisite
-- An OCI tenancy that has enough capacity to provision an OCI Compute Instance and a Virtual Cloud Network. This will also work on the free trial of the [OCI Free Tier](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier.htm).
+- An OCI tenancy that has enough capacity to provision an OCI Compute instance and a Virtual Cloud Network. This will also work on the free trial of the [OCI Free Tier](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier.htm).
 
 ## Tasks
 ### Set up Cloud Shell access.
@@ -42,7 +42,7 @@ The materials for this exercise will be located in the [oci-basic-setup](https:/
 3. The previous step will pull all the required Terraform and Bash script files into the  `~/helidon-labs/hols/oci-basic-setup` directory that will be needed to perform various operations to complete this exercise.
 
 ### Prepare the OCI infrastructure environment
-The goal of this task is to prepare a basic infrastructure environment comprised of a Compartment, Dynamic Groups, Policies, Compute Instance and Virtual Cloud Network. This section requires a user with administrator privilege.
+The goal of this task is to prepare a basic infrastructure environment comprised of a Compartment, Dynamic Groups, Policies, Compute and Virtual Cloud Network. This section requires a user with administrator privilege.
 1. Open the newly cloned repository directory `oci-basic-setup` from the a Cloud Shell terminal.
    ```shell
    cd ~/helidon-labs/hols/oci-basic-setup
@@ -50,7 +50,7 @@ The goal of this task is to prepare a basic infrastructure environment comprised
 2. From the root directory of the repository, open `terraform.tfvars` and set the values of the following variables: 
    * `tenancy_ocid` - This can be retrieved by opening the `Profile` menu (click the User icon on the top most right corner of the console window) and click `Tenancy: <your_tenancy_name>`. The tenancy OCID is shown under `Tenancy Information`. Click `Show` to display the entire ID or click `Copy` to copy it to your clipboard.
    * `region` - From OCI Console's home screen, open the `Region` menu, and then click `Manage Regions`. Locate the Home Region and copy the Region identifier.
-   * `instance_*` - Use these parameters to specify the size and shape of the OCI compute instance that you would like to be provisioned. Currently defaults to an available shape from an [Always Free Resources of an OCI Free Tier Tenancy](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm).
+   * `instance_*` - Use these parameters to specify the size and shape of the OCI Compute instance that you would like to be provisioned. Currently defaults to an available shape from an [Always Free Resources of an OCI Free Tier Tenancy](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm).
      ```terraform
      instance_shape                      = "VM.Standard.E2.1.Micro"
      instance_ocpus                      = 1
@@ -117,10 +117,10 @@ The goal of this task is to prepare a basic infrastructure environment comprised
     ~/helidon-labs/hols/oci-basic-setup/update_config_values.sh ~/oci-mp
     ```
     Invoking this script will perform the following:
-    1. Updates in `~/oci-mp/server/src/main/resources/application.yaml` config file to set up a Helidon feature that sends Helidon generated metrics to the OCI monitoring service.
-       1. compartmentId - Compartment ocid that is used for this demo
+    1. Updates the `~/oci-mp/server/src/main/resources/application.yaml` config file to set up a Helidon feature that sends Helidon generated metrics to the OCI monitoring service.
+       1. compartmentId - The Compartment OCID used for this demo.
        2. namespace - This can be any string but for this demo, will be set to `helidon_metrics`.
-    2. Updates in `~/oci-mp/server/src/main/resources/META-INF/microprofile-config.properties` config file to set up configuration parameters used by the Helidon app code to perform integration with OCI Logging and Metrics service.
+    2. Updates the `~/oci-mp/server/src/main/resources/META-INF/microprofile-config.properties` config file to set up configuration parameters used by the Helidon app code to perform integration with OCI Logging and Metrics service.
        1. oci.monitoring.compartmentId - Compartment ocid that is used for this demo
        2. oci.monitoring.namespace - This can be any string but for this demo, this will be set to `helidon_application`.
        3. oci.logging.id - Application log id that was provisioned by the terraform scripts.
@@ -137,14 +137,14 @@ The goal of this task is to prepare a basic infrastructure environment comprised
    ```shell
    cd ~/helidon-labs/hols/oci-basic-setup
    ```
-2. Open up `deploy.sh` script and use the JDK_TAR_GZ_INSTALLER variable to specify the download path of jdk 21 based on the OS flavor currently installed on Compute instance. The current value used is the Linux x64 version of jdk 21. 
-3. Run `deploy.sh` utility script and provide the directory of the OCI MP application as the argument. This script will zip up the server binaries, upload it to the compute instance, install jdk 21, create a systemctl service for the application to ensure that the application is persistent across reboots, and start the service.
+2. Open up `deploy.sh` script and use the JDK_TAR_GZ_INSTALLER variable to specify the download path of JDK 21 based on the OS flavor currently installed on Compute instance. The current value used is the Linux x64 version of JDK 21. 
+3. Run `deploy.sh` utility script and provide the directory of the OCI MP application as the argument. This script will zip up the server binaries, upload it to the Compute instance, install JDK 21, create a systemctl service for the application to ensure that the application is persistent across reboots, and start the service.
    ```shell
    ./deploy.sh ~/oci-mp
    ```
 
 ### Exercise the deployed Helidon application:
-1. Access the application by using curl to do a GET & PUT http requests.
+1. Access the application by using curl to perform GET & PUT HTTP requests.
     1. Set the endpoint using the instance's public ip which can be retrieved using `get.sh` utility script from the `oci-basic-setup` local repository directory.
        ```shell
        export ENDPOINT_IP=$(~/helidon-labs/hols/oci-basic-setup/get.sh public_ip)
