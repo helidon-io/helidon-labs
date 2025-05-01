@@ -15,7 +15,7 @@
 #
 
 # Tenancy
-tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaaojcizdygp3su6uricqytroqr2ufcprejd7o4earwmbz3akr5ka4q"
+tenancy_ocid = "ocid1.tenancy.oc1..dummy"
 
 # Region - should be the home region
 region = "us-ashburn-1"

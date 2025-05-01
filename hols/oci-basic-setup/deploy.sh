@@ -101,7 +101,8 @@ if [ "${SELINUX_ENFORCE_STATUS}" == "Enforcing" ]; then
     chcon system_u:object_r:systemd_unit_file_t:s0 helidon-app.service.new
 fi
 
-# Start the Helidon application service
+# These next steps will set and start the application up as a systemd service that will automatically be restarted
+# whenever the instance restarts.
 if ! systemctl is-enabled helidon-app.service; then
     echo "Enabling helidon-app.service"
     mv -f helidon-app.service.new helidon-app.service
