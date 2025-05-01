@@ -21,7 +21,7 @@ This example demonstrates how to create a basic OCI infrastructure setup that ca
   - [Getting Started with the Terraform Provider](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/getting-started.htm)
 
 ## Tasks
-### Set up Cloud Shell access.
+### Set up Cloud Shell access
 1. If you are already a super-user with administrator rights that has access to all resources in the tenancy, skip to the next section. Otherwise, continue to the next step.
 2. Create a new group and add your user as a member of that group.
 3. Create a new policy and provide that group a Cloud Shell access:
@@ -72,7 +72,7 @@ The goal of this task is to prepare a basic infrastructure environment comprised
    terraform apply -auto-approve
    ```
     
-### Prepare the Helidon OCI Application:
+### Prepare the Helidon OCI Application
 1. Go to the home directory from a Cloud Shell console:
    ```shell
    cd ~
@@ -175,7 +175,7 @@ The goal of this task is to prepare a basic infrastructure environment comprised
    mvn clean package
    ```
 
-### Deploy the Helidon OCI application:
+### Deploy the Helidon OCI application to your Compute instance
 1. Go back to `oci-basic-setup` local repository directory.
    ```shell
    cd ~/helidon-labs/hols/oci-basic-setup
