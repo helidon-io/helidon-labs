@@ -7,7 +7,7 @@ This example demonstrates how to create a basic OCI infrastructure setup that ca
    1. OCI Compute instance with firewall opened at port 8080.
    2. OCI Virtual Cloud Network with a Security List containing an Ingress at port 8080.
    3. Policies to allow OCI Logging and Monitoring services to be accessed from the provisioned OCI Compute instance.
-2. Generate a Helidon MP OCI project using Helidon cli. 
+2. Generate a Helidon MP OCI project using Helidon CLI. 
 3. Use OCI Cloud Shell to run this example through. 
 
 ## Prerequisite
@@ -119,8 +119,8 @@ The goal of this task is to prepare a basic infrastructure environment comprised
        export PATH=~/helidon-3.0.6/bin/:$PATH
        ```
        **Note:** If you want the above environment variable settings to persist between Cloud Shell sessions, add the definitions to your `~/.bashrc` file.   
-5. Use the cli to generate a Helidon Microprofile application project.
-   1. Start the cli.
+5. Use the CLI to generate a Helidon Microprofile application project.
+   1. Start the CLI.
       ```shell
       helidon init
       ```
