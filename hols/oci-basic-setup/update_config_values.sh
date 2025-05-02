@@ -17,7 +17,8 @@
 
 set -e
 
-MONITORING_NAMESPACE=helidon_metrics
+METRIC_MONITORING_NAMESPACE=helidon_metrics
+APPLICATION_MONITORING_NAMESPACE=helidon_application
 DEFAULT_PROJECT_PATH=~/oci-mp
 
 if [ -z "${1}" ]; then
@@ -35,15 +36,15 @@ fi
 
 GET_SH=$(dirname "$0")/get.sh
 COMPARTMENT_ID=$(${GET_SH} compartment_id)
-APPLICATION_LOG_ID=$(${GET_SH} app_log_id)
+CUSTOM_LOG_ID=$(${GET_SH} custom_log_id)
 
 APPLICATION_YAML=${PROJECT_PATH}/server/src/main/resources/application.yaml
-sed -i 's/compartmentId: <your monitoring compartment id>/compartmentId: '"${COMPARTMENT_ID}"'/' "${APPLICATION_YAML}"
-sed -i 's/namespace: <your monitoring namespace e.g. helidon_oci>/namespace: '"${MONITORING_NAMESPACE}"'/' "${APPLICATION_YAML}"
+sed -i 's/\(compartmentId: \).*/\1'"${COMPARTMENT_ID}"'/' "${APPLICATION_YAML}"
+sed -i 's/\(namespace: \).*/\1'"${METRIC_MONITORING_NAMESPACE}"'/' "${APPLICATION_YAML}"
 echo "Properties compartmentId and namespace under ocimetrics in ${APPLICATION_YAML} were updated"
 
 MICROPROFILE_CONFIG_PROFILE=${PROJECT_PATH}/server/src/main/resources/META-INF/microprofile-config.properties
-sed -i 's/oci.monitoring.compartmentId=<your monitoring compartment id>/oci.monitoring.compartmentId='"${COMPARTMENT_ID}"'/' "${MICROPROFILE_CONFIG_PROFILE}"
-sed -i 's/oci.monitoring.namespace=<your monitoring namespace e.g. helidon_oci>/oci.monitoring.namespace=helidon_application/' "${MICROPROFILE_CONFIG_PROFILE}"
-sed -i 's/oci.logging.id=<your oci custom log id>/oci.logging.id='"${APPLICATION_LOG_ID}"'/' "${MICROPROFILE_CONFIG_PROFILE}"
+sed -i 's/\(oci.monitoring.compartmentId=\).*/\1'"${COMPARTMENT_ID}"'/' "${MICROPROFILE_CONFIG_PROFILE}"
+sed -i 's/\(oci.monitoring.namespace=\).*/\1'"${APPLICATION_MONITORING_NAMESPACE}"'/' "${MICROPROFILE_CONFIG_PROFILE}"
+sed -i 's/\(oci.logging.id=\).*/\1'"${CUSTOM_LOG_ID}"'/' "${MICROPROFILE_CONFIG_PROFILE}"
 echo "Properties oci.monitoring.compartmentId, oci.monitoring.namespace and oci.logging.id in ${MICROPROFILE_CONFIG_PROFILE} were updated"

@@ -262,10 +262,15 @@ When the environment is no longer needed, all the OCI resources can be cleaned u
       2. From the same Compute instance window from the OCI Console, click on the `Actions` pull down menu and choose `Reboot`. To reboot the instance immediately, without waiting for the OS to respond, select the `Force reboot the instance by immediately powering off, then powering back on` option.
 2. If requests to the application are failing, check the application log for errors. Use `ssh.sh` utility script to remotely access the server and the application log can be found in `~/oci-mp/log/oci-mp-server.log`.
 3. If OCI Log or OCI Metrics Explorer do not show any results, check that the application configuration has the correct values:
-   1. In `~/oci-mp/server/src/main/resources/application.yaml`, validate that the `ocimetrics.compartmentId` reflects the compartment id created from this exercise and `ocimetrics.namespace` has a value of `helidon_metrics`.
-   2. In `~/oci-mp/server/src/main/resources/META-INF/microprofile-config.properties`, validate that the `oci.monitoring.compartmentId` reflects the compartment id created from this exercise and `oci.monitoring.namespace` has a value of `oci.monitoring.namespace`. Also, `oci.logging.id` has the id of the custom log created from this exercise.
-   3. Use `get.sh` utility script to check the values of the `compartment id` and the `custom log id` created from this exercise: 
+   1. Use `get.sh` utility script to retrieve the values of the `compartment id` and the `custom log id`  that will be used for validation purposes in the next steps to follow:
       ```shell
       ~/helidon-labs/hols/oci-basic-setup/get.sh compartment_id
       ~/helidon-labs/hols/oci-basic-setup/get.sh custom_log_id
       ```
+   2. In `~/oci-mp/server/src/main/resources/application.yaml`, validate that the `ocimetrics.compartmentId` reflects the retrieved compartment id and `ocimetrics.namespace` has a value of `helidon_metrics`.
+   3. In `~/oci-mp/server/src/main/resources/META-INF/microprofile-config.properties`, validate that the `oci.monitoring.compartmentId` reflects the retrieved compartment id, `oci.monitoring.namespace` has a value of `helidon_application` and `oci.logging.id` has the retrieved custom log id.
+   4. If values are incorrect, you can manually replace them with the correct ones, or just simply run the `update_config_values.sh` script again to automatically replace those values:
+      ```shell
+      ~/helidon-labs/hols/oci-basic-setup/update_config_values.sh ~/oci-mp
+      ```
+   5. Once the config property values are updated, build and redeploy the application again.
