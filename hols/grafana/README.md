@@ -128,7 +128,13 @@ Now quit the Helidon application (^C).
 ## Enable virtual threads metrics (Optional)
 
 If you are running with JDK24, you can include additional experimental virtual threads metrics. Change directory to the cloned `helidon-labs` repository,
-and build using JDK24 include the following in each of the generated MP and SE `pom.xml`.
+and build the project using JDK24 and the following command:
+
+```bash
+mvn clean install
+```
+
+Then, include the following in each of the generated MP and SE `pom.xml`.
 
 ```xml
 <dependency>
@@ -240,6 +246,7 @@ cat ~/logs/helidon-quickstart-mp/access-0.log
 1. Start the Helidon MP application, as described in the previous step if it is not already started
 2. Rebuild and start the Helidon SE application using the following:
    ```bash
+    mvn clean install
     java -Xmx256m -Xmx256m -Dserver.port=8082 -jar target/quickstart-se.jar
     ```
 
@@ -250,6 +257,7 @@ monitoring stack in a common directory. You can find these configuration files i
 
 ```shell
 mkdir -p ~/.config
+cd hols/grafana/
 cp loki-local-config.yaml promtail-local-config.yaml prometheus.yaml ~/.config/
 ```
 
@@ -298,7 +306,7 @@ Once logged into Grafana:
 
 1. Click the Grafana menu icon on the left to get the menu.
 2. Click on Add new data source
-3. Search for Prometheus and click on the `Prometheus` data source, then `Add new data source`. Ensure that the Connection URL is correct for your instance of Prometheus.
+3. Search for Prometheus and click on the `Prometheus` data source, then `Add new data source`. Ensure that the Connection URL is correct for your instance of Prometheus. **Make sure this is set as default**.
 4. Repeat the above for Loki.
 
 The ports used by Loki and Prometheus should be the default ports.
@@ -422,7 +430,7 @@ If you wish to explore the Loki logs you can do the following in Grafana:
 
 1. Open the Grafana menu at the top left, and click on `Explore`
 2. Select the `Loki` datasource
-3. Enter the following in the query and click `Run Query`
+3. On the right click, `Code`, and enter the following in the query and click `Run Query`
    `{job="helidon-quickstart-mp"}`
 4. You should see something similar to the following showing the collected logs:
    ![grafana-loki.png](./images/grafana-loki.png) 
