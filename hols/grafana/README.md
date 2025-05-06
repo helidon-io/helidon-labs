@@ -15,13 +15,13 @@ In this lab you will:
 2. The `helidon` CLI ([installation](https://helidon.io/docs/v4/about/cli))
 3. Grafana ([installation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/))
 4. Prometheus ([installation](https://prometheus.io/docs/prometheus/latest/installation/))
-5. Loki ([installation](https://grafana.com/docs/loki/latest/setup/install/)
-6. Promtail ([installation](https://grafana.com/docs/loki/latest/send-data/promtail/installation/)
+5. Loki ([installation](https://grafana.com/docs/loki/latest/setup/install/))
+6. Promtail ([installation](https://grafana.com/docs/loki/latest/send-data/promtail/installation/))
 7. Clone this GitHub repository - https://github.com/helidon-io/helidon-labs
 
 > Note: Optionally you can use JDK24 to show experimental virtual threads metrics.
 
-On MacOS you should be able to install the above using `brew`.
+On macOS, you should be able to install the above using `brew`.
 
 This lab was tested with:
 * Grafana 11.6.0
@@ -82,7 +82,7 @@ Next build and run the application:
 ```shell
 cd quickstart-mp
 mvn clean install
-java -Xmx1g -Xmx1g -jar target/quickstart-mp.jar
+java -Xmx1g -Xms1g -jar target/quickstart-mp.jar
 ```
 
 Congratulations! You have a Helidon service up and running. It will be listening on port 8080. Try it in another terminal:
@@ -110,7 +110,7 @@ Next build and run the SE application:
 ```shell
 cd quickstart-se
 mvn clean install
-java -Xmx256m -Xmx256m -Dserver.port=8082 -jar target/quickstart-se.jar
+java -Xmx256m -Xms256m -Dserver.port=8082 -jar target/quickstart-se.jar
 ```
 
 Congratulations! You have a Helidon SE service up and running. It will be listening on port 8082. Try it in another terminal:
@@ -148,7 +148,7 @@ Then, include the following in each of the generated MP and SE `pom.xml`.
 ## Add application identification to metrics
 
 To ensure we can identify individual helidon applications as well as allowing drill-through, we need to add the
-following labels to your generated metrics using the system property or `META-INF/application.yaml` (SE) or `META-INF/microprofile-config.properties` (MP)
+following labels to your generated metrics using the system property or `src/main/resources/application.yaml` (SE) or `META-INF/microprofile-config.properties` (MP)
 
 ### Helidon MP
 
@@ -168,7 +168,7 @@ Change the existing value of `metrics.rest-request.enabled` to `true`.
 
 ### Helidon SE
 
-Add the following to your `META-INF/application.yaml` in the `quickstart-se` application to identify the application and enable additional metrics.
+Add the following to your `src/main/resources/application.yaml` in the `quickstart-se` application to identify the application and enable additional metrics.
 
 *application.yaml*
 ```yaml
@@ -268,7 +268,7 @@ the access log files from `${HOME}/logs/helidon-quickstart-mp/` and send them to
 Next, start the monitoring stack. Create four terminal windows and start each of
 these in the foreground so you can easily see what they are doing.
 
-These commands are based on the default install locations of `brew` on MacOS. You should adjust these commands
+These commands are based on the default install locations of `brew` on macOS. You should adjust these commands
 to match your environment.
 
 ```shell
@@ -428,10 +428,9 @@ java -Xmx256m -Xmx256m -Dserver.port=8083 -jar target/quickstart-se.jar
 
 If you wish to explore the Loki logs you can do the following in Grafana:
 
-1. Open the Grafana menu at the top left, and click on `Explore`
-2. Select the `Loki` datasource
-3. On the right click, `Code`, and enter the following in the query and click `Run Query`
-   `{job="helidon-quickstart-mp"}`
+1. Open the Grafana menu at the top left, and click on `Drill Down`
+2. Select `Logs`
+3. In the labels, select `job` then select `helidon-quickstart-mp`, and click `Show Logs`
 4. You should see something similar to the following showing the collected logs:
    ![grafana-loki.png](./images/grafana-loki.png) 
 
