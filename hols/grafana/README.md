@@ -247,7 +247,7 @@ cat ~/logs/helidon-quickstart-mp/access-0.log
 2. Rebuild and start the Helidon SE application using the following:
    ```bash
     mvn clean install
-    java -Xmx256m -Xmx256m -Dserver.port=8082 -jar target/quickstart-se.jar
+    java -Xmx256m -Xms256m -Dserver.port=8082 -jar target/quickstart-se.jar
     ```
 
 ## Configure and start Promtail, Loki, Prometheus, and Grafana
@@ -418,7 +418,7 @@ should see the additional JVM.
 Start and addition SE application on JVM port `8083`, by running the following, and explore the dashboards.
 
 ```bash
-java -Xmx256m -Xmx256m -Dserver.port=8083 -jar target/quickstart-se.jar
+java -Xmx256m -Xms256m -Dserver.port=8083 -jar target/quickstart-se.jar
 ```
 
 > Note: The additional JVM's are picked up by prometheus as the [prometheus.yaml](prometheus.yaml) configuration
