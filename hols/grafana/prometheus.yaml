@@ -12,5 +12,11 @@ scrape_configs:
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 5s
     static_configs:
-      - targets: ['localhost:8080']    # "instance" label
+      - targets: ['localhost:8080','localhost:8081']    # "instance" label
+  - job_name: 'helidon-quickstart-se' # "job" label
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    metrics_path: /observe/metrics
+    static_configs:
+      - targets: ['localhost:8082','localhost:8083']    # "instance" label
 
