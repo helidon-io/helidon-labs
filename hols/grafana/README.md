@@ -225,7 +225,7 @@ Re-build and run the Helidon application:
 
 ```shell
 mvn clean install
-java -Xmx1g -Xmx1g -jar target/quickstart-mp.jar
+java -Xmx1g -Xms1g -jar target/quickstart-mp.jar
 ```
 
 In another terminal try it:
@@ -409,7 +409,7 @@ Run the same curl command above but change the port to `8082`.
 Start an additional MP application JVM on port `8081` by running the following, and run curl requests against it.
 
 ```bash
-java -Xmx1g -Xmx1g -Dserver.port=8081 -jar target/quickstart-mp.jar
+java -Xmx1g -Xms1g -Dserver.port=8081 -jar target/quickstart-mp.jar
 ```
 
 You should see the total MP JVM count updated to 2, and when you navigate to the MP Details dashboards you 
