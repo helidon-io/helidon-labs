@@ -89,8 +89,8 @@ The goal of this task is to prepare a basic infrastructure environment comprised
       ```
    3. Set the JAVA_HOME and PATH environment variables to include the corresponding directories from the extracted JDK binaries. 
       ```shell
-      export JAVA_HOME=~/jdk-21.0.7/
-      export PATH=$JAVA_HOME/bin/:$PATH
+      export JAVA_HOME=$(ls -t -d "$(pwd)"/jdk*/ | head -n 1)
+      export PATH=${JAVA_HOME}bin/:$PATH
       ```
       **Note:** If you want the above environment variable settings to persist between Cloud Shell sessions, add the definitions to your `~/.bashrc` file.
 3. Make sure that Maven 3.8 or higher exists.
