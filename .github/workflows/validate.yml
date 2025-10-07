@@ -4,8 +4,8 @@ name: "Validate"
 on: [pull_request, push]
 
 env:
-  JAVA_VERSION: '24'
-  JAVA_DISTRO: 'jdk.java.net'
+  JAVA_VERSION: '25'
+  JAVA_DISTRO: 'oracle.com'
   MAVEN_HTTP_ARGS: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dmaven.wagon.http.retryHandler.count=3'
 
 concurrency:
@@ -21,7 +21,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: oracle-actions/setup-java@v1.4.0
+        uses: oracle-actions/setup-java@v1.5.0
         with:
           website: ${{ env.JAVA_DISTRO }}
           release: ${{ env.JAVA_VERSION }}
@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: oracle-actions/setup-java@v1.4.0
+        uses: oracle-actions/setup-java@v1.5.0
         with:
           website: ${{ env.JAVA_DISTRO }}
           release: ${{ env.JAVA_VERSION }}
@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: oracle-actions/setup-java@v1.4.0
+        uses: oracle-actions/setup-java@v1.5.0
         with:
           website: ${{ env.JAVA_DISTRO }}
           release: ${{ env.JAVA_VERSION }}
@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: oracle-actions/setup-java@v1.4.0
+        uses: oracle-actions/setup-java@v1.5.0
         with:
           website: ${{ env.JAVA_DISTRO }}
           release: ${{ env.JAVA_VERSION }}
@@ -77,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK ${{ env.JAVA_VERSION }}
-        uses: oracle-actions/setup-java@v1.4.0
+        uses: oracle-actions/setup-java@v1.5.0
         with:
           website: ${{ env.JAVA_DISTRO }}
           release: ${{ env.JAVA_VERSION }}

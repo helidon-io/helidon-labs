@@ -32,8 +32,8 @@
     <name>Helidon Labs Incubator - Virtual Threads Metrics</name>
 
     <properties>
-        <version.java>24</version.java>
-        <version.lib.asm>9.7.1</version.lib.asm>
+        <version.java>25</version.java>
+        <version.lib.asm>9.8</version.lib.asm>
     </properties>
 
     <dependencies>
