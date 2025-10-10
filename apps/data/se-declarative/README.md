@@ -1,8 +1,8 @@
 Helidon Data SE Declarative Example
 ----
 
-This example demonstrates a Java SE declarative application that utilizes Helidon Data, WebServer,
-and a MySQL database.
+This example demonstrates a Java SE declarative application that utilizes Helidon Data, EclipseLink,
+WebServer, UCP DataSource and Oracle database.
 
 There are 3 repository interfaces in the example:
 
@@ -16,8 +16,8 @@ annotation. There is no specific limitation on the names of those methods.
 All methods in `BreedRepository` and `PetRepository` are defined as methods with queries defined
 by the method name. Method names must follow the _Query by Method Name_ grammar.
 
-> **NOTE:** Database tables are initialized with ID auto increment to supply primary key values
->           by the database.
+> **NOTE:** Database tables are initialized with ID as `NOT NULL PRIMARY KEY`. Primary key values
+>           are supplied by sequence generator.
 
 ## Start the Database
 

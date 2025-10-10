@@ -1,8 +1,8 @@
 Helidon Data SE Imperative Example
 ----
 
-This example demonstrates a Java SE imperative application that utilizes Helidon Data, WebServer,
-and a MySQL database.
+This example demonstrates a Java SE imperative application that utilizes Helidon Data, EclipseLink,
+WebServer and a MySQL database.
 
 There are 3 repository interfaces in the example:
 

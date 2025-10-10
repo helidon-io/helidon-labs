@@ -23,7 +23,7 @@ data:
           url: "jdbc:mysql://localhost:3306/pets"
           jdbc-driver-class-name: "com.mysql.cj.jdbc.Driver"
         init-script: "init.sql"
-        # EclipseLink properties
+        drop-script: "drop.sql"
         properties:
           eclipselink.target-database: "MySQL"
           eclipselink.target-server: "None"
