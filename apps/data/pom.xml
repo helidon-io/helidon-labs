@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-
     Copyright (c) 2025 Oracle and/or its affiliates.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,26 +13,30 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
--->
+  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.helidon.labs</groupId>
-        <artifactId>helidon-labs-project</artifactId>
+        <groupId>io.helidon.labs.apps</groupId>
+        <artifactId>helidon-labs-apps-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>io.helidon.labs.apps</groupId>
-    <artifactId>helidon-labs-apps-project</artifactId>
+
+    <groupId>io.helidon.labs.apps.data</groupId>
+    <artifactId>helidon-labs-apps-data-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs Apps Project</name>
+    <name>Helidon Labs Apps Data Repository</name>
+    <description>
+        Examples of Helidon Data Repository
+    </description>
     <packaging>pom</packaging>
 
     <modules>
-        <module>chatroom-sse</module>
-        <module>data</module>
+        <module>se-declarative</module>
+        <module>se-imperative</module>
+        <module>mp</module>
     </modules>
 </project>
