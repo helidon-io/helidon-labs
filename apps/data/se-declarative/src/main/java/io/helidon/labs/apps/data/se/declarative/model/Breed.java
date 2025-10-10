@@ -20,6 +20,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -31,8 +32,9 @@ public class Breed {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_BREED_ID")
+    @SequenceGenerator(name = "GEN_BREED_ID", sequenceName = "SEQ_GEN_BREED_ID", initialValue = 10, allocationSize = 10)
+    private Integer id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
@@ -43,7 +45,7 @@ public class Breed {
      * @param name the name of the breed
      */
     public Breed(String name) {
-        this.id = -1;
+        this.id = null;
         this.name = name;
     }
 
@@ -59,7 +61,7 @@ public class Breed {
      *
      * @return the id of the breed
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -68,7 +70,7 @@ public class Breed {
      *
      * @param id the new id of the breed
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

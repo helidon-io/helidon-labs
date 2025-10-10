@@ -33,7 +33,7 @@ public class Owner {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
@@ -44,7 +44,7 @@ public class Owner {
      * @param name the name of the owner
      */
     public Owner(String name) {
-        this.id = -1;
+        this.id = null;
         this.name = name;
     }
 
@@ -60,7 +60,7 @@ public class Owner {
      *
      * @return the id of the owner
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,7 +69,7 @@ public class Owner {
      *
      * @param id the new id of the owner
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

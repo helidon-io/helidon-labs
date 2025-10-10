@@ -24,6 +24,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -36,8 +37,9 @@ public class Pet {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_PET_ID")
+    @SequenceGenerator(name = "GEN_PET_ID", sequenceName = "SEQ_GEN_PET_ID", initialValue = 20, allocationSize = 10)
+    private Integer id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
@@ -66,7 +68,7 @@ public class Pet {
      * @param breed  the breed of the pet
      */
     public Pet(String name, float weight, LocalDate birth, Owner owner, Breed breed) {
-        this.id = -1;
+        this.id = null;
         this.name = name;
         this.weight = weight;
         this.birth = birth;
@@ -86,7 +88,7 @@ public class Pet {
      *
      * @return the id of the pet
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -95,7 +97,7 @@ public class Pet {
      *
      * @param id the new id of the pet
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

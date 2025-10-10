@@ -32,7 +32,7 @@ public class Breed {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
@@ -43,7 +43,7 @@ public class Breed {
      * @param name the name of the breed
      */
     public Breed(String name) {
-        this.id = -1;
+        this.id = null;
         this.name = name;
     }
 
@@ -59,7 +59,7 @@ public class Breed {
      *
      * @return the id of the breed
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -68,7 +68,7 @@ public class Breed {
      *
      * @param id the new id of the breed
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

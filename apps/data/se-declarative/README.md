@@ -17,21 +17,18 @@ All methods in `BreedRepository` and `PetRepository` are defined as methods with
 by the method name. Method names must follow the _Query by Method Name_ grammar.
 
 > **NOTE:** Database tables are initialized with ID auto increment to supply primary key values
->           by the database. MySQL database default String comparisons are case-insensitive.
+>           by the database.
 
 ## Start the Database
 
-To run the application, a MySQL database is required. You can start the database with the necessary
+To run the application, an Oracle database is required. You can start the database with the necessary
 configuration using the following Docker command:
 
 ```shell
-docker run --name mysql \
-       -p 3306:3306 \
-       -e MYSQL_DATABASE='pets' \
-       -e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
-       -e MYSQL_USER='user' \
-       -e MYSQL_PASSWORD='changeit' \
-       -d mysql
+docker run --name oracle \
+       -p 1521:1521 \
+       -e ORACLE_PWD='changeit' \
+       -d container-registry.oracle.com/database/express
 ```
 
 ### Database Schema and Content

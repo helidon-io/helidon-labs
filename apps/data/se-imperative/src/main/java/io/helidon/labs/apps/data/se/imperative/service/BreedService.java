@@ -16,9 +16,9 @@
 package io.helidon.labs.apps.data.se.imperative.service;
 
 import io.helidon.common.media.type.MediaTypes;
+import io.helidon.http.BadRequestException;
 import io.helidon.labs.apps.data.se.imperative.model.Breed;
 import io.helidon.labs.apps.data.se.imperative.repository.BreedRepository;
-import io.helidon.http.BadRequestException;
 import io.helidon.service.registry.Services;
 import io.helidon.transaction.Tx;
 import io.helidon.webserver.http.HttpRules;

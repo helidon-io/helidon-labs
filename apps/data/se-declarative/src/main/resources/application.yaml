@@ -22,16 +22,25 @@ declarative:
   ignore-incubating: true
 
 data:
+  sources:
+    sql:
+      - name: "example"
+        provider.ucp:
+          username: "system"
+          password: "changeit"
+          url: "jdbc:oracle:thin:@localhost:1521/XEPDB1"
+          connection-factory-class-name: "oracle.jdbc.pool.OracleDataSource"
   persistence-units:
     jakarta:
-      - connection:
-          username: "user"
-          password: "changeit"
-          url: "jdbc:mysql://localhost:3306/pets"
-          jdbc-driver-class-name: "com.mysql.cj.jdbc.Driver"
+      - data-source: "example"
         init-script: "init.sql"
-        # EclipseLink properties
+        drop-script: "drop.sql"
         properties:
-          eclipselink.target-database: "MySQL"
+          eclipselink.target-database: "org.eclipse.persistence.platform.database.Oracle21Platform"
           eclipselink.target-server: "None"
           jakarta.persistence.schema-generation.database.action: "drop-and-create"
+          #eclipselink.ddl-generation: "drop-and-create-tables"
+          #eclipselink.ddl-generation.output-mode: "both"
+          #eclipselink.application-location: "/data/oracle/helidon/helidon-labs/apps/data/se-declarative"
+          #eclipselink.create-ddl-jdbc-file-name: "init-data.sql"
+          #eclipselink.drop-ddl-jdbc-file-name: "drop-data.sql"

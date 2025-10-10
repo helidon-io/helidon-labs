@@ -18,9 +18,9 @@ package io.helidon.labs.apps.data.se.declarative.service;
 import java.util.List;
 
 import io.helidon.common.media.type.MediaTypes;
+import io.helidon.http.Http;
 import io.helidon.labs.apps.data.se.declarative.model.Owner;
 import io.helidon.labs.apps.data.se.declarative.repository.OwnerRepository;
-import io.helidon.http.Http;
 import io.helidon.service.registry.Service;
 import io.helidon.transaction.Tx;
 import io.helidon.webserver.http.RestServer;

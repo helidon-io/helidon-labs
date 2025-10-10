@@ -20,6 +20,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -32,8 +33,9 @@ public class Owner {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GEN_OWNER_ID")
+    @SequenceGenerator(name = "GEN_OWNER_ID", sequenceName = "SEQ_GEN_OWNER_ID", initialValue = 10, allocationSize = 10)
+    private Integer id;
 
     @Column(name = "NAME", unique = true, nullable = false)
     private String name;
@@ -44,7 +46,7 @@ public class Owner {
      * @param name the name of the owner
      */
     public Owner(String name) {
-        this.id = -1;
+        this.id = null;
         this.name = name;
     }
 
@@ -60,7 +62,7 @@ public class Owner {
      *
      * @return the id of the owner
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -69,7 +71,7 @@ public class Owner {
      *
      * @param id the new id of the owner
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
