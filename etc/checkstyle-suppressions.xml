@@ -27,5 +27,8 @@
     <suppress checks="MethodName"
               files="apps/data/"/>
 
+    <!-- Helidon MCP: ignore JsonSchema redundant public constructor  -->
+    <suppress checks="RedundantModifier"
+            files="apps/mcp/"/>
 </suppressions>
 

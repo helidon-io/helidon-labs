@@ -16,25 +16,23 @@
     limitations under the License.
 
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>io.helidon.labs</groupId>
-        <artifactId>helidon-labs-project</artifactId>
+        <groupId>io.helidon.labs.apps</groupId>
+        <artifactId>helidon-labs-apps-project</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <groupId>io.helidon.labs.apps</groupId>
-    <artifactId>helidon-labs-apps-project</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>Helidon Labs Apps Project</name>
-    <packaging>pom</packaging>
 
+    <artifactId>helidon-labs-mcp-project</artifactId>
+    <packaging>pom</packaging>
+    <name>Helidon MCP applications Project</name>
     <modules>
-        <module>chatroom-sse</module>
-        <module>data</module>
-        <module>mcp</module>
+        <module>mcp-coffee-shop</module>
+        <module>mcp-coffee-shop-declarative</module>
     </modules>
+
+
 </project>
