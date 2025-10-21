@@ -29,10 +29,9 @@
     <artifactId>helidon-labs-mcp-project</artifactId>
     <packaging>pom</packaging>
     <name>Helidon MCP applications Project</name>
+
     <modules>
         <module>mcp-coffee-shop</module>
         <module>mcp-coffee-shop-declarative</module>
     </modules>
-
-
 </project>
