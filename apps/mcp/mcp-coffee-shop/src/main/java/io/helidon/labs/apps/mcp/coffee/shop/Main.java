@@ -38,7 +38,7 @@ public class Main {
     public static void main(String[] args) {
         var config = Services.get(Config.class);
 
-        var server = WebServerConfig.builder()
+        WebServerConfig.builder()
                 .config(config.get("server"))
                 .routing(Main::setUpRoute)
                 .build()

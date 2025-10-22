@@ -18,19 +18,20 @@ package io.helidon.labs.apps.mcp.coffee.shop;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import io.helidon.common.LazyValue;
 import io.helidon.common.mapper.OptionalValue;
 import io.helidon.extensions.mcp.server.McpParameters;
 import io.helidon.extensions.mcp.server.McpRequest;
 import io.helidon.extensions.mcp.server.McpTool;
 import io.helidon.extensions.mcp.server.McpToolContent;
-import io.helidon.extensions.mcp.server.McpToolContents;
 import io.helidon.extensions.mcp.server.McpToolErrorException;
 import io.helidon.service.registry.Services;
 import io.helidon.transaction.Tx;
 import io.helidon.transaction.TxException;
+
+import static io.helidon.extensions.mcp.server.McpToolContents.textContent;
 
 /**
  * Take an {@link io.helidon.labs.apps.mcp.coffee.shop.Order} from customer.
@@ -38,6 +39,7 @@ import io.helidon.transaction.TxException;
 class TakeOrderTool implements McpTool {
     private final OrderRepository orderRepository = Services.get(OrderRepository.class);
     private final MenuItemRepository itemRepository = Services.get(MenuItemRepository.class);
+    private final LazyValue<List<MenuItem>> menu = LazyValue.create(itemRepository::listOrderById);
 
     @Override
     public String name() {
@@ -78,8 +80,11 @@ class TakeOrderTool implements McpTool {
     public Function<McpRequest, List<McpToolContent>> tool() {
         return request -> {
             try {
-                AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0));
-                String name = request.parameters().get("name").asString().orElse("Name is missing");
+                BigDecimal totalPrice = new BigDecimal(0);
+                String name = request.parameters()
+                        .get("name")
+                        .asString()
+                        .orElseThrow(() -> new McpToolErrorException(textContent("Name is missing")));
                 List<String> names = request.parameters()
                         .get("content")
                         .asList()
@@ -88,19 +93,26 @@ class TakeOrderTool implements McpTool {
                         .map(McpParameters::asString)
                         .map(OptionalValue::get)
                         .toList();
-                itemRepository.listOrderById()
-                        .stream()
-                        .filter(item -> names.contains(item.getName()))
-                        .forEach(order -> totalPrice.getAndUpdate(it -> it.add(order.getPrice())));
+
+                for (String itemName : names) {
+                    BigDecimal price = menu.get()
+                            .stream()
+                            .filter(it -> itemName.equals(it.getName()))
+                            .map(MenuItem::getPrice)
+                            .findFirst()
+                            .orElseThrow(() -> new McpToolErrorException(textContent("The item is not on the menu")));
+                    totalPrice = totalPrice.add(price);
+                }
+                final BigDecimal finalTotalPrice = totalPrice;
 
                 Tx.transaction(() -> {
-                    Order order = new Order(name, String.join(", ", names), totalPrice.get());
+                    Order order = new Order(name, String.join(", ", names), finalTotalPrice);
                     return orderRepository.insert(order);
                 });
             } catch (TxException e) {
-                throw new McpToolErrorException(McpToolContents.textContent("There was an issue when taking your order."));
+                throw new McpToolErrorException(textContent("There was an issue when taking your order."));
             }
-            return List.of(McpToolContents.textContent("The order was taken successfully."));
+            return List.of(textContent("The order was taken successfully"));
         };
     }
 }

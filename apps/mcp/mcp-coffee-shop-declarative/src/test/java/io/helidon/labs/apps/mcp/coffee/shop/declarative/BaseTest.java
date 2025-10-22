@@ -95,7 +95,7 @@ abstract class BaseTest {
                                                                      .toString())
                                                   .build());
         assertThat(result.isError(), is(false));
-        assertThat(result.resultText(), is("The order was taken successfully."));
+        assertThat(result.resultText(), is("The order was taken successfully"));
     }
 
     @Test

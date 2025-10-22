@@ -19,12 +19,11 @@ package io.helidon.labs.apps.mcp.coffee.shop.declarative;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import io.helidon.common.LazyValue;
 import io.helidon.extensions.mcp.server.Mcp;
 import io.helidon.extensions.mcp.server.McpToolContent;
-import io.helidon.extensions.mcp.server.McpToolContents;
 import io.helidon.extensions.mcp.server.McpToolErrorException;
 import io.helidon.json.schema.JsonSchema;
 import io.helidon.service.registry.Services;
@@ -34,6 +33,8 @@ import io.helidon.transaction.TxException;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
+import static io.helidon.extensions.mcp.server.McpToolContents.textContent;
+
 /**
  * Helidon coffee shop MCP server.
  */
@@ -42,6 +43,7 @@ import jakarta.json.JsonObject;
 class CoffeeShopServer {
     private final OrderRepository orderRepository = Services.get(OrderRepository.class);
     private final MenuItemRepository itemRepository = Services.get(MenuItemRepository.class);
+    private final LazyValue<List<MenuItem>> menu = LazyValue.create(itemRepository::listOrderById);
 
     @Mcp.Tool("Provides the coffee shop menu")
     List<McpToolContent> getMenu() {
@@ -57,7 +59,7 @@ class CoffeeShopServer {
                         .build())
                 .map(JsonObject::toString)
                 .collect(Collectors.joining(", "));
-        return List.of(McpToolContents.textContent(menu));
+        return List.of(textContent(menu));
     }
 
     @Mcp.Tool("Give the list of orders")
@@ -71,25 +73,30 @@ class CoffeeShopServer {
                         .build())
                 .map(JsonObject::toString)
                 .collect(Collectors.joining(", "));
-        return List.of(McpToolContents.textContent(orders));
+        return List.of(textContent(orders));
     }
 
     @Mcp.Tool("Take an order")
     List<McpToolContent> takeOrder(OrderRequest orderRequest) {
         try {
-            AtomicReference<BigDecimal> totalPrice = new AtomicReference<>(new BigDecimal(0));
-            itemRepository.listOrderById()
-                    .stream()
-                    .filter(item -> orderRequest.getContent().contains(item.getName()))
-                    .forEach(order -> totalPrice.getAndUpdate(it -> it.add(order.getPrice())));
+            BigDecimal totalPrice = new BigDecimal(0);
+
+            for (String item : orderRequest.getContent()) {
+                BigDecimal price = menu.get().stream()
+                        .filter(it -> item.equals(it.getName()))
+                        .map(MenuItem::getPrice)
+                        .findFirst()
+                        .orElseThrow(() -> new McpToolErrorException(textContent("The item is not on the menu")));
+                totalPrice = totalPrice.add(price);
+            }
 
             insert(orderRequest.getName(),
                    String.join(", ", orderRequest.getContent()),
-                   totalPrice.get());
+                   totalPrice);
         } catch (TxException e) {
-            throw new McpToolErrorException(McpToolContents.textContent("There was an issue when taking your order."));
+            throw new McpToolErrorException(textContent("There was an issue when taking your order"));
         }
-        return List.of(McpToolContents.textContent("The order was taken successfully."));
+        return List.of(textContent("The order was taken successfully"));
     }
 
     @Tx.Required

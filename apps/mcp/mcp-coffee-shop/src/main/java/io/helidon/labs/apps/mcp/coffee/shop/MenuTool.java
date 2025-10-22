@@ -24,12 +24,13 @@ import java.util.stream.Collectors;
 import io.helidon.extensions.mcp.server.McpRequest;
 import io.helidon.extensions.mcp.server.McpTool;
 import io.helidon.extensions.mcp.server.McpToolContent;
-import io.helidon.extensions.mcp.server.McpToolContents;
 import io.helidon.service.registry.Services;
 
 import jakarta.json.Json;
 import jakarta.json.JsonBuilderFactory;
 import jakarta.json.JsonObject;
+
+import static io.helidon.extensions.mcp.server.McpToolContents.textContent;
 
 /**
  * MCP tool that provides the coffee shop menu.
@@ -68,7 +69,7 @@ class MenuTool implements McpTool {
                             .build())
                     .map(JsonObject::toString)
                     .collect(Collectors.joining(", "));
-            return List.of(McpToolContents.textContent(menu));
+            return List.of(textContent(menu));
         };
     }
 }
