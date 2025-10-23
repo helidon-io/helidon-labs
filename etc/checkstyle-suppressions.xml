@@ -27,5 +27,11 @@
     <suppress checks="MethodName"
               files="apps/data/"/>
 
+    <!-- Helidon MCP: ignore JsonSchema redundant public constructor  -->
+    <suppress checks="RedundantModifier"
+            files="apps/mcp/"/>
+    <!-- Helidon MCP: ignore private field for declarative injection  -->
+    <suppress checks="VisibilityModifier"
+            files="apps/mcp/mcp-coffee-shop-declarative/.*"/>
 </suppressions>
 
