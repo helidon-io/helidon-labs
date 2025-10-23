@@ -34,7 +34,7 @@
 
     <properties>
         <mainClass>io.helidon.labs.apps.mcp.coffee.shop.Main</mainClass>
-        <version.lib.mcp>1.0.1</version.lib.mcp>
+        <version.lib.mcp>1.0.2</version.lib.mcp>
     </properties>
 
     <dependencies>

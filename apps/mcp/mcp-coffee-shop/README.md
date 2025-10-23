@@ -23,13 +23,13 @@ mvn clean package
 java -jar target/helidon-mcp-coffee-shop-declarative.jar
 ```
 
-The server will start on `http://localhost:8081` with the MCP endpoint available at `/mcp-coffee-shop`.
+The server will start at `http://localhost:8081` with the MCP endpoint available at `/mcp-coffee-shop`.
 
 ## Exercise The Application
 
 ### Using MCP Client
 
-The application is designed to work with MCP-compatible clients supporting `2024-11-05` and `2025-03-26`. The test suite 
+The application is designed to work with MCP-compatible clients supporting MCP versions `2024-11-05` and `2025-03-26`. The test suite 
 demonstrates how to use it with Langchain4j MCP client:
 
 1. **List Available Tools**: The MCP client can discover the three available tools (`get-menu`, `list-order`, `take-order`)
@@ -53,22 +53,22 @@ Example order request:
 ### Using Claude Desktop
 
 1. [Install Claude desktop](https://claude.ai/download)
-2. Update Claude desktop configuration to register your MCP server. Edit the `claude_desktop_config.json` file with the 
-   following content:
-    ```json
-    {
-      "mcpServers": {
-        "helidon-coffee-shop": {
-          "command": "npx",
-          "args": [
-            "-y",
-            "mcp-remote",
-            "http://localhost:8081/mcp-coffee-shop"
-          ]
-        }
-      }
+2. Update Claude desktop configuration to register your MCP server. Edit the `claude_desktop_config.json` file located under 
+`Settings -> Developer -> Edit Config` with the following content:
+```json
+{
+  "mcpServers": {
+    "helidon-coffee-shop": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://localhost:8081/mcp-coffee-shop"
+      ]
     }
-    ```
+  }
+}
+```
 3. Open claude desktop application. Claude automatically connects to the coffee shop server at startup.
 4. Ask the following question:
     1. `What is on the menu today?`

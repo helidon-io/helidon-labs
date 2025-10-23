@@ -21,12 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.helidon.common.LazyValue;
 import io.helidon.extensions.mcp.server.Mcp;
 import io.helidon.extensions.mcp.server.McpToolContent;
 import io.helidon.extensions.mcp.server.McpToolErrorException;
 import io.helidon.json.schema.JsonSchema;
-import io.helidon.service.registry.Services;
+import io.helidon.service.registry.Service;
 import io.helidon.transaction.Tx;
 import io.helidon.transaction.TxException;
 
@@ -41,9 +40,11 @@ import static io.helidon.extensions.mcp.server.McpToolContents.textContent;
 @Mcp.Path("/mcp-coffee-shop")
 @Mcp.Server("mcp-server-coffee-shop")
 class CoffeeShopServer {
-    private final OrderRepository orderRepository = Services.get(OrderRepository.class);
-    private final MenuItemRepository itemRepository = Services.get(MenuItemRepository.class);
-    private final LazyValue<List<MenuItem>> menu = LazyValue.create(itemRepository::listOrderById);
+    @Service.Inject
+    OrderRepository orderRepository;
+
+    @Service.Inject
+    MenuItemRepository itemRepository;
 
     @Mcp.Tool("Provides the coffee shop menu")
     List<McpToolContent> getMenu() {
@@ -82,7 +83,8 @@ class CoffeeShopServer {
             BigDecimal totalPrice = new BigDecimal(0);
 
             for (String item : orderRequest.getContent()) {
-                BigDecimal price = menu.get().stream()
+                BigDecimal price = itemRepository.listOrderById()
+                        .stream()
                         .filter(it -> item.equals(it.getName()))
                         .map(MenuItem::getPrice)
                         .findFirst()
