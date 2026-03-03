@@ -5,10 +5,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.LongAdder;
 
 import io.helidon.common.features.api.HelidonFlavor;
 import io.helidon.config.Config;
 import io.helidon.config.ConfigException;
+import io.helidon.hol.agentic.assistant.dto.IngestionProgress;
 import io.helidon.service.registry.Service;
 
 import dev.langchain4j.data.document.Metadata;
@@ -30,6 +32,9 @@ public class DocsIngestor {
     private final EmbeddingStore<TextSegment> seEmbeddingStore;
     private final EmbeddingStore<TextSegment> mpEmbeddingStore;
     private final EmbeddingModel embeddingModel;
+
+    private final LongAdder progressTotal = new LongAdder();
+    private final LongAdder progressRemaining = new LongAdder();
 
     @Service.PostConstruct
     void onCreate() {
@@ -54,7 +59,7 @@ public class DocsIngestor {
         allOf(
                 runAsync(() -> ingest(HelidonFlavor.MP), ex),
                 runAsync(() -> ingest(HelidonFlavor.SE), ex)
-        ).join();
+        );
     }
 
     void ingest(HelidonFlavor flavor) {
@@ -76,6 +81,9 @@ public class DocsIngestor {
 
         LOGGER.log(INFO, "Ingesting {0} {1} files", files.size(), flavor.name());
 
+        progressTotal.add(files.size());
+        progressRemaining.add(files.size());
+
         // Process files
         var processor = new AsciiDocPreprocessor();
         for (Path path : files) {
@@ -96,6 +104,7 @@ public class DocsIngestor {
             }
 
             if (segments.isEmpty()) {
+                progressRemaining.decrement();
                 continue;
             }
 
@@ -114,9 +123,14 @@ public class DocsIngestor {
             }
 
             embeddingStore.addAll(embeddings.content(), segments);
+            progressRemaining.decrement();
         }
 
         LOGGER.log(INFO, "Ingestion done for {0}", flavor.name());
+    }
+
+    public IngestionProgress progress() {
+        return new IngestionProgress(progressTotal.longValue(), progressRemaining.longValue());
     }
 
     private static List<AsciiDocPreprocessor.Chunk> groupChunks(List<AsciiDocPreprocessor.Chunk> input, int maxChars) {
