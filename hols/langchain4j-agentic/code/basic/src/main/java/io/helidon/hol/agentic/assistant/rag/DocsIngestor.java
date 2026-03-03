@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2026 Oracle and/or its affiliates.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.helidon.hol.agentic.assistant.rag;
 
 import java.lang.System.Logger;
@@ -5,10 +21,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.LongAdder;
 
 import io.helidon.common.features.api.HelidonFlavor;
 import io.helidon.config.Config;
 import io.helidon.config.ConfigException;
+import io.helidon.hol.agentic.assistant.dto.IngestionProgress;
 import io.helidon.service.registry.Service;
 
 import dev.langchain4j.data.document.Metadata;
@@ -29,6 +47,9 @@ public class DocsIngestor {
     private final Config config;
     private final EmbeddingStore<TextSegment> basicEmbeddingStore;
     private final EmbeddingModel embeddingModel;
+
+    private final LongAdder progressTotal = new LongAdder();
+    private final LongAdder progressRemaining = new LongAdder();
 
     @Service.PostConstruct
     void onCreate() {
@@ -51,7 +72,7 @@ public class DocsIngestor {
         allOf(
                 runAsync(() -> ingest(HelidonFlavor.MP), ex),
                 runAsync(() -> ingest(HelidonFlavor.SE), ex)
-        ).join();
+        );
     }
 
     void ingest(HelidonFlavor flavor) {
@@ -68,6 +89,9 @@ public class DocsIngestor {
         var files = AsciiFileLister.listFiles(root.resolve(flavor.name().toLowerCase()).toAbsolutePath());
 
         LOGGER.log(INFO, "Ingesting {0} {1} files", files.size(), flavor.name());
+
+        progressTotal.add(files.size());
+        progressRemaining.add(files.size());
 
         // Process files
         var processor = new AsciiDocPreprocessor();
@@ -89,6 +113,7 @@ public class DocsIngestor {
             }
 
             if (segments.isEmpty()) {
+                progressRemaining.decrement();
                 continue;
             }
 
@@ -107,9 +132,14 @@ public class DocsIngestor {
             }
 
             basicEmbeddingStore.addAll(embeddings.content(), segments);
+            progressRemaining.decrement();
         }
 
         LOGGER.log(INFO, "Ingestion done for {0}", flavor.name());
+    }
+
+    public IngestionProgress progress() {
+        return new IngestionProgress(progressTotal.longValue(), progressRemaining.longValue());
     }
 
     private static List<AsciiDocPreprocessor.Chunk> groupChunks(List<AsciiDocPreprocessor.Chunk> input, int maxChars) {

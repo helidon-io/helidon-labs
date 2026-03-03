@@ -18,6 +18,8 @@ package io.helidon.hol.agentic.assistant.rest;
 
 import io.helidon.hol.agentic.assistant.ai.HelidonExpert;
 import io.helidon.hol.agentic.assistant.dto.ExpertMessage;
+import io.helidon.hol.agentic.assistant.dto.IngestionProgress;
+import io.helidon.hol.agentic.assistant.rag.DocsIngestor;
 import io.helidon.http.Http;
 import io.helidon.service.registry.Service;
 import io.helidon.webserver.http.RestServer;
@@ -25,18 +27,28 @@ import io.helidon.webserver.http.RestServer;
 import static io.helidon.common.media.type.MediaTypes.APPLICATION_JSON_VALUE;
 
 @RestServer.Endpoint
-@Http.Path("/chat")
+@Http.Path
 @Service.Singleton
 class ChatBotEndpoint {
 
     private final HelidonExpert expert;
+    private final DocsIngestor ingestor;
 
     @Service.Inject
-    ChatBotEndpoint(HelidonExpert agent) {
+    ChatBotEndpoint(HelidonExpert agent, DocsIngestor ingestor) {
         this.expert = agent;
+        this.ingestor = ingestor;
+    }
+
+    @Http.GET
+    @Http.Path("/progress")
+    @Http.Produces(APPLICATION_JSON_VALUE)
+    IngestionProgress ingestionProgress() {
+        return ingestor.progress();
     }
 
     @Http.POST
+    @Http.Path("/chat")
     @Http.Produces(APPLICATION_JSON_VALUE)
     ExpertMessage chatWithAssistant(@Http.Entity ExpertMessage msg) {
         return expert.chat(msg.message(), msg.summary());

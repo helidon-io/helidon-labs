@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-package io.helidon.hol.agentic.assistant;
+package io.helidon.hol.agentic.assistant.dto;
 
-import io.helidon.logging.common.LogConfig;
-import io.helidon.service.registry.Service;
-import io.helidon.service.registry.ServiceRegistryManager;
+import io.helidon.json.binding.Json;
 
-@Service.GenerateBinding
-public class ApplicationMain {
-    public static void main(String[] args) {
-        LogConfig.configureRuntime();
-        // Start Helidon
-        ServiceRegistryManager.start(ApplicationBinding.create());
-        System.out.println("Helidon Assistant is running at http://localhost:8080");
-    }
+@Json.Entity
+public record IngestionProgress(Long total, Long remaining) {
 }
