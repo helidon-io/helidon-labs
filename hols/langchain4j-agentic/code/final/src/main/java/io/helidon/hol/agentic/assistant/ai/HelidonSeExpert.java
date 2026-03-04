@@ -27,6 +27,8 @@ import dev.langchain4j.service.V;
 @Ai.ChatModel("expensive-model")
 @Ai.ContentRetriever("se-content-retriever")
 @Ai.Tools(CliTools.class)
+// Use MCP instead of @Ai.Tools
+//@Ai.McpClients("cli-tools-mcp-server")
 public interface HelidonSeExpert {
 
     @UserMessage("""
