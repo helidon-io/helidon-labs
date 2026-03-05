@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1600"
+   height="980"
+   viewBox="0 0 1600 980"
+   role="img"
+   aria-labelledby="title desc"
+   version="1.1"
+   id="svg50"
+   sodipodi:docname="agentic_assistant_agents_diagram.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview50"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.1897959"
+     inkscape:cx="801.39794"
+     inkscape:cy="502.6072"
+     inkscape:window-width="3440"
+     inkscape:window-height="1371"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg50" />
+  <title
+     id="title">Helidon Agentic Assistant - Agents and Relations</title>
+  <desc
+     id="desc">Diagram of HelidonExpertAgent orchestration with FlavorClassifierAgent, FlavorRouterAgent, SummarizerAgent in sequence order, including expert agents and resources.</desc>
+  <defs
+     id="defs1">
+    <marker
+       id="arrow"
+       viewBox="0 0 10 10"
+       refX="9"
+       refY="5"
+       markerWidth="8"
+       markerHeight="8"
+       orient="auto-start-reverse">
+      <path
+         d="M 0 0 L 10 5 L 0 10 z"
+         fill="#1f2937"
+         id="path1" />
+    </marker>
+    <style
+       id="style1">
+      .title { font: 700 30px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 400 16px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .box-title { font: 700 18px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .box-text { font: 400 14px 'Segoe UI', Arial, sans-serif; fill: #1e293b; }
+      .edge-label { font: 600 13px 'Segoe UI', Arial, sans-serif; fill: #111827; }
+      .entry { fill: #dcfce7; stroke: #15803d; stroke-width: 2; rx: 14; }
+      .agent { fill: #e0f2fe; stroke: #0369a1; stroke-width: 2; rx: 14; }
+      .agent-group { fill: #dbeafe; stroke: #1d4ed8; stroke-width: 2.5; rx: 14; }
+      .resource { fill: #fef3c7; stroke: #b45309; stroke-width: 2; rx: 14; }
+      .guide { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 12; }
+      .line { stroke: #1f2937; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+      .line-dashed { stroke: #374151; stroke-width: 2; fill: none; stroke-dasharray: 8 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect
+     x="0"
+     y="0"
+     width="1600"
+     height="980"
+     fill="#f8fafc"
+     id="rect1" />
+  <text
+     x="800"
+     y="54"
+     text-anchor="middle"
+     class="title"
+     id="text1">Helidon Agentic Assistant: Agent Graph</text>
+  <text
+     x="800"
+     y="82"
+     text-anchor="middle"
+     class="subtitle"
+     id="text2">Sequence order inside HelidonExpertAgent: FlavorClassifierAgent -&gt; FlavorRouterAgent -&gt; SummarizerAgent</text>
+  <rect
+     class="guide"
+     x="60"
+     y="96"
+     width="1480"
+     height="590"
+     id="rect2" />
+  <text
+     x="90"
+     y="136"
+     class="subtitle"
+     id="text3">Core orchestration</text>
+  <rect
+     class="entry"
+     x="110"
+     y="360.00391"
+     width="230"
+     height="90"
+     id="rect3" />
+  <text
+     x="225"
+     y="392.00391"
+     text-anchor="middle"
+     class="box-title"
+     id="text4"
+     style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:18px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">ChatBotEndpoint</text>
+  <text
+     x="225"
+     y="416.00391"
+     text-anchor="middle"
+     class="box-text"
+     id="text5"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:14px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">POST /chat</text>
+  <rect
+     class="agent-group"
+     x="390.01028"
+     y="150.01028"
+     width="1077.5795"
+     height="359.97943"
+     id="rect5" />
+  <text
+     x="920"
+     y="184"
+     text-anchor="middle"
+     class="box-title"
+     id="text6">HelidonExpertAgent (@SequenceAgent)</text>
+  <text
+     x="920"
+     y="206"
+     text-anchor="middle"
+     class="box-text"
+     id="text7">Orchestrates sub-agents and returns ExpertMessage</text>
+  <rect
+     class="agent"
+     x="440"
+     y="250"
+     width="280"
+     height="120"
+     id="rect7" />
+  <text
+     x="580"
+     y="288"
+     text-anchor="middle"
+     class="box-title"
+     id="text8">FlavorClassifierAgent</text>
+  <text
+     x="580"
+     y="312"
+     text-anchor="middle"
+     class="box-text"
+     id="text9">Classify question as SE or MP</text>
+  <text
+     x="580"
+     y="334"
+     text-anchor="middle"
+     class="box-text"
+     id="text10">outputKey: flavor</text>
+  <rect
+     class="agent"
+     x="780"
+     y="250"
+     width="280"
+     height="120"
+     id="rect10" />
+  <text
+     x="920"
+     y="288"
+     text-anchor="middle"
+     class="box-title"
+     id="text11">FlavorRouterAgent</text>
+  <text
+     x="920"
+     y="312"
+     text-anchor="middle"
+     class="box-text"
+     id="text12">Conditional expert routing</text>
+  <text
+     x="920"
+     y="334"
+     text-anchor="middle"
+     class="box-text"
+     id="text13">uses flavor + question</text>
+  <rect
+     class="agent"
+     x="1152.8097"
+     y="249.43506"
+     width="280"
+     height="120"
+     id="rect13" />
+  <text
+     x="1292.8097"
+     y="287.43506"
+     text-anchor="middle"
+     class="box-title"
+     id="text14"
+     style="font-style:normal;font-variant:normal;font-weight:700;font-stretch:normal;font-size:18px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">SummarizerAgent</text>
+  <text
+     x="1292.8097"
+     y="311.43506"
+     text-anchor="middle"
+     class="box-text"
+     id="text15"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:14px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">Updates conversation summary</text>
+  <text
+     x="1292.8097"
+     y="333.43506"
+     text-anchor="middle"
+     class="box-text"
+     id="text16"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:14px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">outputKey: nextSummary</text>
+  <rect
+     class="agent"
+     x="780"
+     y="560"
+     width="280"
+     height="110"
+     id="rect16" />
+  <text
+     x="920"
+     y="598"
+     text-anchor="middle"
+     class="box-title"
+     id="text17">HelidonSeExpert</text>
+  <text
+     x="920"
+     y="622"
+     text-anchor="middle"
+     class="box-text"
+     id="text18">@Ai.ContentRetriever(se)</text>
+  <text
+     x="920"
+     y="644"
+     text-anchor="middle"
+     class="box-text"
+     id="text19">outputKey: lastResponse</text>
+  <rect
+     class="agent"
+     x="1120"
+     y="560"
+     width="280"
+     height="110"
+     id="rect19" />
+  <text
+     x="1260"
+     y="598"
+     text-anchor="middle"
+     class="box-title"
+     id="text20">HelidonMpExpert</text>
+  <text
+     x="1260"
+     y="622"
+     text-anchor="middle"
+     class="box-text"
+     id="text21">@Ai.ContentRetriever(mp)</text>
+  <text
+     x="1260"
+     y="644"
+     text-anchor="middle"
+     class="box-text"
+     id="text22">outputKey: lastResponse</text>
+  <path
+     class="line"
+     d="M 340,404.15478 644.80386,402.96616 644.57831,370"
+     id="path22"
+     sodipodi:nodetypes="ccc" />
+  <text
+     x="421.31714"
+     y="396.18457"
+     class="edge-label"
+     id="text23"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">question + previousSummary</text>
+  <path
+     class="line"
+     d="M 720 310 L 780 310"
+     id="path23" />
+  <text
+     x="724.40308"
+     y="298"
+     class="edge-label"
+     id="text24"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">1) flavor</text>
+  <path
+     class="line"
+     d="m 1060,310 h 92.8097"
+     id="path24"
+     sodipodi:nodetypes="cc" />
+  <text
+     x="1064.9236"
+     y="298.18008"
+     class="edge-label"
+     id="text25"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">3) summarize</text>
+  <path
+     class="line"
+     d="M 920 370 L 920 560"
+     id="path25" />
+  <text
+     x="926.38086"
+     y="408.30225"
+     class="edge-label"
+     id="text26"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">2a) if SE</text>
+  <path
+     class="line"
+     d="m 1020,370 v 70 h 203.3448 v 120"
+     id="path26"
+     sodipodi:nodetypes="cccc" />
+  <text
+     x="1030.2397"
+     y="408.30225"
+     class="edge-label"
+     id="text27"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">2b) if MP</text>
+  <path
+     class="line"
+     d="m 934.45068,558.67317 v -60 l 251.96002,0.84048 0.7895,-129.07859"
+     id="path27"
+     sodipodi:nodetypes="cccc" />
+  <text
+     x="1010"
+     y="488"
+     class="edge-label"
+     id="text28">lastResponse</text>
+  <path
+     class="line"
+     d="M 1240 560 L 1240 500 L 1360 500 L 1360 370"
+     id="path28" />
+  <text
+     x="1261.3524"
+     y="489.06299"
+     class="edge-label"
+     id="text29"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">lastResponse</text>
+  <path
+     class="line"
+     d="m 1432.8097,310 h 61.6862 l 0.2907,-185.49932 -1233.8364,-0.0944 0,235.59763"
+     id="path29"
+     sodipodi:nodetypes="ccccc" />
+  <text
+     x="720"
+     y="118"
+     class="edge-label"
+     id="text30"
+     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:13px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">4) output ExpertMessage</text>
+  <rect
+     class="guide"
+     x="60"
+     y="700"
+     width="1480"
+     height="250"
+     id="rect30" />
+  <text
+     x="101.83301"
+     y="724.31903"
+     class="subtitle"
+     id="text31"
+     style="font-style:normal;font-variant:normal;font-weight:400;font-stretch:normal;font-size:16px;line-height:normal;font-family:'Segoe UI', Arial, sans-serif">Models, tools, and retrievers linked to agents</text>
+  <rect
+     class="resource"
+     x="120"
+     y="790"
+     width="240"
+     height="90"
+     id="rect31" />
+  <text
+     x="240"
+     y="823"
+     text-anchor="middle"
+     class="box-title"
+     id="text32">cheap-model</text>
+  <text
+     x="240"
+     y="847"
+     text-anchor="middle"
+     class="box-text"
+     id="text33">Classifier + Summarizer</text>
+  <rect
+     class="resource"
+     x="390"
+     y="790"
+     width="240"
+     height="90"
+     id="rect33" />
+  <text
+     x="510"
+     y="823"
+     text-anchor="middle"
+     class="box-title"
+     id="text34">expensive-model</text>
+  <text
+     x="510"
+     y="847"
+     text-anchor="middle"
+     class="box-text"
+     id="text35">SE Expert + MP Expert</text>
+  <rect
+     class="resource"
+     x="660"
+     y="790"
+     width="240"
+     height="90"
+     id="rect35" />
+  <text
+     x="780"
+     y="823"
+     text-anchor="middle"
+     class="box-title"
+     id="text36">CliTools</text>
+  <text
+     x="780"
+     y="847"
+     text-anchor="middle"
+     class="box-text"
+     id="text37">@Ai.Tools</text>
+  <rect
+     class="resource"
+     x="930"
+     y="790"
+     width="270"
+     height="90"
+     id="rect37" />
+  <text
+     x="1065"
+     y="823"
+     text-anchor="middle"
+     class="box-title"
+     id="text38">MCP Client (optional)</text>
+  <text
+     x="1065"
+     y="847"
+     text-anchor="middle"
+     class="box-text"
+     id="text39">@Ai.McpClients(cli-tools-mcp-server)</text>
+  <rect
+     class="resource"
+     x="1230"
+     y="790"
+     width="280"
+     height="90"
+     id="rect39" />
+  <text
+     x="1370"
+     y="823"
+     text-anchor="middle"
+     class="box-title"
+     id="text40">Content Retrievers</text>
+  <text
+     x="1370"
+     y="847"
+     text-anchor="middle"
+     class="box-text"
+     id="text41">se-content / mp-content</text>
+  <path
+     class="line-dashed"
+     d="M 175.05215,790 175.2409,761.56333 87.276071,761.41023 87.868288,220 H 580 v 30"
+     id="path41"
+     sodipodi:nodetypes="cccccc" />
+  <path
+     class="line-dashed"
+     d="M 139.81132,790.00664 139.51782,775.8066 75,776.13208 V 210 h 1185 v 40"
+     id="path42"
+     sodipodi:nodetypes="cccccc" />
+  <path
+     class="line-dashed"
+     d="m 510,790 v -80 l 304.09277,1.18862 v -40"
+     id="path43"
+     sodipodi:nodetypes="cccc" />
+  <path
+     class="line-dashed"
+     d="m 530,790 v -31.16338 h 630.2785 V 670"
+     id="path44"
+     sodipodi:nodetypes="cccc" />
+  <path
+     class="line-dashed"
+     d="m 842.76074,790 0,-118.81138"
+     id="path45"
+     sodipodi:nodetypes="cc" />
+  <path
+     class="line-dashed"
+     d="m 870.72281,790 v -53.15282 l 266.56489,0 V 670"
+     id="path46"
+     sodipodi:nodetypes="cccc" />
+  <path
+     class="line-dashed"
+     d="m 964.41252,790 0,-120"
+     id="path47"
+     sodipodi:nodetypes="cc" />
+  <path
+     class="line-dashed"
+     d="m 1182.7607,789.40569 v -120"
+     id="path48"
+     sodipodi:nodetypes="cc" />
+  <path
+     class="line-dashed"
+     d="m 1303.85,788.21707 0,-75.03901 -316.46816,2.97155 0,-44.96099"
+     id="path49"
+     sodipodi:nodetypes="cccc" />
+  <path
+     class="line-dashed"
+     d="m 1333.7842,787.62276 v -120"
+     id="path50"
+     sodipodi:nodetypes="cc" />
+</svg>

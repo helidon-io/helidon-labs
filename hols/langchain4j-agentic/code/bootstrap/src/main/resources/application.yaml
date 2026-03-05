@@ -40,7 +40,7 @@ langchain4j:
 
     lc4j-content-retriever:
       embedding-model: assistant-embedding-model
-      max-results: 10
+      max-results: 20
       min-score: 0.6
 
   models:
@@ -50,6 +50,7 @@ langchain4j:
     expensive-model:
       provider: open-ai
       model-name: "openai.gpt-oss-120b"
+      strict-json-schema: true
 
   embedding-stores:
     basic-embedding-store:

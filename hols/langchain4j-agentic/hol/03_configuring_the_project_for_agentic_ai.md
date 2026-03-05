@@ -1,18 +1,43 @@
-#
-# Copyright (c) 2026 Oracle and/or its affiliates.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# 3. Configuring the Project for Agentic AI
+
+In this section, we will:
+
+- Update Maven coordinates to match the final project.
+- Align dependencies with the final code.
+- Configure separate models, embedding stores, and retrievers for SE and MP flows.
+
+---
+
+## 1. Update `pom.xml`
+
+Edit `pom.xml` in `code/bootstrap`:
+
+- Change:
+  - `groupId` from `io.helidon.hol.helidon-basic-assistant` to `io.helidon.hol.helidon-agentic-assistant`
+  - `artifactId` from `helidon-basic-assistant` to `helidon-agentic-assistant`
+- Remove dependency `io.helidon.http.media:helidon-http-media-jsonp`
+
+Resulting `pom.xml` should match:
+
+```xml
+<groupId>io.helidon.hol.helidon-agentic-assistant</groupId>
+<artifactId>helidon-agentic-assistant</artifactId>
+```
+
+And keep only:
+
+```xml
+<dependency>
+    <groupId>io.helidon.http.media</groupId>
+    <artifactId>helidon-http-media-json-binding</artifactId>
+</dependency>
+```
+
+## 2. Replace `src/main/resources/application.yaml`
+
+Replace the file with:
+
+```yaml
 server:
   host: "0.0.0.0"
   port: 8080
@@ -40,7 +65,7 @@ langchain4j:
 
     lc4j-content-retriever:
       embedding-model: assistant-embedding-model
-      max-results: 20
+      max-results: 10
       min-score: 0.6
 
   models:
@@ -70,10 +95,14 @@ langchain4j:
       provider: lc4j-content-retriever
       embedding-store: mp-embedding-store
 
-#  mcp-clients:
-#    cli-tools-mcp-server:
-#      uri: http://localhost:8081/cli
-
 app:
   latest-helidon-version: 4.4.0-FROM-TOOL
   docs-zip-path: ../../data/helidon-docs.zip
+```
+
+
+
+---
+
+### Next Step -> [Creating the Orchestrator Agent](04_creating_the_orchestrator_agent.md)
+
