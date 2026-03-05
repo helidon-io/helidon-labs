@@ -14,56 +14,44 @@ From `hols/langchain4j-agentic/code/bootstrap`:
 
 ```sh
 mvn clean package
-java -jar target/helidon-agentic-assistant.jar
 ```
-
-## 2. Validate ingestion status
-
-In another terminal:
 
 ```sh
-curl -X GET http://localhost:8080/progress
+java -jar target/*.jar
 ```
 
-Wait until `remaining` reaches `0`.
+## 2. Verify web UI
 
-## 3. Validate chat
+Open the chat UI at http://localhost:8080
 
-Ask an SE question:
+You should see Helidon Assistant prompt UI with a progress bar showing RAG ingestion state.
 
-```sh
-curl -X POST http://localhost:8080/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"How do I start a Helidon SE quickstart project?","summary":""}'
+![hol-ui-progressbar.png](img/hol-ui-progressbar.png)
+
+When the ingestion is finished, the progressbar will disappear.
+
+Helidon assistant will get smarter with every document ingested during the process,
+you can try to ask about the Helidon app setup and features.
+
+Example prompt:
+```
+Show me how to create a new Helidon SE application named javaone-demo with cli showing a HTTP resource with Hello World with latest Helidon version.
 ```
 
-Ask an MP question:
+> [!NOTE]
+> Notice that the Helidon assistant now decides which Helidon flavor (SE/MP) the question is about and selects the
+> appropriate specialized agent to answer it. 
+> Each specialized agent uses a separate embedding store with documents related to a single Helidon flavor, making
+> the response tailored to the correct product.
 
-```sh
-curl -X POST http://localhost:8080/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"How does dependency injection work in Helidon MP?","summary":""}'
+You can check the system output to see how the agentic workflow proceeded and whether any tools were executed:
 ```
-
-Ask for latest version (tool call):
-
-```sh
-curl -X POST http://localhost:8080/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"What is the latest Helidon version?","summary":""}'
+INFO: Activate SE Expert!
+INFO: Latest released Helidon version: 4.4.0-FROM-TOOL
+INFO: Init with Helidon cli cmd called, version: 4.4.0-FROM-TOOL, project name: javaone-demo
 ```
-
-You should see `4.4.0-FROM-TOOL`.
-
-## 4. Verify your bootstrap project is now equal to `code/final`
-
-From `hols/langchain4j-agentic/code`:
-
-```sh
-diff -ru --exclude target basic final
-```
-
-Expected result: no differences.
+> [!NOTE]
+> Notice how version `4.4.0-FROM-TOOL` was provided by the CliTool from the YAML configuration file.
 
 ---
 

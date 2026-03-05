@@ -6,9 +6,6 @@ In this section, we will:
 - Add flavor classification and routing.
 - Add a summarizer agent to maintain the conversation context.
 
-
-![agentic_assistant_agents_diagram.svg](agentic_assistant_agents_diagram.svg)
-
 ---
 
 ## 1. Remove old AI service

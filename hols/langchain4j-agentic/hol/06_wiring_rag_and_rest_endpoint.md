@@ -19,6 +19,29 @@ with:
 ```java
 package io.helidon.hol.agentic.assistant.rag;
 
+import java.lang.System.Logger;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.LongAdder;
+
+import io.helidon.common.features.api.HelidonFlavor;
+import io.helidon.config.Config;
+import io.helidon.config.ConfigException;
+import io.helidon.hol.agentic.assistant.dto.IngestionProgress;
+import io.helidon.service.registry.Service;
+
+import dev.langchain4j.data.document.Metadata;
+import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+
+import static java.lang.System.Logger.Level.DEBUG;
+import static java.lang.System.Logger.Level.INFO;
+import static java.util.concurrent.CompletableFuture.allOf;
+import static java.util.concurrent.CompletableFuture.runAsync;
+
 @Service.Singleton
 @Service.RunLevel(1)
 public class DocsIngestor {

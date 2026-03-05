@@ -12,7 +12,13 @@ In this section, we will:
 
 ```sh
 cd hols/langchain4j-agentic/code/mcp-server
+```
+
+```sh
 mvn clean package
+```
+
+```sh
 java -jar target/helidon-mcp-weather-server-declarative.jar
 ```
 
@@ -28,10 +34,13 @@ In `hols/langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`
 uncomment this block:
 
 ```yaml
-mcp-clients:
-  cli-tools-mcp-server:
-    uri: http://localhost:8081/cli
+  mcp-clients:
+    cli-tools-mcp-server:
+      uri: http://localhost:8081/cli
 ```
+> [!WARNING]
+> Check the indentation in the YAML file! Added key should look like this `langchain4j.mcp-clients.cli-tools-mcp-server.uri`
+
 
 ## 3. Switch expert agents to MCP clients
 
@@ -69,27 +78,49 @@ with:
 
 ```sh
 cd hols/langchain4j-agentic/code/bootstrap
+```
+
+```sh
 mvn clean package
-java -jar target/helidon-agentic-assistant.jar
+```
+
+```sh
+java -jar target/*.jar
 ```
 
 ## 5. Verify MCP tools are used
 
-Ask:
+Open the chat UI at http://localhost:8080
 
-```sh
-curl -X POST http://localhost:8080/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message":"What is the latest Helidon version?","summary":""}'
+You should see Helidon Assistant prompt UI with a progress bar showing RAG ingestion state.
+
+![hol-ui-progressbar.png](img/hol-ui-progressbar.png)
+
+When the ingestion is finished, the progressbar will disappear.
+
+Example prompt:
+```
+Show me how to create a new Helidon SE application named javaone-demo with cli showing a HTTP resource with Hello World with latest Helidon version.
 ```
 
-Expected value now comes from MCP server config:
+Expected CLI provided by the assistant should look like this:
 
 ```text
-4.4.0-FROM-MCP-SERVER
+helidon init --batch \
+  --version 4.4.0-FROM-MCP-SERVER \
+  --name javaone-demo \
+  -Dpackage=com.example.javaonedemo \
+  -Dflavor=SE \
+  -Dapp-type=quickstart
 ```
 
 This confirms the app is using MCP-based tools instead of local tool methods.
+
+You can check the MCP server system output to see whether MCP server was called:
+```
+INFO Latest released Helidon version: 4.4.0-FROM-MCP-SERVER
+INFO Init with Helidon cli cmd called, version: 4.4.0-FROM-MCP-SERVER, project name: javaone-demo
+```
 
 ---
 

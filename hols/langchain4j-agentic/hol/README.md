@@ -16,7 +16,7 @@ Starting from the bootstrap project, you will evolve it into a multi-agent syste
 
 Final code location: `hols/langchain4j-agentic/code/final`
 
-![Helidon Agentic Assistant Diagram](./agentic_assistant_agents_diagram.svg)
+![Helidon Agentic Assistant Diagram](./img/agentic_assistant_agents_diagram.svg)
 
 ### Helidon Agentic Assistant Overview
 
