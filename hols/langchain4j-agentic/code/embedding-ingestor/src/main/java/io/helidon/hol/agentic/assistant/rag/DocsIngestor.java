@@ -16,90 +16,77 @@
 
 package io.helidon.hol.agentic.assistant.rag;
 
-import java.lang.System.Logger;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.LongAdder;
 
-import io.helidon.common.features.api.HelidonFlavor;
-import io.helidon.config.Config;
-import io.helidon.config.ConfigException;
-import io.helidon.hol.agentic.assistant.dto.IngestionProgress;
-import io.helidon.service.registry.Service;
-
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 
-import static java.lang.System.Logger.Level.DEBUG;
-import static java.lang.System.Logger.Level.INFO;
 import static java.util.concurrent.CompletableFuture.allOf;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
-@Service.Singleton
-@Service.RunLevel(1)
 public class DocsIngestor {
-    private static final Logger LOGGER = System.getLogger(DocsIngestor.class.getName());
+    private static final boolean DEBUG = Boolean.getBoolean("ingestor.debug");
 
-    private final Config config;
-    private final EmbeddingStore<TextSegment> basicEmbeddingStore;
+    private final Path docsZipPath;
+    private final InMemoryEmbeddingStore<TextSegment> seEmbeddingStore;
+    private final InMemoryEmbeddingStore<TextSegment> mpEmbeddingStore;
     private final EmbeddingModel embeddingModel;
 
     private final LongAdder progressTotal = new LongAdder();
     private final LongAdder progressRemaining = new LongAdder();
 
-    @Service.PostConstruct
-    void onCreate() {
-        // Initialize embedding store
-        this.ingestAll();
-    }
-
-    @Service.Inject
-    DocsIngestor(Config config,
-                 @Service.Named("basic-embedding-store") EmbeddingStore<TextSegment> basicEmbeddingStore,
-                 @Service.Named("assistant-embedding-model") EmbeddingModel embeddingModel) {
-        this.config = config;
-        this.basicEmbeddingStore = basicEmbeddingStore;
+    public DocsIngestor(Path docsZipPath,
+                        InMemoryEmbeddingStore<TextSegment> seEmbeddingStore,
+                        InMemoryEmbeddingStore<TextSegment> mpEmbeddingStore,
+                        EmbeddingModel embeddingModel) {
+        this.docsZipPath = docsZipPath;
+        this.seEmbeddingStore = seEmbeddingStore;
+        this.mpEmbeddingStore = mpEmbeddingStore;
         this.embeddingModel = embeddingModel;
     }
 
     public void ingestAll() {
-        LOGGER.log(INFO, "Starting ingestion ...");
-        var ex = Executors.newVirtualThreadPerTaskExecutor();
-        allOf(
-                runAsync(() -> ingest(HelidonFlavor.MP), ex),
-                runAsync(() -> ingest(HelidonFlavor.SE), ex)
-        );
+        try (var ex = Executors.newVirtualThreadPerTaskExecutor()) {
+            allOf(
+                    runAsync(() -> ingest(HelidonFlavor.MP), ex),
+                    runAsync(() -> ingest(HelidonFlavor.SE), ex)
+            ).join();
+        }
+    }
+
+    public long progressTotal() {
+        return progressTotal.longValue();
+    }
+
+    public long progressRemaining() {
+        return progressRemaining.longValue();
     }
 
     void ingest(HelidonFlavor flavor) {
+        EmbeddingStore<TextSegment> embeddingStore = switch (flavor) {
+            case SE -> seEmbeddingStore;
+            case MP -> mpEmbeddingStore;
+        };
 
-        // Get files to process
-        var appConfig = config.get("app");
-        var zipDirPath = appConfig.get("docs-zip-path")
-                .as(Path.class)
-                .orElseThrow(() -> new ConfigException("Missing app.docs-zip-path property with path to Helidon project "
-                                                               + "dir"));
-
-        var root = AsciiFileLister.unzip(zipDirPath);
-
+        var root = AsciiFileLister.unzip(docsZipPath);
         var files = AsciiFileLister.listFiles(root.resolve(flavor.name().toLowerCase()).toAbsolutePath());
-
-        LOGGER.log(INFO, "Ingesting {0} {1} files", files.size(), flavor.name());
 
         progressTotal.add(files.size());
         progressRemaining.add(files.size());
 
-        // Process files
         var processor = new AsciiDocPreprocessor();
         for (Path path : files) {
             var chunks = processor.extractChunks(path.toFile(), root, flavor);
             var groupedChunks = groupChunks(chunks, 1000);
 
-            // Convert to LangChain4J TextSegments with metadata
             List<TextSegment> segments = new ArrayList<>();
             for (int i = 0; i < groupedChunks.size(); i++) {
                 var chunk = groupedChunks.get(i);
@@ -117,29 +104,21 @@ public class DocsIngestor {
                 continue;
             }
 
-            // Embed the segments
             var embeddings = embeddingModel.embedAll(segments);
 
-            if (LOGGER.isLoggable(DEBUG)) {
-                // Print segments and metadata
+            if (DEBUG) {
                 for (int i = 0; i < segments.size(); i++) {
                     TextSegment segment = segments.get(i);
-                    LOGGER.log(DEBUG, "Chunk {0}:\n{1}\n", i + 1, segment.text());
-                    LOGGER.log(DEBUG, "Metadata: {0}", segment.metadata());
-                    LOGGER.log(DEBUG, "Embedding vector size: {0}", embeddings.content().get(i).vector().length);
-                    LOGGER.log(DEBUG, "---");
+                    System.out.printf("Chunk %d:%n%s%n%n", i + 1, segment.text());
+                    System.out.printf("Metadata: %s%n", segment.metadata());
+                    System.out.printf("Embedding vector size: %d%n", embeddings.content().get(i).vector().length);
+                    System.out.println("---");
                 }
             }
 
-            basicEmbeddingStore.addAll(embeddings.content(), segments);
+            embeddingStore.addAll(embeddings.content(), segments);
             progressRemaining.decrement();
         }
-
-        LOGGER.log(INFO, "Ingestion done for {0}", flavor.name());
-    }
-
-    public IngestionProgress progress() {
-        return new IngestionProgress(progressTotal.longValue(), progressRemaining.longValue());
     }
 
     private static List<AsciiDocPreprocessor.Chunk> groupChunks(List<AsciiDocPreprocessor.Chunk> input, int maxChars) {
@@ -151,7 +130,6 @@ public class DocsIngestor {
             if (currentSection == null) {
                 currentSection = chunk.sectionPath();
             }
-            // If switching section or chunk is too big to add
             if (!chunk.sectionPath().equals(currentSection) || builder.length() + chunk.text().length() > maxChars) {
                 if (!builder.isEmpty()) {
                     grouped.add(new AsciiDocPreprocessor.Chunk(builder.toString().trim(), type, currentSection));
@@ -165,5 +143,9 @@ public class DocsIngestor {
             grouped.add(new AsciiDocPreprocessor.Chunk(builder.toString().trim(), type, currentSection));
         }
         return grouped;
+    }
+
+    enum HelidonFlavor {
+        MP, SE;
     }
 }

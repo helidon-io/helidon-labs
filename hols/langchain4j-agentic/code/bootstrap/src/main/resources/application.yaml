@@ -55,6 +55,7 @@ langchain4j:
   embedding-stores:
     basic-embedding-store:
       provider: lc4j-in-memory
+      from-file: ../../data/all-embeddings.json
 
   content-retrievers:
     basic-content-retriever:

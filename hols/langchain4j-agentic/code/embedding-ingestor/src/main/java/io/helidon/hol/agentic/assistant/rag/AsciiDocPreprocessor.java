@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
-import io.helidon.common.features.api.HelidonFlavor;
+import io.helidon.hol.agentic.assistant.rag.DocsIngestor.HelidonFlavor;
 
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Attributes;
