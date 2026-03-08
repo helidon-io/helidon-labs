@@ -47,4 +47,4 @@ ls -la hols/langchain4j-agentic/code/mcp-server
 
 ---
 
-### Next Step -> [Setting Up the Bootstrap Project](02_setting_up_the_bootstrap_project.md)
+### Next Step -> [Preparing Embeddings with Embedding Ingestor](00_preparing_embeddings_with_embedding_ingestor.md)

@@ -16,7 +16,7 @@ Starting from the bootstrap project, you will evolve it into a multi-agent syste
 
 Final code location: `hols/langchain4j-agentic/code/final`
 
-![Helidon Agentic Assistant Diagram](./img/agentic_assistant_agents_diagram.svg)
+![Helidon Agentic Assistant Diagram](./docs/img/agentic_assistant_agents_diagram.svg)
 
 ### Helidon Agentic Assistant Overview
 
@@ -32,32 +32,28 @@ This orchestration is executed by **`HelidonExpertAgent`** as a sequence, giving
 
 ### Local Embeddings and RAG in This HOL
 
-The HOL uses a **local embedding model** (`all-minilm-l6-v2-q`, in-process) and **local in-memory embedding stores** (separate stores for SE and MP).
-At application startup, Helidon documentation is unpacked, chunked, embedded, and stored for retrieval.
+The HOL uses a **local embedding model** (`all-minilm-l6-v2-q`, in-process) and **local in-memory embedding stores** (separate stores for SE and MP), loaded from persisted JSON files.
+Embeddings are generated only by the standalone `embedding-ingestor` project in step `2`.
+The HOL application projects do not compute embeddings at startup; they load prebuilt embeddings via `from-file`.
 
-Because this ingestion runs at startup, it can take a bit of time before RAG context is fully available.
-Early prompts may be answered with less Helidon-specific context; responses become more grounded as ingestion progresses.
-
-### Tracking Ingestion Progress in the UI
+### Assistant UI
 
 Open the UI at:
 
 `http://localhost:8080`
 
-The UI shows ingestion progress, so you can see when embedding is still running and when it is complete.
-Once progress reaches completion (remaining work reaches zero), prompts should consistently include richer Helidon context from RAG.
-
 ## Table of Contents
 
-1. [Setting Up the Environment](./01_setting_up_the_environment.md)
-2. [Setting Up the Bootstrap Project](./02_setting_up_the_bootstrap_project.md)
-3. [Configuring the Project for Agentic AI](./03_configuring_the_project_for_agentic_ai.md)
-4. [Creating the Orchestrator Agent](./04_creating_the_orchestrator_agent.md)
-5. [Adding Specialized Experts and Tools](./05_adding_specialized_experts_and_tools.md)
-6. [Wiring RAG and REST Endpoint](./06_wiring_rag_and_rest_endpoint.md)
-7. [Building and Running the Final Assistant](./07_building_and_running_the_final_assistant.md)
-8. [Bonus: Using MCP Server Instead of Local Tools](./08_bonus_using_mcp_server.md)
+1. [Setting Up the Environment](./docs/01_setting_up_the_environment.md)
+2. [Preparing Embeddings with Embedding Ingestor](./docs/00_preparing_embeddings_with_embedding_ingestor.md)
+3. [Setting Up the Bootstrap Project](./docs/02_setting_up_the_bootstrap_project.md)
+4. [Configuring the Project for Agentic AI](./docs/03_configuring_the_project_for_agentic_ai.md)
+5. [Creating the Orchestrator Agent](./docs/04_creating_the_orchestrator_agent.md)
+6. [Adding Specialized Experts and Tools](./docs/05_adding_specialized_experts_and_tools.md)
+7. [Wiring RAG and REST Endpoint](./docs/06_wiring_rag_and_rest_endpoint.md)
+8. [Building and Running the Final Assistant](./docs/07_building_and_running_the_final_assistant.md)
+9. [Bonus: Using MCP Server Instead of Local Tools](./docs/08_bonus_using_mcp_server.md)
 
 Let's get started.
 
-### [Start the Hands-on Lab ->](./01_setting_up_the_environment.md)
+### [Start the Hands-on Lab ->](./docs/01_setting_up_the_environment.md)
