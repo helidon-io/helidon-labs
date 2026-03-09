@@ -45,7 +45,7 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 ```
 
 > [!NOTE]
-> Notice that Helidon assistant has no specialized specialization, AI service uses a single big embedding store 
+> Notice that Helidon assistant has no specialization, AI service uses a single big embedding store 
 for all the prompts regardless of the Helidon flavor (SE or MP) the user is asking for. 
 Response mixes all the context it gets from the emebeding store together.
 

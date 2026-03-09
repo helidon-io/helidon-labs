@@ -70,7 +70,6 @@ langchain4j:
 
 app:
   latest-helidon-version: 4.4.0-FROM-TOOL
-  docs-zip-path: ../../data/helidon-docs.zip
 ```
 
 ## 2. Understand the YAML Configuration
@@ -146,7 +145,6 @@ This is what enables flavor-specific RAG in expert agents.
 This is an application-specific configuration consumed by local services/tools:
 
 - `latest-helidon-version` is used by the helper tool logic in later steps.
-- `docs-zip-path` points to the Helidon docs archive used by ingestion to build embeddings at startup.
 
 ### About MCP Client Configuration
 
