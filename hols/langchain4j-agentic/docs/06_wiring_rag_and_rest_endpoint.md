@@ -27,7 +27,22 @@ langchain4j:
       from-file: ../../data/mp-embeddings.json
 ```
 
-These JSON files are produced in step `2` by `embedding-ingestor` and then reused by the app.
+What these persisted JSON files are:
+
+- They are serialized snapshots of LangChain4j `InMemoryEmbeddingStore` data generated earlier by `embedding-ingestor` (step `2`).
+- Each file contains precomputed embedding vectors together with their text segments and metadata.
+- `se-embeddings.json` contains only Helidon SE knowledge; `mp-embeddings.json` contains only Helidon MP knowledge.
+
+How `from-file` works here:
+
+- `provider: lc4j-in-memory` still creates an in-memory store at runtime.
+- `from-file` tells Helidon/LangChain4j to initialize that in-memory store from the JSON snapshot instead of an empty state.
+- After loading, retrievers query these in-memory vectors immediately, so RAG is ready without running document embedding in the app project.
+
+Important:
+
+- Paths in `from-file` are relative to the running application module (for example `code/bootstrap`).
+- Make sure step `2` completed and both JSON files exist in `hols/langchain4j-agentic/data`.
 
 ## 2. Replace `ChatBotEndpoint.java`
 

@@ -47,4 +47,4 @@ ls -la hols/langchain4j-agentic/code/mcp-server
 
 ---
 
-### Next Step -> [Preparing Embeddings with Embedding Ingestor](00_preparing_embeddings_with_embedding_ingestor.md)
+### Next Step -> [Preparing Embeddings with Embedding Ingestor](01_preparing_embeddings_with_embedding_ingestor.md)

@@ -44,8 +44,8 @@ Open the UI at:
 
 ## Table of Contents
 
-1. [Setting Up the Environment](./docs/01_setting_up_the_environment.md)
-2. [Preparing Embeddings with Embedding Ingestor](./docs/00_preparing_embeddings_with_embedding_ingestor.md)
+1. [Setting Up the Environment](./docs/00_setting_up_the_environment.md)
+2. [Preparing Embeddings with Embedding Ingestor](./docs/01_preparing_embeddings_with_embedding_ingestor.md)
 3. [Setting Up the Bootstrap Project](./docs/02_setting_up_the_bootstrap_project.md)
 4. [Configuring the Project for Agentic AI](./docs/03_configuring_the_project_for_agentic_ai.md)
 5. [Creating the Orchestrator Agent](./docs/04_creating_the_orchestrator_agent.md)
@@ -56,4 +56,4 @@ Open the UI at:
 
 Let's get started.
 
-### [Start the Hands-on Lab ->](./docs/01_setting_up_the_environment.md)
+### [Start the Hands-on Lab ->](./docs/00_setting_up_the_environment.md)
