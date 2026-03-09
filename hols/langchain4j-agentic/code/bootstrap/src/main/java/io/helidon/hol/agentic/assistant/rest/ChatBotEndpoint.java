@@ -16,7 +16,7 @@
 
 package io.helidon.hol.agentic.assistant.rest;
 
-import io.helidon.hol.agentic.assistant.ai.HelidonExpertAgent;
+import io.helidon.hol.agentic.assistant.ai.HelidonExpert;
 import io.helidon.hol.agentic.assistant.dto.ExpertMessage;
 import io.helidon.http.Http;
 import io.helidon.service.registry.Service;
@@ -29,17 +29,17 @@ import static io.helidon.common.media.type.MediaTypes.APPLICATION_JSON_VALUE;
 @Service.Singleton
 class ChatBotEndpoint {
 
-    private final HelidonExpertAgent agent;
+    private final HelidonExpert expert;
 
     @Service.Inject
-    ChatBotEndpoint(HelidonExpertAgent agent) {
-        this.agent = agent;
+    ChatBotEndpoint(HelidonExpert agent) {
+        this.expert = agent;
     }
 
     @Http.POST
     @Http.Path("/chat")
     @Http.Produces(APPLICATION_JSON_VALUE)
     ExpertMessage chatWithAssistant(@Http.Entity ExpertMessage msg) {
-        return agent.chat(msg.message(), msg.summary());
+        return expert.chat(msg.message(), msg.summary());
     }
 }

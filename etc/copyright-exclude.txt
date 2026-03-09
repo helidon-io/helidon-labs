@@ -56,3 +56,6 @@ promtail-local-config.yaml
 cloud_init
 .tf
 .tfvars
+mvnw
+mvnw.cmd
+maven-wrapper.properties

@@ -27,8 +27,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>io.helidon.hol.helidon-agentic-assistant</groupId>
-    <artifactId>helidon-agentic-assistant</artifactId>
+    <groupId>io.helidon.hol.helidon-basic-assistant</groupId>
+    <artifactId>helidon-basic-assistant</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <name>Helidon Agentic Assistant</name>

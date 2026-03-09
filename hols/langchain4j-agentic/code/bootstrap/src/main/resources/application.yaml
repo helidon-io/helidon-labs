@@ -24,7 +24,7 @@ server:
           welcome: "index.html"
 
 declarative:
-  ignore-incubating: true
+  ignore-incubating: true;
 
 langchain4j:
   providers:
@@ -47,35 +47,20 @@ langchain4j:
     assistant-embedding-model:
       provider: lc4j-in-process
 
-    cheap-model:
-      provider: open-ai
-      model-name: "meta.llama-4-scout-17b-16e-instruct"
-
     expensive-model:
       provider: open-ai
       model-name: "openai.gpt-oss-120b"
+      strict-json-schema: true
 
   embedding-stores:
-    se-embedding-store:
+    basic-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/se-embeddings.json
-    mp-embedding-store:
-      provider: lc4j-in-memory
-      from-file: ../../data/mp-embeddings.json
+      from-file: ../../data/all-embeddings.json
 
   content-retrievers:
-    se-content-retriever:
+    basic-content-retriever:
       provider: lc4j-content-retriever
-      embedding-store: se-embedding-store
-
-    mp-content-retriever:
-      provider: lc4j-content-retriever
-      embedding-store: mp-embedding-store
-
-#  mcp-clients:
-#    cli-tools-mcp-server:
-#      uri: http://localhost:8081/cli
+      embedding-store: basic-embedding-store
 
 app:
-  latest-helidon-version: 4.4.0-FROM-TOOL
-  docs-zip-path: ../../data/helidon-docs.zip
+  latest-helidon-version: 4.3.4
