@@ -22,7 +22,7 @@ server:
           welcome: "index.html"
 
 declarative:
-  ignore-incubating: true;
+  ignore-incubating: true
 
 langchain4j:
   providers:
@@ -88,7 +88,7 @@ Helidon LangChain4j uses a **unified configuration model**:
 
 ### `declarative`
 
-- `ignore-incubating: true;` allows the app to use incubating declarative features without startup failure.
+- `ignore-incubating: true` allows the app to use incubating declarative features without startup failure.
 
 ### `langchain4j.providers`
 

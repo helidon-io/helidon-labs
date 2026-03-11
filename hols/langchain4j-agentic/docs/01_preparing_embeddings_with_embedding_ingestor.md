@@ -30,7 +30,7 @@ cd hols/langchain4j-agentic/code/embedding-ingestor
 ## 2. Build the ingestor
 
 ```sh
-mvnd clean package
+mvnw clean package
 ```
 
 ## 3. Run ingestion and serialize embeddings
@@ -38,7 +38,6 @@ mvnd clean package
 ```sh
 java \
 --enable-native-access=ALL-UNNAMED \
---sun-misc-unsafe-memory-access=allow \
 --add-opens java.base/sun.nio.ch=ALL-UNNAMED \
 --add-opens java.base/java.io=ALL-UNNAMED \
 -jar ./target/*.jar
@@ -62,7 +61,7 @@ You should see both files present and non-empty.
 
 ## 5. Reuse JSON files later with `from-file`
 
-When you configure `application.yaml` in HOL steps, set `from-file` for both embedding stores so the app loads vectors directly from persisted JSON:
+In a later step these generated files will be referenced in `application.yaml` using `from-file` for both embedding stores so the app loads vectors directly from persisted JSON:
 
 ```yaml
 langchain4j:
@@ -76,6 +75,7 @@ langchain4j:
 ```
 
 With this setup, HOL projects reuse persisted embeddings and skip embedding computation entirely.
+This will happen in a later step. You do not need to do anything at this time.
 
 ---
 
