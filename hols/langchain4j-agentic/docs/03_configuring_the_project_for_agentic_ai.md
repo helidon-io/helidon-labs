@@ -22,7 +22,7 @@ server:
           welcome: "index.html"
 
 declarative:
-  ignore-incubating: true;
+  ignore-incubating: true
 
 langchain4j:
   providers:
