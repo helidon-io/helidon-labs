@@ -44,6 +44,13 @@ public final class EmbeddingIngestorMain {
         var mpPath = getPathFromConfig(ingestorConfig, "mp-embeddings-path");
         var allPath = getPathFromConfig(ingestorConfig, "all-embeddings-path");
 
+        if (Files.notExists(docsZipPath)) {
+            System.out.println("ERROR: file " + docsZipPath + " does not exist. Skipping ingestion.");
+            System.exit(1);
+        }
+
+        System.out.println("Ingesting " + docsZipPath);
+
         var seStore = new InMemoryEmbeddingStore<TextSegment>();
         var mpStore = new InMemoryEmbeddingStore<TextSegment>();
         var embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
