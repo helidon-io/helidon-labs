@@ -45,7 +45,11 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 for all the prompts regardless of the Helidon flavor (SE or MP) the user is asking for. 
 Response mixes all the context it gets from the emebeding store together.
 
+<<<<<<< HEAD
 Stop the app after verification. (return to your terminal and type [CMD/CONTROL-C])
+=======
+Stop the app after verification. (return to your terminal and type [CMD/CONTRL-C])
+>>>>>>> 4da252e8f09e0b804b331a39ab2446641326aa92
 
 ---
 
