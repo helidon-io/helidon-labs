@@ -30,14 +30,10 @@ java -jar target/helidon-basic-assistant.jar
 
 Open the chat UI at http://localhost:8080
 
-You should see Helidon Assistant prompt UI with a progress bar showing RAG ingestion state.
+You should see Helidon Assistant prompt UI.
 
-![hol-ui-progressbar.png](img/hol-ui-progressbar.png)
+![hol-ui.png](img/hol-ui.png)
 
-When the ingestion is finished, the progressbar will disappear.
-
-Helidon assistant will get smarter with every document ingested during the process, 
-you can try to ask about the Helidon app setup and features.
 
 Example prompt:
 ```
@@ -49,7 +45,7 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 for all the prompts regardless of the Helidon flavor (SE or MP) the user is asking for. 
 Response mixes all the context it gets from the emebeding store together.
 
-Stop the app after verification.
+Stop the app after verification. (return to your terminal and type [CMD/CONTRL-C])
 
 ---
 
