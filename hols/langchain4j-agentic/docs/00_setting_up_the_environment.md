@@ -12,7 +12,7 @@ In this section, we will:
 
 ## 1. Verify Java
 
-Use Java 21+ (Java 25 reccomended).
+Use Java 21+ (Java 25 recommended).
 
 ```sh
 java --version

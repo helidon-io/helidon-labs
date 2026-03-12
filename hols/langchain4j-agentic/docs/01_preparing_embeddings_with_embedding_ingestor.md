@@ -30,7 +30,7 @@ cd langchain4j-agentic/code/embedding-ingestor
 ## 2. Build the ingestor
 
 ```sh
-mvnw clean package
+./mvnw clean package
 ```
 
 ## 3. Run ingestion and serialize embeddings
