@@ -16,12 +16,9 @@
 
 package io.helidon.hol.agentic.assistant.mcp;
 
-import java.util.List;
-
 import io.helidon.config.Config;
 import io.helidon.extensions.mcp.server.Mcp;
-import io.helidon.extensions.mcp.server.McpToolContent;
-import io.helidon.extensions.mcp.server.McpToolContents;
+import io.helidon.extensions.mcp.server.McpToolResult;
 import io.helidon.json.schema.JsonSchema;
 import io.helidon.service.registry.Service;
 
@@ -31,26 +28,31 @@ import static java.lang.System.Logger.Level.INFO;
 @Mcp.Server("cli-tools-mcp-server")
 class CliToolsMcpServer {
     private static final System.Logger LOGGER = System.getLogger(CliToolsMcpServer.class.getName());
+    private final Config config;
 
     @Service.Inject
-    Config config;
-
-    @Mcp.Tool("Returns a version of the latest released Helidon.")
-    List<McpToolContent> getLatestHelidonVersion() {
-        var version = config.get("app.latest-helidon-version").asString().orElse("4.0.0");
-        LOGGER.log(INFO, "Latest released Helidon version: " + version);
-        return List.of(McpToolContents.textContent(version));
+    CliToolsMcpServer(Config config) {
+        this.config = config;
     }
 
-    @Mcp.Tool("Returns example of Helidon CLI command to create Helidon quickstart example with provided projectName, "
-            + "version, package name and Helidon flavor as parameters. "
-            + "Resulting CLI command can be used for generating new quickstart project based on Helidon SE. "
-            + "Version parameter should be the latest released version unless specified otherwise.")
-    List<McpToolContent> getInitHelidonSeProjectWithCliCmd(InitArguments initArguments) {
+    @Mcp.Tool("Returns a version of the latest released Helidon.")
+    String getLatestHelidonVersion() {
+        var version = config.get("app.latest-helidon-version").asString().orElse("4.0.0");
+        LOGGER.log(INFO, "Latest released Helidon version: " + version);
+        return version;
+    }
+
+    @Mcp.Tool("""
+            Returns example of Helidon CLI command to create Helidon quickstart example with provided projectName,
+            version, package name and Helidon flavor as parameters. Resulting CLI command can be used for generating new
+            quickstart project based on Helidon SE. Version parameter should be the latest released version unless specified
+            otherwise.
+            """)
+    McpToolResult getInitHelidonSeProjectWithCliCmd(InitArguments initArguments) {
         LOGGER.log(INFO, "Init with Helidon cli cmd called, version: {0}, project name: {1}",
                    initArguments.version(),
                    initArguments.projectName());
-        return List.of(McpToolContents.textContent(
+        return McpToolResult.create(
                 String.format("""
                                       helidon init --batch \\
                                       --version %s \\
@@ -63,7 +65,7 @@ class CliToolsMcpServer {
                               initArguments.projectName(),
                               initArguments.packageName(),
                               initArguments.flavor()
-                )));
+                ));
     }
 
     @JsonSchema.Schema

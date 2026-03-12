@@ -19,7 +19,7 @@ mvn clean package
 ```
 
 ```sh
-java -jar target/helidon-mcp-weather-server-declarative.jar
+java -jar target/helidon-mcp-server.jar
 ```
 
 Server runs on:
