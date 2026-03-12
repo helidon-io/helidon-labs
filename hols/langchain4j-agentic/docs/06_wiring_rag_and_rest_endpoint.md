@@ -14,13 +14,11 @@ Edit:
 
 `src/main/resources/application.yaml`
 
-and add the `langchain4j.embedding-stores` block:
-
-> [!NOTE]
-> Copy the text below. Highlight `langchain4j:` in the file application.yaml and paste in the following text
+and update the `langchain4j.embedding-stores` block to add `from-file` like this:
 
 ```yaml
 langchain4j:
+  
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory

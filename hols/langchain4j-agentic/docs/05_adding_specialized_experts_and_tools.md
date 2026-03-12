@@ -9,10 +9,8 @@ In this section, we will:
 ---
 
 ## 1. Create `CliTools.java`
-Create a new directory
-`src/main/java/io/helidon/hol/agentic/assistant/tools`
 
-Create package `tools` and file:
+Create package (directory) `tools` and file:
 
 `src/main/java/io/helidon/hol/agentic/assistant/tools/CliTools.java`
 

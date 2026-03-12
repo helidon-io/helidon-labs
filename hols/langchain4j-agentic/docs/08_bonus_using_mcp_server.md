@@ -38,8 +38,7 @@ In `langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`, unc
       uri: http://localhost:8081/cli
 ```
 > [!WARNING]
-> Check the indentation in the YAML file! Added key should look like this `langchain4j.mcp-clients.cli-tools-mcp-server.uri`
-
+> Check the indentation in the YAML file! Added key should have hierarchy `langchain4j.mcp-clients.cli-tools-mcp-server.uri`
 
 ## 3. Switch expert agents to MCP clients
 
@@ -123,7 +122,7 @@ INFO Init with Helidon cli cmd called, version: 4.4.0-FROM-MCP-SERVER, project n
 If you ask broader questions, sometimes the version string used in the CLI responses does
 not exactly match the version string returned by the MCP tool.
 If you want the responses to always use the version string returned in the MCP tool, you can add instructions
-to the prompt in the file CliToolsMCPServer.java. 
+to the prompt in the file `CliToolsMCPServer.java`.
 Try adding an additional clause to the prompt. For example, "Only use the version returned by this tool."
 
 Compile and restart to see how the responses change.
