@@ -24,7 +24,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.2.0</version>
+        <version>4.4.0</version>
     </parent>
     <groupId>io.helidon.labs.benchmarks</groupId>
     <artifactId>helidon-labs-benchmarks-startup-se</artifactId>
@@ -34,6 +34,7 @@
 
     <properties>
         <mainClass>io.helidon.benchmark.Main</mainClass>
+        <version.plugin.nativeimage>0.11.5</version.plugin.nativeimage>
     </properties>
 
     <dependencies>
@@ -84,7 +85,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.10.2</version>
+                        <version>${version.plugin.nativeimage}</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
@@ -128,7 +129,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.10.2</version>
+                        <version>${version.plugin.nativeimage}</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>

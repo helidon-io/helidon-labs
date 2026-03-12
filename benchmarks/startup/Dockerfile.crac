@@ -20,13 +20,13 @@ FROM helidon/benchmark-startup-base AS benchmark
 WORKDIR /usr/share
 
 ENV JDK_URL="https://cdn.azul.com/zulu/bin"
-ENV DOWNLOAD_URL="$JDK_URL/zulu23.32.11-ca-crac-jdk23.0.2-linux_x64.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-23/zulu23.32.11-ca-crac-jdk23.0.2-linux_x64
+ENV DOWNLOAD_URL="$JDK_URL/zulu25.32.21-ca-crac-jdk25.0.2-linux_x64.tar.gz"
+ENV JAVA_HOME=/usr/share/jdk-25/zulu25.32.21-ca-crac-jdk25.0.2-linux_x64
 
 # Install ZULU
 RUN wget -O crac-jdk.tar.gz ${DOWNLOAD_URL} && \
-    mkdir -p /usr/share/jdk-23 && \
-    tar zxf ./crac-jdk.tar.gz -C /usr/share/jdk-23 && \
+    mkdir -p /usr/share/jdk-25 && \
+    tar zxf ./crac-jdk.tar.gz -C /usr/share/jdk-25 && \
     ln -sf $JAVA_HOME/bin/java /bin/ && \
     ln -sf $JAVA_HOME/bin/jcmd /bin/ && \
     ln -sf $JAVA_HOME/bin/jps /bin/

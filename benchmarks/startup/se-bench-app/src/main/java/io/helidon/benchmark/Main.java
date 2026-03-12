@@ -29,7 +29,7 @@ public class Main {
     }
 
     /**
-     * Setuo Helidon server.
+     * Setup Helidon server.
      * @param args
      */
     public static void main(String[] args) {

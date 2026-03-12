@@ -69,7 +69,7 @@ function runBenchmark() {
     echo -n "docker build --build-arg FLAVOR=$FLAVOR "
     echo -n "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
     echo -n "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
-    docker build --build-arg FLAVOR="$FLAVOR" \
+    docker build --progress=plain --build-arg FLAVOR="$FLAVOR" \
     --build-arg WARMUP_CACHEBUST="$WARMUP_CACHEBUST" \
     -t "$IMAGE_NAME" -f Dockerfile."$NAME" .
 
@@ -79,9 +79,10 @@ function runBenchmark() {
     tail -1 "$LOG_FILE" >> "$RESULTS_FILE"
 }
 
-# Check all docker files within current folder and run se and mp tests
-for FLAVOR in se mp ; do
+# Check all docker files within current folder and run se tests
+for FLAVOR in se ; do
   for f in Dockerfile.*; do
+#  for f in Dockerfile.nativeimage Dockerfile.nativeimage-pgo; do
     TEST_NAME=$(echo "$f" | awk -F. '{printf $2}');
     [ "$TEST_NAME" = "base" ] && continue
     runBenchmark "$FLAVOR" "$TEST_NAME"

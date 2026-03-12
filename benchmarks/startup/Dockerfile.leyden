@@ -20,8 +20,8 @@ FROM helidon/benchmark-startup-base AS benchmark
 WORKDIR /usr/share
 
 ENV JDK_URL="https://download.java.net/java/early_access"
-ENV DOWNLOAD_URL="${JDK_URL}/leyden/2/openjdk-24-leyden+2-8_linux-x64_bin.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-24
+ENV DOWNLOAD_URL="${JDK_URL}/leyden/1/openjdk-26-leydenpremain+1_linux-x64_bin.tar.gz"
+ENV JAVA_HOME=/usr/share/jdk-26
 
 # Install Leyden EA
 RUN wget -O leyden-jdk.tar.gz ${DOWNLOAD_URL} && \
@@ -55,10 +55,15 @@ cat <<EOF > aot-build.sh
 #!/bin/bash
 mvn package -DskipTests
 
+java -version
+java -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsFinal -version | grep -i -E 'cache|training|leyden'
+
 java \
--XX:CacheDataStore=LeydenBenchmark.cds \
+-XX:+UnlockDiagnosticVMOptions \
+-XX:+UnlockExperimentalVMOptions \
+-XX:AOTCacheOutput=LeydenBenchmark.cds \
 `# https://openjdk.org/jeps/8325147` \
--XX:+RecordTraining \
+-XX:+AOTRecordTraining \
 -XX:+ArchiveDynamicProxies \
 -XX:+ArchiveReflectionData \
 -XX:+ArchiveLoaderLookupCache \
@@ -81,8 +86,10 @@ RUN <<END_OF_SCRIPT
 cat <<EOF > run.sh
 #!/bin/bash -e
 java \
--XX:CacheDataStore=LeydenBenchmark.cds \
--XX:+ReplayTraining \
+-XX:+UnlockDiagnosticVMOptions \
+-XX:+UnlockExperimentalVMOptions \
+-XX:AOTCache=LeydenBenchmark.cds \
+-XX:+AOTReplayTraining \
 -XX:+UseG1GC \
 -XX:G1HeapRegionSize=1048576 \
 -Djdk.console=java.basebroken \
