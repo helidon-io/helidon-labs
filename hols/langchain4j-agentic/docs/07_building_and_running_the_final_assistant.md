@@ -13,7 +13,7 @@ In this section, we will:
 From `hols/langchain4j-agentic/code/bootstrap`:
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ```sh

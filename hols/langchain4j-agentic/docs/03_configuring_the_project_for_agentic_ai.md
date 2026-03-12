@@ -68,6 +68,10 @@ langchain4j:
       provider: lc4j-content-retriever
       embedding-store: mp-embedding-store
 
+#  mcp-clients:
+#    cli-tools-mcp-server:
+#      uri: http://localhost:8081/cli
+
 app:
   latest-helidon-version: 4.4.0-FROM-TOOL
 ```

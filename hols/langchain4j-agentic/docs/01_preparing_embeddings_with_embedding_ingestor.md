@@ -24,7 +24,7 @@ In this section, we will:
 From repository root (`helidon-labs`):
 
 ```sh
-cd hols/langchain4j-agentic/code/embedding-ingestor
+cd langchain4j-agentic/code/embedding-ingestor
 ```
 
 ## 2. Build the ingestor
@@ -45,11 +45,11 @@ java \
 
 What this run does:
 
-- Unzips `hols/langchain4j-agentic/data/helidon-docs.zip`.
+- Unzips `langchain4j-agentic/data/helidon-docs.zip`.
 - Chunks and embeds documents for SE and MP.
 - Serializes both in-memory stores to:
-  - `hols/langchain4j-agentic/data/se-embeddings.json`
-  - `hols/langchain4j-agentic/data/mp-embeddings.json`
+  - `langchain4j-agentic/data/se-embeddings.json`
+  - `langchain4j-agentic/data/mp-embeddings.json`
 
 ## 4. Verify generated files
 

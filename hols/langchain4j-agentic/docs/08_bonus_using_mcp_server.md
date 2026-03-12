@@ -11,11 +11,11 @@ In this section, we will:
 ## 1. Build and run the MCP server (Terminal 1)
 
 ```sh
-cd hols/langchain4j-agentic/code/mcp-server
+cd langchain4j-agentic/code/mcp-server
 ```
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ```sh
@@ -30,8 +30,7 @@ http://localhost:8081/cli
 
 ## 2. Enable MCP client in assistant config (Terminal 2)
 
-In `hols/langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`,
-Add this configuration block (insert so mcp-clients is at the same column as `embedding-stores` or `providers` blocks):
+In `langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`, uncomment this block:
 
 ```yaml
   mcp-clients:
@@ -81,7 +80,7 @@ cd hols/langchain4j-agentic/code/bootstrap
 ```
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ```sh

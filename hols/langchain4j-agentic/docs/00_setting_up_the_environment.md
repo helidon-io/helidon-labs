@@ -10,39 +10,23 @@ In this section, we will:
 
 ---
 
-## 1. Verify Java and Maven
+## 1. Verify Java
 
-Use Java 21+ and Maven 3.9+:
+Use Java 21+ (Java 25 reccomended).
 
 ```sh
-java -version
-mvn -version
+java --version
 ```
+
+This lab uses the maven wrapper (`mvnw`) so that you do not need to install maven on your system if you do not have it already.
 
 ## 2. Set OCI API key
 
 This project uses the OpenAI-compatible OCI Generative AI endpoint configured in `application.yaml`.
-Set `OCI_API_KEY` before running the app:
+Set the `OCI_API_KEY` environment variable before running the app:
 
 ```sh
 export OCI_API_KEY="<your-oci-api-key>"
-```
-
-To persist it:
-
-```sh
-echo 'export OCI_API_KEY="<your-oci-api-key>"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-## 3. Verify project folders
-
-From repository root:
-
-```sh
-ls -la hols/langchain4j-agentic/code/bootstrap
-ls -la hols/langchain4j-agentic/code/final
-ls -la hols/langchain4j-agentic/code/mcp-server
 ```
 
 ---

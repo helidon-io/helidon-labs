@@ -11,13 +11,13 @@ In this section, we will:
 ## 1. Open the bootstrap project
 
 ```sh
-cd hols/langchain4j-agentic/code/bootstrap
+cd langchain4j-agentic/code/bootstrap
 ```
 
 ## 2. Build the project
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ## 3. Run the bootstrap application
