@@ -9,10 +9,14 @@ In this section, we will:
 ---
 
 ## 1. Create `CliTools.java`
+Create a new directory
+`src/main/java/io/helidon/hol/agentic/assistant/tools`
 
 Create package `tools` and file:
 
 `src/main/java/io/helidon/hol/agentic/assistant/tools/CliTools.java`
+
+Add this code:
 
 ```java
 package io.helidon.hol.agentic.assistant.tools;
@@ -67,11 +71,13 @@ public class CliTools {
     }
 }
 ```
+Save the file
 
 ## 2. Create `HelidonSeExpert.java`
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/HelidonSeExpert.java`
 
+Copy in the following code:
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
@@ -97,11 +103,13 @@ public interface HelidonSeExpert {
     String askExpert(@V("question") String question);
 }
 ```
+Save the file
 
 ## 3. Create `HelidonMpExpert.java`
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/HelidonMpExpert.java`
 
+Add the following code
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
@@ -127,6 +135,7 @@ public interface HelidonMpExpert {
     String askExpert(@V("question") String question);
 }
 ```
+Save the file
 
 ---
 

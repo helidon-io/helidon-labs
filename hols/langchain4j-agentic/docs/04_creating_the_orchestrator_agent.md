@@ -20,6 +20,7 @@ src/main/java/io/helidon/hol/agentic/assistant/ai/HelidonExpert.java
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/HelidonExpertAgent.java`
 
+Copy in the following code:
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
@@ -56,11 +57,13 @@ public interface HelidonExpertAgent {
     }
 }
 ```
+Save the file
 
 ## 3. Create `FlavorClassifierAgent.java`
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/FlavorClassifierAgent.java`
 
+Copy in the following code:
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
@@ -87,10 +90,13 @@ public interface FlavorClassifierAgent {
     HelidonFlavor classify(@V("question") String question);
 }
 ```
+Save the file
 
 ## 4. Create `FlavorRouterAgent.java`
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/FlavorRouterAgent.java`
+
+Copy in the following code:
 
 ```java
 package io.helidon.hol.agentic.assistant.ai;
@@ -134,10 +140,13 @@ public interface FlavorRouterAgent {
     }
 }
 ```
+Save the file
 
 ## 5. Create `SummarizerAgent.java`
 
 `src/main/java/io/helidon/hol/agentic/assistant/ai/SummarizerAgent.java`
+
+Copy in:
 
 ```java
 package io.helidon.hol.agentic.assistant.ai;
@@ -178,6 +187,7 @@ public interface SummarizerAgent {
                 @V("lastResponse") String lastResponse);
 }
 ```
+Save the file
 
 ---
 

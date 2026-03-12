@@ -24,14 +24,11 @@ java -jar target/*.jar
 
 Open the chat UI at http://localhost:8080
 
-You should see Helidon Assistant prompt UI with a progress bar showing RAG ingestion state.
+You should see Helidon Expert Assistant prompt UI.
 
-![hol-ui-progressbar.png](img/hol-ui-progressbar.png)
+![hol-expert-ui.png](img/hol-expert-ui.png)
 
-When the ingestion is finished, the progressbar will disappear.
-
-Helidon assistant will get smarter with every document ingested during the process,
-you can try to ask about the Helidon app setup and features.
+This expert uses the previously created embeddings stores that were saved to JSON files on your local disk. There is one each for the SE and MP Experts.
 
 Example prompt:
 ```

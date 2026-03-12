@@ -31,7 +31,7 @@ http://localhost:8081/cli
 ## 2. Enable MCP client in assistant config (Terminal 2)
 
 In `hols/langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`,
-uncomment this block:
+Add this configuration block (insert so mcp-clients is at the same column as `embedding-stores` or `providers` blocks):
 
 ```yaml
   mcp-clients:
@@ -92,15 +92,13 @@ java -jar target/*.jar
 
 Open the chat UI at http://localhost:8080
 
-You should see Helidon Assistant prompt UI with a progress bar showing RAG ingestion state.
+You should see Helidon Assistant prompt UI.
 
-![hol-ui-progressbar.png](img/hol-ui-progressbar.png)
-
-When the ingestion is finished, the progressbar will disappear.
+![hol-expert-ui.png](img/hol-expert-ui.png)
 
 Example prompt:
 ```
-Show me how to create a new Helidon SE application named javaone-demo with cli showing a HTTP resource with Hello World with latest Helidon version.
+please give me only the CLI command to generate a Helidon SE quickstart
 ```
 
 Expected CLI provided by the assistant should look like this:
@@ -116,11 +114,20 @@ helidon init --batch \
 
 This confirms the app is using MCP-based tools instead of local tool methods.
 
-You can check the MCP server system output to see whether MCP server was called:
+You can also check the MCP server log output to see whether MCP server was called:
 ```
 INFO Latest released Helidon version: 4.4.0-FROM-MCP-SERVER
 INFO Init with Helidon cli cmd called, version: 4.4.0-FROM-MCP-SERVER, project name: javaone-demo
 ```
+
+### Did you notice?
+If you ask broader questions, sometimes the version string used in the CLI responses does
+not exactly match the version string returned by the MCP tool.
+If you want the responses to always use the version string returned in the MCP tool, you can add instructions
+to the prompt in the file CliToolsMCPServer.java. 
+Try adding an additional clause to the prompt. For example, "Only use the version returned by this tool."
+
+Compile and restart to see how the responses change.
 
 ---
 
