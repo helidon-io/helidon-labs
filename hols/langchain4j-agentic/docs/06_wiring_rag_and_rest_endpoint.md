@@ -14,7 +14,10 @@ Edit:
 
 `src/main/resources/application.yaml`
 
-and update the `langchain4j.embedding-stores` block to:
+and add the `langchain4j.embedding-stores` block:
+
+> [!NOTE]
+> Copy the text below. Highlight `langchain4j:` in the file application.yaml and paste in the following text
 
 ```yaml
 langchain4j:
@@ -27,6 +30,7 @@ langchain4j:
       from-file: ../../data/mp-embeddings.json
 ```
 
+These embeddings files were created in the earlier step: Preparing Embeddings with Embedding Ingestor.
 What these persisted JSON files are:
 
 - They are serialized snapshots of LangChain4j `InMemoryEmbeddingStore` data generated earlier by `embedding-ingestor` (step `2`).
@@ -88,9 +92,11 @@ class ChatBotEndpoint {
 
 Edit `src/main/resources/WEB/index.html`:
 
+(line 139)
 ```html
-<h1 class="title">Helidon Agentic Assistant</h1>
+<h1 class="title">Helidon Expert Agentic Assistant</h1>
 ```
+Save the file
 
 ---
 

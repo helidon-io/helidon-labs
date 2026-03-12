@@ -77,6 +77,9 @@ langchain4j:
 With this setup, HOL projects reuse persisted embeddings and skip embedding computation entirely.
 This will happen in a later step. You do not need to do anything at this time.
 
+> [!NOTE]
+> Please close all edit windows you may still have open for the embedding-ingestor project at this time.
+
 ---
 
 ### Next Step -> [Setting Up the Bootstrap Project](02_setting_up_the_bootstrap_project.md)
