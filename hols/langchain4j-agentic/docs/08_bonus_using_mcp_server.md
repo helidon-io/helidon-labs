@@ -10,12 +10,15 @@ In this section, we will:
 
 ## 1. Build and run the MCP server (Terminal 1)
 
+> [!NOTE]
+> Make sure the `OCI_API_KEY` environment variable has been set in this terminal.
+
 ```sh
 cd langchain4j-agentic/code/mcp-server
 ```
 
 ```sh
-./mvnw clean package
+mvnw clean package
 ```
 
 ```sh
@@ -74,16 +77,19 @@ with:
 
 ## 4. Build and run the assistant
 
+> [!NOTE]
+> Make sure the `OCI_API_KEY` environment variable has been set in this terminal.
+
 ```sh
-cd hols/langchain4j-agentic/code/bootstrap
+cd langchain4j-agentic/code/bootstrap
 ```
 
 ```sh
-./mvnw clean package
+mvnw clean package
 ```
 
 ```sh
-java -jar target/*.jar
+java -jar target/helidon-basic-assistant.jar
 ```
 
 ## 5. Verify MCP tools are used

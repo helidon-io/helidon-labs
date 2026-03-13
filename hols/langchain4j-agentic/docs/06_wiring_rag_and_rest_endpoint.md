@@ -44,7 +44,7 @@ How `from-file` works here:
 Important:
 
 - Paths in `from-file` are relative to the running application module (for example `code/bootstrap`).
-- Make sure step `2` completed and both JSON files exist in `hols/langchain4j-agentic/data`.
+- Make sure step `2` completed and both JSON files exist in `langchain4j-agentic/data`.
 
 ## 2. Replace `ChatBotEndpoint.java`
 

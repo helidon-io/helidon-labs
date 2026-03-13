@@ -10,14 +10,14 @@ In this section, we will:
 
 ## 1. Build and run
 
-From `hols/langchain4j-agentic/code/bootstrap`:
+From `langchain4j-agentic/code/bootstrap`:
 
 ```sh
-./mvnw clean package
+mvnw clean package
 ```
 
 ```sh
-java -jar target/*.jar
+java -jar target/helidon-basic-assistant.jar
 ```
 
 ## 2. Verify web UI

@@ -17,7 +17,7 @@ cd langchain4j-agentic/code/bootstrap
 ## 2. Build the project
 
 ```sh
-./mvnw clean package
+mvnw clean package
 ```
 
 ## 3. Run the bootstrap application

@@ -7,7 +7,7 @@ Standalone ingestor that uses the LangChain4j [in-process embedding model](https
 From `code/embedding-ingestor`:
 
 ```sh
-mvnd clean package
+mvnw clean package
 ```
 ```sh
 java \
@@ -15,7 +15,7 @@ java \
 --sun-misc-unsafe-memory-access=allow \
 --add-opens java.base/sun.nio.ch=ALL-UNNAMED \
 --add-opens java.base/java.io=ALL-UNNAMED \
--jar ./target/*.jar
+-jar target/embedding-ingestor.jar
 ```
 
 Why these JVM flags are used:
