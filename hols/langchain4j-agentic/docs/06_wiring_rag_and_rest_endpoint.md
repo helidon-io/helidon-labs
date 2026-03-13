@@ -14,13 +14,11 @@ Edit:
 
 `src/main/resources/application.yaml`
 
-and add the `langchain4j.embedding-stores` block:
-
-> [!NOTE]
-> Copy the text below. Highlight `langchain4j:` in the file application.yaml and paste in the following text
+and update the `langchain4j.embedding-stores` block to add `from-file` like this:
 
 ```yaml
 langchain4j:
+  
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory
@@ -46,7 +44,7 @@ How `from-file` works here:
 Important:
 
 - Paths in `from-file` are relative to the running application module (for example `code/bootstrap`).
-- Make sure step `2` completed and both JSON files exist in `hols/langchain4j-agentic/data`.
+- Make sure step `2` completed and both JSON files exist in `langchain4j-agentic/data`.
 
 ## 2. Replace `ChatBotEndpoint.java`
 

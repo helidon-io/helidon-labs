@@ -11,13 +11,13 @@ In this section, we will:
 ## 1. Open the bootstrap project
 
 ```sh
-cd hols/langchain4j-agentic/code/bootstrap
+cd langchain4j-agentic/code/bootstrap
 ```
 
 ## 2. Build the project
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ## 3. Run the bootstrap application
@@ -45,7 +45,7 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 for all the prompts regardless of the Helidon flavor (SE or MP) the user is asking for. 
 Response mixes all the context it gets from the emebeding store together.
 
-Stop the app after verification. (return to your terminal and type [CMD/CONTROL-C])
+Stop the app after verification (return to your terminal and type CTRL-C).
 
 
 ---

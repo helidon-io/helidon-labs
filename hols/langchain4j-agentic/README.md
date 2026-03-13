@@ -3,6 +3,9 @@
 In this hands-on lab, you will build an **agentic AI assistant** with **Helidon** and **LangChain4J**.  
 Starting from the bootstrap project, you will evolve it into a multi-agent system that classifies user intent, routes requests to specialized experts, applies RAG, and returns summarized conversational context.
 
+Note: if you have trouble viewing local markdown files, you can view this documentation
+[on GitHub](https://github.com/helidon-io/helidon-labs/blob/main/hols/langchain4j-agentic/README.md).
+
 ## What You'll Learn
 
 - How to build an **agentic workflow** with `@SequenceAgent` and `@ConditionalAgent`.
@@ -10,11 +13,11 @@ Starting from the bootstrap project, you will evolve it into a multi-agent syste
 - How to configure and use multiple models (cheap vs expensive) for different agent tasks.
 - How to use separate **embedding stores** and **content retrievers** for Helidon SE and MP knowledge.
 - How to add tool usage with local `@Ai.Tools` and switch to MCP using `@Ai.McpClients`.
-- How to transform `code/bootstrap` into the final implementation in `hols/langchain4j-agentic/code/final`.
+- How to transform `code/bootstrap` into the final implementation in `code/final`.
 
 ## Agentic Architecture (Final Project)
 
-Final code location: `hols/langchain4j-agentic/code/final`
+Final code location: `langchain4j-agentic/code/final`
 
 ![Helidon Agentic Assistant Diagram](./docs/img/agentic_assistant_agents_diagram.svg)
 
@@ -35,12 +38,6 @@ This orchestration is executed by **`HelidonExpertAgent`** as a sequence, giving
 The HOL uses a **local embedding model** (`all-minilm-l6-v2-q`, in-process) and **local in-memory embedding stores** (separate stores for SE and MP), loaded from persisted JSON files.
 Embeddings are generated only by the standalone `embedding-ingestor` project in step `2`.
 The HOL application projects do not compute embeddings at startup; they load prebuilt embeddings via `from-file`.
-
-### Assistant UI
-
-Open the UI at:
-
-`http://localhost:8080`
 
 ## Table of Contents
 

@@ -14,7 +14,7 @@ Reference: [LangChain4j In-Memory Embedding Store](https://docs.langchain4j.dev/
 In this section, we will:
 
 - Build and run `embedding-ingestor`.
-- Generate `se-embeddings.json` and `mp-embeddings.json` in `hols/langchain4j-agentic/data`.
+- Generate `se-embeddings.json` and `mp-embeddings.json` in `langchain4j-agentic/data`.
 - Reuse these files in later HOL steps by setting `from-file` in `application.yaml`.
 
 ---
@@ -24,7 +24,7 @@ In this section, we will:
 From repository root (`helidon-labs`):
 
 ```sh
-cd hols/langchain4j-agentic/code/embedding-ingestor
+cd langchain4j-agentic/code/embedding-ingestor
 ```
 
 ## 2. Build the ingestor
@@ -35,21 +35,19 @@ mvnw clean package
 
 ## 3. Run ingestion and serialize embeddings
 
+We use the maven `exec` plugin to simplify running the `java` command:
+
 ```sh
-java \
---enable-native-access=ALL-UNNAMED \
---add-opens java.base/sun.nio.ch=ALL-UNNAMED \
---add-opens java.base/java.io=ALL-UNNAMED \
--jar ./target/*.jar
+mvnw exec:exec
 ```
 
-What this run does:
+What this does:
 
-- Unzips `hols/langchain4j-agentic/data/helidon-docs.zip`.
+- Opens and reads `langchain4j-agentic/data/helidon-docs.zip`.
 - Chunks and embeds documents for SE and MP.
 - Serializes both in-memory stores to:
-  - `hols/langchain4j-agentic/data/se-embeddings.json`
-  - `hols/langchain4j-agentic/data/mp-embeddings.json`
+  - `langchain4j-agentic/data/se-embeddings.json`
+  - `langchain4j-agentic/data/mp-embeddings.json`
 
 ## 4. Verify generated files
 

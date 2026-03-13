@@ -10,12 +10,15 @@ In this section, we will:
 
 ## 1. Build and run the MCP server (Terminal 1)
 
+> [!NOTE]
+> Make sure the `OCI_API_KEY` environment variable has been set in this terminal.
+
 ```sh
-cd hols/langchain4j-agentic/code/mcp-server
+cd langchain4j-agentic/code/mcp-server
 ```
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ```sh
@@ -30,8 +33,7 @@ http://localhost:8081/cli
 
 ## 2. Enable MCP client in assistant config (Terminal 2)
 
-In `hols/langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`,
-Add this configuration block (insert so mcp-clients is at the same column as `embedding-stores` or `providers` blocks):
+In `langchain4j-agentic/code/bootstrap/src/main/resources/application.yaml`, uncomment this block:
 
 ```yaml
   mcp-clients:
@@ -39,8 +41,7 @@ Add this configuration block (insert so mcp-clients is at the same column as `em
       uri: http://localhost:8081/cli
 ```
 > [!WARNING]
-> Check the indentation in the YAML file! Added key should look like this `langchain4j.mcp-clients.cli-tools-mcp-server.uri`
-
+> Check the indentation in the YAML file! Added key should have hierarchy `langchain4j.mcp-clients.cli-tools-mcp-server.uri`
 
 ## 3. Switch expert agents to MCP clients
 
@@ -76,16 +77,19 @@ with:
 
 ## 4. Build and run the assistant
 
+> [!NOTE]
+> Make sure the `OCI_API_KEY` environment variable has been set in this terminal.
+
 ```sh
-cd hols/langchain4j-agentic/code/bootstrap
+cd langchain4j-agentic/code/bootstrap
 ```
 
 ```sh
-mvn clean package
+mvnw clean package
 ```
 
 ```sh
-java -jar target/*.jar
+java -jar target/helidon-basic-assistant.jar
 ```
 
 ## 5. Verify MCP tools are used
@@ -124,7 +128,7 @@ INFO Init with Helidon cli cmd called, version: 4.4.0-FROM-MCP-SERVER, project n
 If you ask broader questions, sometimes the version string used in the CLI responses does
 not exactly match the version string returned by the MCP tool.
 If you want the responses to always use the version string returned in the MCP tool, you can add instructions
-to the prompt in the file CliToolsMCPServer.java. 
+to the prompt in the file `CliToolsMCPServer.java`.
 Try adding an additional clause to the prompt. For example, "Only use the version returned by this tool."
 
 Compile and restart to see how the responses change.

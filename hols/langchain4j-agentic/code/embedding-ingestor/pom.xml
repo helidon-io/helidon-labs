@@ -86,6 +86,23 @@
                     <release>21</release>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>--enable-native-access=ALL-UNNAMED</argument>
+                        <argument>--add-opens</argument>
+                        <argument>java.base/sun.nio.ch=ALL-UNNAMED</argument>
+                        <argument>--add-opens</argument>
+                        <argument>java.base/java.io=ALL-UNNAMED </argument>
+                        <argument>-jar</argument>
+                        <argument>target/embedding-ingestor.jar</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
