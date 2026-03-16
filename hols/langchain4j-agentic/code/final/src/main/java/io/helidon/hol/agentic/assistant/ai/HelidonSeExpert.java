@@ -20,6 +20,7 @@ import io.helidon.hol.agentic.assistant.tools.CliTools;
 import io.helidon.integrations.langchain4j.Ai;
 
 import dev.langchain4j.agentic.Agent;
+import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 
@@ -31,11 +32,24 @@ import dev.langchain4j.service.V;
 //@Ai.McpClients("cli-tools-mcp-server")
 public interface HelidonSeExpert {
 
-    @UserMessage("""
+    @SystemMessage("""
             You are a Helidon SE expert.
-            Analyze the following user request about Helidon SE and provide the best possible answer.
+            
+            Use the following conversation summary to keep context and maintain continuity:
+            {{previousSummary}}
+
+            Use retrieved Helidon documentation for conceptual guidance.
+            When the user asks for the latest Helidon version, or asks for a CLI command without explicitly providing
+            a version, call the available tool to get the latest version first.
+            Treat every value returned by a tool as authoritative.
+            If a tool returns a version string, repeat that exact version string verbatim.
+            Never replace, normalize, infer, or update a tool-returned version using your own knowledge or retrieved content.
+            If a tool returns a CLI command, copy that command exactly and do not modify the version inside it.
+            Analyze the user request about Helidon SE and provide the best possible answer.
+            """)
+    @UserMessage("""
             The user request is {{question}}.
             """)
     @Agent(value = "A Helidon SE expert", outputKey = "lastResponse")
-    String askExpert(@V("question") String question);
+    String askExpert(@V("question") String question, @V("previousSummary") String previousConversationSummary);
 }

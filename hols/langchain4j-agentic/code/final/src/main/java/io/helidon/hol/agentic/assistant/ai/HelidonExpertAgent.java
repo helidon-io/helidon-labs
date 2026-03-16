@@ -21,7 +21,6 @@ import io.helidon.integrations.langchain4j.Ai;
 
 import dev.langchain4j.agentic.declarative.Output;
 import dev.langchain4j.agentic.declarative.SequenceAgent;
-import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.V;
 
 @Ai.Agent("helidon-expert")
@@ -32,15 +31,6 @@ public interface HelidonExpertAgent {
             FlavorRouterAgent.class,
             SummarizerAgent.class
     })
-    @SystemMessage("""
-            You are Frank, a helpful Helidon expert.
-            
-            Only answer questions related to Helidon and its components. If a question is not relevant to Helidon,
-            politely decline.
-            
-            Use the following conversation summary to keep context and maintain continuity:
-            {{previousSummary}}
-            """)
     ExpertMessage chat(@V("question") String question, @V("previousSummary") String previousConversationSummary);
 
     @Output

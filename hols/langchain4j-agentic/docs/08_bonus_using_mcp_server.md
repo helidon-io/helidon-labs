@@ -61,6 +61,9 @@ with:
 @Ai.McpClients("cli-tools-mcp-server")
 ```
 
+Leave the rest of the prompt unchanged. The expert already talks about generic `tool` output, which also works when
+the tool is provided by an MCP client.
+
 ### Update `HelidonMpExpert.java`
 
 Replace:
@@ -125,13 +128,10 @@ INFO Init with Helidon cli cmd called, version: 4.4.0-FROM-MCP-SERVER, project n
 ```
 
 ### Did you notice?
-If you ask broader questions, sometimes the version string used in the CLI responses does
-not exactly match the version string returned by the MCP tool.
-If you want the responses to always use the version string returned in the MCP tool, you can add instructions
-to the prompt in the file `CliToolsMCPServer.java`.
-Try adding an additional clause to the prompt. For example, "Only use the version returned by this tool."
-
-Compile and restart to see how the responses change.
+The expert prompts use generic `tool` wording rather than MCP-specific wording.
+That means the same instructions continue to work after switching from local `@Ai.Tools` to `@Ai.McpClients`.
+The assistant should continue to treat the returned version as authoritative and preserve it verbatim in generated
+CLI commands.
 
 ---
 
