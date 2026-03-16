@@ -34,7 +34,10 @@ public interface FlavorClassifierAgent {
             In case the request doesn't belong to any of those categories categorize it as 'se'.
             Reply with only one of those words and nothing else.
             The user request is: '{{question}}'.
+            
+            Use the following conversation summary to keep context and maintain continuity:
+            {{previousSummary}}
             """)
     @Agent(value = "Categorize a user request", outputKey = "flavor")
-    HelidonFlavor classify(@V("question") String question);
+    HelidonFlavor classify(@V("question") String question, @V("previousSummary") String previousConversationSummary);
 }
