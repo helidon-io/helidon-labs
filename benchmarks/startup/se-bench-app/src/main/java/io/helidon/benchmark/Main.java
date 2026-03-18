@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Oracle and/or its affiliates.
+ * Copyright (c) 2025, 2026 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,33 +15,18 @@
  */
 package io.helidon.benchmark;
 
-import io.helidon.config.Config;
 import io.helidon.logging.common.LogConfig;
-import io.helidon.webserver.WebServer;
-import io.helidon.webserver.http.HttpRouting;
+import io.helidon.service.registry.Service;
+import io.helidon.service.registry.ServiceRegistryManager;
 
-/**
- * Main class.
- */
+@Service.GenerateBinding
 public class Main {
 
     private Main() {
     }
 
-    /**
-     * Setuo Helidon server.
-     * @param args
-     */
     public static void main(String[] args) {
         LogConfig.configureRuntime();
-        WebServer.builder()
-                .config(Config.create().get("server"))
-                .routing(Main::routing)
-                .build()
-                .start();
-    }
-
-    private static void routing(HttpRouting.Builder routing) {
-        routing.get("/", (req, res) -> res.send("Hello World!"));
+        ServiceRegistryManager.start(ApplicationBinding.create());
     }
 }

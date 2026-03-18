@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@ FROM helidon/benchmark-startup-base AS benchmark
 WORKDIR /usr/share
 
 ENV JDK_URL="https://cdn.azul.com/zulu/bin"
-ENV DOWNLOAD_URL="$JDK_URL/zulu23.32.11-ca-crac-jdk23.0.2-linux_x64.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-23/zulu23.32.11-ca-crac-jdk23.0.2-linux_x64
+ENV DOWNLOAD_URL="$JDK_URL/zulu25.32.21-ca-crac-jdk25.0.2-linux_x64.tar.gz"
+ENV JAVA_HOME=/usr/share/jdk-25/zulu25.32.21-ca-crac-jdk25.0.2-linux_x64
 
 # Install ZULU
 RUN wget -O crac-jdk.tar.gz ${DOWNLOAD_URL} && \
-    mkdir -p /usr/share/jdk-23 && \
-    tar zxf ./crac-jdk.tar.gz -C /usr/share/jdk-23 && \
+    mkdir -p /usr/share/jdk-25 && \
+    tar zxf ./crac-jdk.tar.gz -C /usr/share/jdk-25 && \
     ln -sf $JAVA_HOME/bin/java /bin/ && \
     ln -sf $JAVA_HOME/bin/jcmd /bin/ && \
     ln -sf $JAVA_HOME/bin/jps /bin/
@@ -37,6 +37,7 @@ ARG FLAVOR=mp
 ENV FLAVOR=$FLAVOR
 
 ADD ${FLAVOR}-bench-app/pom.xml .
+ADD ${FLAVOR}-bench-app/pokemons.mv.db .
 ADD ${FLAVOR}-bench-app/src src
 RUN mvn package -Pcrac -DskipTests
 
@@ -57,11 +58,21 @@ END_OF_SCRIPT
 
 # AOT build and warmup
 RUN <<END_OF_SCRIPT
+cat <<EOF > crac-resource-policies.yaml
+# https://docs.azul.com/core/release/january-2025/crac/fd-policies.html
+# H2 in external file
+type: FILE
+path: **/pokemons.mv.db
+action: close
+EOF
+
 cat <<EOF > aot-build.sh
 #!/bin/bash
 java -XX:CPUFeatures=generic \
     -XX:CRaCEngine=warp \
     -XX:CRaCCheckpointTo=./cr \
+    -Djdk.crac.collect-fd-stacktraces=false \
+    -Djdk.crac.resource-policies=crac-resource-policies.yaml \
     -jar ./target/benchmark.jar |& tee helidon-warmup.log &
 PID="\$(jcmd | grep ".jar" | awk '{print \$1}')"
 source warmup.sh
@@ -77,8 +88,7 @@ cat <<EOF > run.sh
 #!/bin/bash -e
 java \
 -XX:CRaCEngine=warp \
--XX:CRaCRestoreFrom=/helidon/cr \
--jar ./target/benchmark.jar |& tee helidon-run.log &
+-XX:CRaCRestoreFrom=/helidon/cr |& tee helidon-run.log &
 
 PID="\$(jcmd | grep "jar" | awk '{print \$1}')"
 

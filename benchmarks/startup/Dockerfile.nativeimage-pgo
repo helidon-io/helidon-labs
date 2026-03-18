@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ FROM helidon/benchmark-startup-base AS benchmark
 WORKDIR /usr/share
 
 ENV JDK_URL="https://download.oracle.com/graalvm"
-ENV DOWNLOAD_URL="$JDK_URL/21/latest/graalvm-jdk-21_linux-x64_bin.tar.gz"
-ENV JAVA_HOME=/usr/share/jdk-21-graal
+ENV DOWNLOAD_URL="$JDK_URL/25/latest/graalvm-jdk-25_linux-x64_bin.tar.gz"
+ENV JAVA_HOME=/usr/share/jdk
 
 # Install GraalVM
 RUN wget -O jdk.tar.gz ${DOWNLOAD_URL} && \
@@ -37,6 +37,7 @@ ARG FLAVOR=mp
 ENV FLAVOR=$FLAVOR
 
 ADD ${FLAVOR}-bench-app/pom.xml .
+ADD ${FLAVOR}-bench-app/pokemons.mv.db .
 ADD ${FLAVOR}-bench-app/src src
 
 # Extra layer with deps download
