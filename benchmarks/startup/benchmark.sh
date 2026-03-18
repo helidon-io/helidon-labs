@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,10 +66,10 @@ function runBenchmark() {
     NAME_CAP=$(echo "$NAME" | awk '{$1=toupper(substr($1,0,1))substr($1,2)}1')
     LOG_FILE=$RUN_DIR/$NAME-$FLAVOR-run.log
 
-    echo -n "docker build --build-arg FLAVOR=$FLAVOR "
+    echo -n "docker build --network=host --build-arg FLAVOR=$FLAVOR "
     echo -n "--build-arg WARMUP_CACHEBUST=$WARMUP_CACHEBUST "
     echo -n "-t $IMAGE_NAME -f Dockerfile.$NAME .\n"
-    docker build --progress=plain --build-arg FLAVOR="$FLAVOR" \
+    docker build --network=host --progress=plain --build-arg FLAVOR="$FLAVOR" \
     --build-arg WARMUP_CACHEBUST="$WARMUP_CACHEBUST" \
     -t "$IMAGE_NAME" -f Dockerfile."$NAME" .
 
@@ -82,7 +82,6 @@ function runBenchmark() {
 # Check all docker files within current folder and run se tests
 for FLAVOR in se ; do
   for f in Dockerfile.*; do
-#  for f in Dockerfile.nativeimage Dockerfile.nativeimage-pgo; do
     TEST_NAME=$(echo "$f" | awk -F. '{printf $2}');
     [ "$TEST_NAME" = "base" ] && continue
     runBenchmark "$FLAVOR" "$TEST_NAME"
