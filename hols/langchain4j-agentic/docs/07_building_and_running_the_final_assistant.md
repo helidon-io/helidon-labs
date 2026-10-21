@@ -37,7 +37,7 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 
 > [!NOTE]
 > Notice that the Helidon assistant now decides which Helidon flavor (SE/MP) the question is about and selects the
-> appropriate specialized agent to answer it. 
+> appropriate specialized agent to answer it.
 > Each specialized agent uses a separate embedding store with documents related to a single Helidon flavor, making
 > the response tailored to the correct product.
 

@@ -24,9 +24,7 @@ Helidon’s **LangChain4J integration** makes it easy to create AI Services usin
 
 ## 2. Creating the AI Service
 
-An **AI Service** is a user-defined interface annotated with `@Ai.Service`. By default, it **automatically integrates all LangChain4J (LC4J) components** registered in Helidon's service registry. This means that if no specific configuration is provided, the service will use all available AI components.
-
-At this stage, only the **`ChatLanguageModel`** has been configured, so it will be **automatically injected** into the service. Later, we will extend the AI Service by adding **embedding storage, chat memory**, and other components to enhance its capabilities.
+An **AI Service** is a user-defined interface annotated with `@Ai.Service`. Name the AI service with `@Ai.Service("hol-model")` and select the configured chat model with `@Ai.ChatModel("hol-model")`. Later, we will connect a content retriever to supply relevant menu data.
 
 📌 We will keep all AI-related classes in `io.helidon.hol.lc4j.ai` package. Create this package first if it doesn't exist.
 
@@ -35,11 +33,10 @@ At this stage, only the **`ChatLanguageModel`** has been configured, so it will 
 ```java
 package io.helidon.hol.lc4j.ai;
 
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
-import dev.langchain4j.service.SystemMessage;
-
-@Ai.Service
+@Ai.Service("hol-model")
+@Ai.ChatModel("hol-model")
 public interface ChatAiService {
 
     String chat(String question);
@@ -52,10 +49,10 @@ Now, let's modify our existing `ChatBotService.java` to use the **AI Service** i
 
 ### **Before:**
 
-Previously, `ChatLanguageModel` was injected into `ChatBotService` and called directly:
+Previously, `ChatModel` was injected into `ChatBotService` and called directly:
 
 ```java
-var answer = chatModel.generate(question);
+var answer = chatModel.chat(question);
 ```
 
 ### **After:**

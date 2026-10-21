@@ -1,6 +1,8 @@
 # HOL: Building AI-Powered Applications with Helidon and LangChain4J
 
-In this hands-on lab, you will build an AI-powered chat assistant for a coffee shop using **Helidon** and **LangChain4J**. The assistant will understand natural language, provide menu recommendations, and guide users through the ordering process.
+In this hands-on lab, you will build an AI-powered chat assistant for a coffee shop using **Helidon 27** and **LangChain4J**. The assistant will understand natural language, provide menu recommendations, and guide users through the ordering process.
+
+Requires **JDK 27**. Both the bootstrap and final projects use Helidon `27.0.0`; the final project adds Helidon Extensions LangChain4J `27.0.0`.
 
 ## What You'll Learn
 

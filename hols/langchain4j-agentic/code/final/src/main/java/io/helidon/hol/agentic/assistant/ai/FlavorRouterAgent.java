@@ -17,7 +17,7 @@
 package io.helidon.hol.agentic.assistant.ai;
 
 import io.helidon.common.features.api.HelidonFlavor;
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
 import dev.langchain4j.agentic.declarative.ActivationCondition;
 import dev.langchain4j.agentic.declarative.ConditionalAgent;

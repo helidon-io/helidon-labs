@@ -12,7 +12,7 @@
 
 ## 1. Helidon LangChain4J Integration
 
-We will use [LangChain4J (LC4J)](https://github.com/langchain4j/langchain4j/) to implement AI features in our application. Helidon 4.2 provides a dedicated **Helidon-LC4J integration module**, simplifying AI integration in Helidon applications.
+We will use [LangChain4J (LC4J)](https://github.com/langchain4j/langchain4j/) to implement AI features in our application. Helidon 27 uses the separately versioned **Helidon Extensions LangChain4J modules**, simplifying AI integration in Helidon applications.
 
 ### Key Features of Helidon LangChain4J Integration:
 
@@ -32,29 +32,64 @@ We will use [LangChain4J (LC4J)](https://github.com/langchain4j/langchain4j/) to
 
 To enable Helidon and LangChain4J integration, we need to add several **Maven dependencies** and **annotation processor**.
 
+### Manage Extension Versions
+
+The bootstrap project uses Helidon `27.0.0` and Java `27`. Add these properties to its existing `<properties>` section:
+
+```xml
+<langchain4j.extension.version>27.0.0</langchain4j.extension.version>
+<version.lib.langchain4j>1.18.1</version.lib.langchain4j>
+```
+
+Add the extension BOM and the LangChain4J BOM before `<dependencies>`. The latter manages the direct quantized embedding-model dependency.
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.helidon.extensions.langchain4j</groupId>
+            <artifactId>helidon-extensions-langchain4j-bom</artifactId>
+            <version>${langchain4j.extension.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-bom</artifactId>
+            <version>${version.lib.langchain4j}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
 ### Add Dependencies
 
 Add the following dependencies inside the `<dependencies>` section of `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>io.helidon.integrations.langchain4j</groupId>
-    <artifactId>helidon-integrations-langchain4j</artifactId>
+    <groupId>io.helidon.extensions.langchain4j</groupId>
+    <artifactId>helidon-extensions-langchain4j</artifactId>
 </dependency>
 <dependency>
-    <groupId>io.helidon.integrations.langchain4j.providers</groupId>
-    <artifactId>helidon-integrations-langchain4j-providers-open-ai</artifactId>
+    <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+    <artifactId>helidon-extensions-langchain4j-providers-open-ai</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+    <artifactId>helidon-extensions-langchain4j-providers-lc4j-in-process</artifactId>
 </dependency>
 <dependency>
     <groupId>dev.langchain4j</groupId>
-    <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-    <version>${version.lib.langchain4j}</version>
+    <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
 </dependency>
 ```
 
 ### Add Annotation Processor
 
-Since **Helidon Inject** works at build time, we need to add annotation processor `helidon-integrations-langchain4j-codegen` 
+Since **Helidon Inject** works at build time, we need to add annotation processor `helidon-extensions-langchain4j-codegen`
 to the `maven-compiler-plugin` in `pom.xml`, result should look like the following:
 
 ```xml
@@ -74,9 +109,9 @@ to the `maven-compiler-plugin` in `pom.xml`, result should look like the followi
                 <version>${helidon.version}</version>
             </path>
             <path>
-              <groupId>io.helidon.integrations.langchain4j</groupId>
-              <artifactId>helidon-integrations-langchain4j-codegen</artifactId>
-              <version>${helidon.version}</version>
+              <groupId>io.helidon.extensions.langchain4j</groupId>
+              <artifactId>helidon-extensions-langchain4j-codegen</artifactId>
+              <version>${langchain4j.extension.version}</version>
             </path>
         </annotationProcessorPaths>
     </configuration>
@@ -103,10 +138,12 @@ Add the following configuration to `src/main/resources/application.yaml`:
 
 ```yaml
 langchain4j:
-  open-ai:
-    chat-model:
-      enabled: true
+  providers:
+    open-ai:
       api-key: "demo"
+  models:
+    hol-model:
+      provider: open-ai
       model-name: "gpt-4o-mini"
 ```
 
@@ -117,15 +154,15 @@ After adding the configuration, the chat model will be **available for injection
 Update `ChatBotService.java` as follows:
 
 ```java
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 
 @Service.Singleton
 public class ChatBotService implements HttpService {
 
-    private final ChatLanguageModel chatModel;
+    private final ChatModel chatModel;
 
     @Service.Inject
-    public ChatBotService(ChatLanguageModel chatModel) {
+    public ChatBotService(@Service.Named("hol-model") ChatModel chatModel) {
         // Injecting the configured chat model using constructor injection
         this.chatModel = chatModel;
     }
@@ -140,7 +177,7 @@ public class ChatBotService implements HttpService {
         var question = req.query().first("question").orElse("Hello");
         
         // Calling the chat model to get the answer
-        var answer = chatModel.generate(question);
+        var answer = chatModel.chat(question);
 
         // Return the answer
         res.send(answer);

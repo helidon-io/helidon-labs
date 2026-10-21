@@ -24,8 +24,8 @@ Copy in the following code:
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
+import io.helidon.extensions.langchain4j.Ai;
 import io.helidon.hol.agentic.assistant.dto.ExpertMessage;
-import io.helidon.integrations.langchain4j.Ai;
 
 import dev.langchain4j.agentic.declarative.Output;
 import dev.langchain4j.agentic.declarative.SequenceAgent;
@@ -58,7 +58,7 @@ Copy in the following code:
 package io.helidon.hol.agentic.assistant.ai;
 
 import io.helidon.common.features.api.HelidonFlavor;
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.UserMessage;
@@ -69,9 +69,9 @@ import dev.langchain4j.service.V;
 public interface FlavorClassifierAgent {
 
     @UserMessage("""
-            Analyze the following user request about Helidon framework and categorize it as 'mp' - MicroProfile flavor 
+            Analyze the following user request about Helidon framework and categorize it as 'mp' - MicroProfile flavor
             or 'se' - Standard Edition flavor of Helidon.
-            
+
             In case the request doesn't belong to any of those categories categorize it as 'se'.
             Reply with only one of those words and nothing else.
             The user request is: '{{question}}'.
@@ -98,7 +98,7 @@ Copy in the following code:
 package io.helidon.hol.agentic.assistant.ai;
 
 import io.helidon.common.features.api.HelidonFlavor;
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
 import dev.langchain4j.agentic.declarative.ActivationCondition;
 import dev.langchain4j.agentic.declarative.ConditionalAgent;
@@ -147,7 +147,7 @@ Copy in:
 ```java
 package io.helidon.hol.agentic.assistant.ai;
 
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.SystemMessage;
@@ -169,7 +169,7 @@ public interface SummarizerAgent {
     @UserMessage("""
         Previous Summary:
         {{previousSummary}}
-        
+
         Last User Message:
         {{question}}
 

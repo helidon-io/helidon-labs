@@ -19,6 +19,7 @@ package io.helidon.hol.agentic.assistant.mcp;
 import io.helidon.config.Config;
 import io.helidon.extensions.mcp.server.Mcp;
 import io.helidon.extensions.mcp.server.McpToolResult;
+import io.helidon.json.binding.Json;
 import io.helidon.json.schema.JsonSchema;
 import io.helidon.service.registry.Service;
 
@@ -68,6 +69,7 @@ class CliToolsMcpServer {
                 ));
     }
 
+    @Json.Entity
     @JsonSchema.Schema
     @JsonSchema.Title("Calendar Event")
     public record InitArguments(@JsonSchema.Required

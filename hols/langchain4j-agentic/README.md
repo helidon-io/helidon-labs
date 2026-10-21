@@ -1,7 +1,11 @@
 # HOL: Building Agentic AI Applications with Helidon and LangChain4J
 
-In this hands-on lab, you will build an **agentic AI assistant** with **Helidon** and **LangChain4J**.  
+In this hands-on lab, you will build an **agentic AI assistant** with **Helidon** and **LangChain4J**.
 Starting from the bootstrap project, you will evolve it into a multi-agent system that classifies user intent, routes requests to specialized experts, applies RAG, and returns summarized conversational context.
+
+The assistant runs on **Helidon 27.0.0** with **Java 27**, using the Helidon Extensions LangChain4j integration.
+Its SE and MP experts describe the documentation supplied to their embedding stores; the MP knowledge does not make
+the assistant itself an MP application. The demo versions returned by tools are independent of the assistant's runtime version.
 
 Note: if you have trouble viewing local markdown files, you can view this documentation
 [on GitHub](https://github.com/helidon-io/helidon-labs/blob/main/hols/langchain4j-agentic/README.md).

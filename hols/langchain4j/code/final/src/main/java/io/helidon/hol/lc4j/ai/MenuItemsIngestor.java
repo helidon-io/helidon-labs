@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Oracle and/or its affiliates.
+ * Copyright (c) 2025, 2026 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package io.helidon.hol.lc4j.ai;
 
 import java.util.logging.Logger;
 
-import io.helidon.common.config.Config;
+import io.helidon.config.Config;
 import io.helidon.hol.lc4j.data.MenuItem;
 import io.helidon.hol.lc4j.data.MenuItemsService;
 import io.helidon.service.registry.Service;
@@ -53,8 +53,8 @@ public class MenuItemsIngestor {
      */
     @Service.Inject
     MenuItemsIngestor(Config config,
-                      EmbeddingStore<TextSegment> embeddingStore,
-                      EmbeddingModel embeddingModel,
+                      @Service.Named("hol-embedding-store") EmbeddingStore<TextSegment> embeddingStore,
+                      @Service.Named("hol-embedding-model") EmbeddingModel embeddingModel,
                       MenuItemsService menuItemsService) {
         this.embeddingStore = embeddingStore;
         this.embeddingModel = embeddingModel;

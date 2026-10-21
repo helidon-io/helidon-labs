@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Oracle and/or its affiliates.
+ * Copyright (c) 2025, 2026 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.helidon.hol.lc4j.ai;
 
-import io.helidon.integrations.langchain4j.Ai;
+import io.helidon.extensions.langchain4j.Ai;
 
 import dev.langchain4j.service.SystemMessage;
 
@@ -26,8 +26,9 @@ import dev.langchain4j.service.SystemMessage;
  * The chat model and content provider implementations are automatically retrieved from
  * the service registry.
  */
-@Ai.Service
-@Ai.ChatMemoryWindow(10)
+@Ai.Service("hol-model")
+@Ai.ChatModel("hol-model")
+@Ai.ContentRetriever("hol-content-retriever")
 public interface ChatAiService {
 
     /**

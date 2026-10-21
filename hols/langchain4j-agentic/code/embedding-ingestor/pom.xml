@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.4.0</version>
+        <version>27.0.0</version>
         <relativePath/>
     </parent>
 
@@ -34,8 +34,22 @@
     <name>Embedding Ingestor</name>
 
     <properties>
+        <maven.compiler.release>27</maven.compiler.release>
+        <version.lib.langchain4j>1.18.1</version.lib.langchain4j>
         <mainClass>io.helidon.hol.agentic.assistant.EmbeddingIngestorMain</mainClass>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>${version.lib.langchain4j}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -76,15 +90,6 @@
                         <id>copy-libs</id>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                    <release>21</release>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

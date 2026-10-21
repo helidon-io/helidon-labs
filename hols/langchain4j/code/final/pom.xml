@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Copyright (c) 2025 Oracle and/or its affiliates.
+    Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.2.0</version>
+        <version>27.0.0</version>
         <relativePath/>
     </parent>
     <groupId>io.helidon.hol</groupId>
@@ -29,23 +29,47 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>27</maven.compiler.release>
+        <langchain4j.extension.version>27.0.0</langchain4j.extension.version>
+        <version.lib.langchain4j>1.18.1</version.lib.langchain4j>
         <mainClass>io.helidon.hol.lc4j.ApplicationMain</mainClass>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.helidon.extensions.langchain4j</groupId>
+                <artifactId>helidon-extensions-langchain4j-bom</artifactId>
+                <version>${langchain4j.extension.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>${version.lib.langchain4j}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
-            <groupId>io.helidon.integrations.langchain4j</groupId>
-            <artifactId>helidon-integrations-langchain4j</artifactId>
+            <groupId>io.helidon.extensions.langchain4j</groupId>
+            <artifactId>helidon-extensions-langchain4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.helidon.integrations.langchain4j.providers</groupId>
-            <artifactId>helidon-integrations-langchain4j-providers-open-ai</artifactId>
+            <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+            <artifactId>helidon-extensions-langchain4j-providers-open-ai</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+            <artifactId>helidon-extensions-langchain4j-providers-lc4j-in-process</artifactId>
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-            <version>${version.lib.langchain4j}</version>
+            <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -93,9 +117,9 @@
                             <version>${helidon.version}</version>
                         </path>
                         <path>
-                            <groupId>io.helidon.integrations.langchain4j</groupId>
-                            <artifactId>helidon-integrations-langchain4j-codegen</artifactId>
-                            <version>${helidon.version}</version>
+                            <groupId>io.helidon.extensions.langchain4j</groupId>
+                            <artifactId>helidon-extensions-langchain4j-codegen</artifactId>
+                            <version>${langchain4j.extension.version}</version>
                         </path>
                         <path>
                             <groupId>io.helidon.service</groupId>
