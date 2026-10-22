@@ -24,7 +24,7 @@ The LangChain4j code generator uses the same extension version. Direct LangChain
 `dev.langchain4j:langchain4j-bom:1.18.1`.
 
 ```sh
-mvnw clean package
+./mvnw clean package
 ```
 
 ## 3. Run the bootstrap application

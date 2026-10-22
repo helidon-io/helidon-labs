@@ -16,8 +16,8 @@
 
 package io.helidon.hol.agentic.assistant.ai;
 
-import io.helidon.hol.agentic.assistant.dto.ExpertMessage;
 import io.helidon.extensions.langchain4j.Ai;
+import io.helidon.hol.agentic.assistant.dto.ExpertMessage;
 
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;

@@ -9,7 +9,7 @@ The ingestor downloads `helidon-markdown-docs.zip` to a temporary file on each r
 From `code/embedding-ingestor`:
 
 ```sh
-mvnw clean package
+./mvnw clean package
 ```
 ```sh
 java \

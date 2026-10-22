@@ -86,4 +86,24 @@ You can use any code editor of your choice. Recommended options:
 
 ---
 
+## 4. Configure OpenAI Access
+
+The chat examples use `gpt-4o-mini` and require an OpenAI API key with access to that model. API usage may incur charges. LangChain4J 1.18.1 does not enable demo access when the key is `demo`.
+
+Set your key in the terminal used to launch the application:
+
+```sh
+export OPENAI_API_KEY="<your-openai-api-key>"
+```
+
+In Windows PowerShell, use:
+
+```powershell
+$env:OPENAI_API_KEY = "<your-openai-api-key>"
+```
+
+Keep the key out of source files and version control. The application configuration reads it through `${OPENAI_API_KEY}`. Set the variable before running either the completed workshop or the final project in `code/final`.
+
+---
+
 ### Next Step → [Setting Up the Project](02_setting_up_the_project.md)

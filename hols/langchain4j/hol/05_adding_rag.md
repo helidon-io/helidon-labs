@@ -28,7 +28,7 @@ Replace the `langchain4j` section in `application.yaml` with the following, keep
 langchain4j:
   providers:
     open-ai:
-      api-key: "demo"
+      api-key: "${OPENAI_API_KEY}"
 
     lc4j-in-process:
       type: all_minilm_l6_v2_q

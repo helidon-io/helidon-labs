@@ -4,6 +4,8 @@ In this hands-on lab, you will build an AI-powered chat assistant for a coffee s
 
 Requires **JDK 27**. Both the bootstrap and final projects use Helidon `27.0.0`; the final project adds Helidon Extensions LangChain4J `27.0.0`.
 
+Chat examples require an OpenAI API key with access to `gpt-4o-mini`. Set `OPENAI_API_KEY` in the terminal used to start the application; see [Configure OpenAI Access](hol/01_setting_up_the_environment.md#4-configure-openai-access). API usage may incur charges.
+
 ## What You'll Learn
 
 - How to use **Helidon** and **LangChain4J** to build an **AI-powered assistant**.

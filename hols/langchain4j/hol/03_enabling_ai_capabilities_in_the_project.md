@@ -130,7 +130,7 @@ The application should compile and start without errors.
 
 ## 3. Adding a Chat Model
 
-Now, let’s add a **chat model** to our project. We will use OpenAI’s **gpt-4o-mini** in **demo mode**.
+Now, let’s add a **chat model** to our project. We will use OpenAI’s **gpt-4o-mini** with the `OPENAI_API_KEY` environment variable set in [Setting Up the Environment](01_setting_up_the_environment.md#4-configure-openai-access). Start the application from a terminal where that variable is set.
 
 ### Update Application Configuration
 
@@ -140,7 +140,7 @@ Add the following configuration to `src/main/resources/application.yaml`:
 langchain4j:
   providers:
     open-ai:
-      api-key: "demo"
+      api-key: "${OPENAI_API_KEY}"
   models:
     hol-model:
       provider: open-ai
