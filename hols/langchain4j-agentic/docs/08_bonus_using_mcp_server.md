@@ -10,9 +10,6 @@ In this section, we will:
 
 ## 1. Build and run the MCP server (Terminal 1)
 
-> [!NOTE]
-> Make sure the `OCI_API_KEY` environment variable has been set in this terminal.
-
 ```sh
 cd langchain4j-agentic/code/mcp-server
 ```

@@ -36,6 +36,9 @@
     <properties>
         <maven.compiler.release>27</maven.compiler.release>
         <version.lib.langchain4j>1.18.1</version.lib.langchain4j>
+        <version.lib.commonmark>0.31.0</version.lib.commonmark>
+        <version.lib.jsoup>1.23.1</version.lib.jsoup>
+        <version.lib.hamcrest>3.0</version.lib.hamcrest>
         <mainClass>io.helidon.hol.agentic.assistant.EmbeddingIngestorMain</mainClass>
     </properties>
 
@@ -69,9 +72,34 @@
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.asciidoctor</groupId>
-            <artifactId>asciidoctorj</artifactId>
-            <version>3.0.1</version>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>${version.lib.commonmark}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>${version.lib.commonmark}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${version.lib.jsoup}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${version.lib.hamcrest}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -99,10 +127,6 @@
                     <executable>java</executable>
                     <arguments>
                         <argument>--enable-native-access=ALL-UNNAMED</argument>
-                        <argument>--add-opens</argument>
-                        <argument>java.base/sun.nio.ch=ALL-UNNAMED</argument>
-                        <argument>--add-opens</argument>
-                        <argument>java.base/java.io=ALL-UNNAMED </argument>
                         <argument>-jar</argument>
                         <argument>target/embedding-ingestor.jar</argument>
                     </arguments>

@@ -41,7 +41,7 @@ Open the chat UI at http://localhost:8080
 
 You should see Helidon Assistant prompt UI.
 
-![hol-ui.png](img/hol-ui.png)
+![hol-ui.png](img/hol-expert-ui.png)
 
 
 Example prompt:

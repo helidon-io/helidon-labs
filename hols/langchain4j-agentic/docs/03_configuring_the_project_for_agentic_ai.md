@@ -51,7 +51,7 @@ langchain4j:
 
     expensive-model:
       provider: open-ai
-      model-name: "openai.gpt-oss-120b"
+      model-name: "xai.grok-4.7"
 
   embedding-stores:
     se-embedding-store:

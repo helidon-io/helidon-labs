@@ -46,7 +46,7 @@ The HOL application projects do not compute embeddings at startup; they load pre
 ## Table of Contents
 
 1. [Setting Up the Environment](./docs/00_setting_up_the_environment.md)
-2. [Preparing Embeddings with Embedding Ingestor](./docs/01_preparing_embeddings_with_embedding_ingestor.md)
+2. [Preparing Embeddings with Embedding Ingestor (Optional)](./docs/01_preparing_embeddings_with_embedding_ingestor.md)
 3. [Setting Up the Bootstrap Project](./docs/02_setting_up_the_bootstrap_project.md)
 4. [Configuring the Project for Agentic AI](./docs/03_configuring_the_project_for_agentic_ai.md)
 5. [Creating the Orchestrator Agent](./docs/04_creating_the_orchestrator_agent.md)

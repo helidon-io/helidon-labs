@@ -78,4 +78,3 @@ langchain4j:
 
 app:
   latest-helidon-version: 4.4.0-FROM-TOOL
-  docs-zip-path: ../../data/helidon-docs.zip
