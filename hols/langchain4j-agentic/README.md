@@ -40,7 +40,7 @@ This orchestration is executed by **`HelidonExpertAgent`** as a sequence, giving
 ### Local Embeddings and RAG in This HOL
 
 The HOL uses a **local embedding model** (`all-minilm-l6-v2-q`, in-process) and **local in-memory embedding stores** (separate stores for SE and MP), loaded from persisted JSON files.
-Embeddings are generated only by the standalone `embedding-ingestor` project in step `2`.
+The applications download `embeddings.zip` at startup if any embedding file is missing and extract `all-embeddings.json`, `se-embeddings.json`, and `mp-embeddings.json`, preserving existing files; you can also generate them with the standalone `embedding-ingestor` project in step `2`.
 The HOL application projects do not compute embeddings at startup; they load prebuilt embeddings via `from-file`.
 
 ## Table of Contents

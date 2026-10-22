@@ -28,7 +28,7 @@ You should see Helidon Expert Assistant prompt UI.
 
 ![hol-expert-ui.png](img/hol-expert-ui.png)
 
-This expert uses the previously created embeddings stores that were saved to JSON files on your local disk. There is one each for the SE and MP Experts.
+This expert uses embedding stores loaded from `se-embeddings.json` and `mp-embeddings.json` in the working directory. Startup downloads `embeddings.zip` to extract missing files and reuses existing ones. There is one each for the SE and MP Experts.
 
 Example prompt:
 ```

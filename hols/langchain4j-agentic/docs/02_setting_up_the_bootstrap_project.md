@@ -33,6 +33,8 @@ mvnw clean package
 java -jar target/helidon-basic-assistant.jar
 ```
 
+Startup downloads `embeddings.zip` if any embedding file is missing and extracts `all-embeddings.json`, `se-embeddings.json`, and `mp-embeddings.json` into the working directory, preserving existing files. Bootstrap loads `all-embeddings.json`.
+
 ## 4. Verify web UI
 
 Open the chat UI at http://localhost:8080

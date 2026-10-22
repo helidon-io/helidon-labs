@@ -1,5 +1,7 @@
 # 2. Preparing Embeddings with Embedding Ingestor
 
+The applications now download `embeddings.zip` and extract missing ALL, SE, and MP embedding files automatically, so running the ingestor is optional.
+
 In this HOL we use LangChain4j `InMemoryEmbeddingStore` instances for RAG (one store for Helidon SE and one for Helidon MP).
 `InMemoryEmbeddingStore` keeps vectors in RAM for fast retrieval, and it also supports loading persisted state from JSON via `from-file`.
 
@@ -61,15 +63,17 @@ You should see both files present and non-empty.
 
 In a later step these generated files will be referenced in `application.yaml` using `from-file` for both embedding stores so the app loads vectors directly from persisted JSON:
 
+To use your generated files instead of the automatic downloads, copy them from `data/` into `code/bootstrap/` (or `code/final/`) before starting the application from that directory. Existing files are reused.
+
 ```yaml
 langchain4j:
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/se-embeddings.json
+      from-file: se-embeddings.json
     mp-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/mp-embeddings.json
+      from-file: mp-embeddings.json
 ```
 
 With this setup, HOL projects reuse persisted embeddings and skip embedding computation entirely.

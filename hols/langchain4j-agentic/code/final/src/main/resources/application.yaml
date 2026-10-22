@@ -53,15 +53,15 @@ langchain4j:
 
     expensive-model:
       provider: open-ai
-      model-name: "openai.gpt-oss-120b"
+      model-name: "xai.grok-4.7"
 
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/se-embeddings.json
+      from-file: se-embeddings.json
     mp-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/mp-embeddings.json
+      from-file: mp-embeddings.json
 
   content-retrievers:
     se-content-retriever:
