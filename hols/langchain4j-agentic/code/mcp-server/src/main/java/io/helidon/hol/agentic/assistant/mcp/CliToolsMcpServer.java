@@ -19,6 +19,7 @@ package io.helidon.hol.agentic.assistant.mcp;
 import io.helidon.config.Config;
 import io.helidon.extensions.mcp.server.Mcp;
 import io.helidon.extensions.mcp.server.McpToolResult;
+import io.helidon.json.binding.Json;
 import io.helidon.json.schema.JsonSchema;
 import io.helidon.service.registry.Service;
 
@@ -45,7 +46,7 @@ class CliToolsMcpServer {
     @Mcp.Tool("""
             Returns example of Helidon CLI command to create Helidon quickstart example with provided projectName,
             version, package name and Helidon flavor as parameters. Resulting CLI command can be used for generating new
-            quickstart project based on Helidon SE. Version parameter should be the latest released version unless specified
+            quickstart project based on Helidon SE or MP. Version parameter should be the latest released version unless specified
             otherwise.
             """)
     McpToolResult getInitHelidonSeProjectWithCliCmd(InitArguments initArguments) {
@@ -68,8 +69,9 @@ class CliToolsMcpServer {
                 ));
     }
 
+    @Json.Entity
     @JsonSchema.Schema
-    @JsonSchema.Title("Calendar Event")
+    @JsonSchema.Title("Helidon CLI init arguments")
     public record InitArguments(@JsonSchema.Required
                                 @JsonSchema.Description("Version of the Helidon release to create a quickstart project with.")
                                 String version,

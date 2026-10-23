@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>4.4.0</version>
+        <version>27.0.0</version>
         <relativePath/>
     </parent>
 
@@ -34,21 +34,42 @@
     <name>Helidon Agentic Assistant</name>
 
     <properties>
+        <langchain4j.extension.version>27.0.0</langchain4j.extension.version>
+        <version.lib.langchain4j>1.18.1</version.lib.langchain4j>
         <mainClass>io.helidon.hol.agentic.assistant.ApplicationMain</mainClass>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.helidon.extensions.langchain4j</groupId>
+                <artifactId>helidon-extensions-langchain4j-bom</artifactId>
+                <version>${langchain4j.extension.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>${version.lib.langchain4j}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
-            <groupId>io.helidon.integrations.langchain4j</groupId>
-            <artifactId>helidon-integrations-langchain4j</artifactId>
+            <groupId>io.helidon.extensions.langchain4j</groupId>
+            <artifactId>helidon-extensions-langchain4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.helidon.integrations.langchain4j.providers</groupId>
-            <artifactId>helidon-integrations-langchain4j-providers-open-ai</artifactId>
+            <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+            <artifactId>helidon-extensions-langchain4j-providers-open-ai</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.helidon.integrations.langchain4j.providers</groupId>
-            <artifactId>helidon-integrations-langchain4j-providers-lc4j-in-process</artifactId>
+            <groupId>io.helidon.extensions.langchain4j.providers</groupId>
+            <artifactId>helidon-extensions-langchain4j-providers-lc4j-in-process</artifactId>
         </dependency>
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -99,14 +120,19 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
+                            <groupId>io.helidon.extensions.langchain4j</groupId>
+                            <artifactId>helidon-extensions-langchain4j-codegen</artifactId>
+                            <version>${langchain4j.extension.version}</version>
+                        </path>
+                        <path>
                             <groupId>io.helidon.bundles</groupId>
                             <artifactId>helidon-bundles-apt</artifactId>
                             <version>${helidon.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <source>21</source>
-                    <target>21</target>
-                    <release>21</release>
+                    <source>27</source>
+                    <target>27</target>
+                    <release>27</release>
                 </configuration>
             </plugin>
             <plugin>

@@ -16,16 +16,53 @@
 
 package io.helidon.hol.agentic.assistant;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.HashSet;
+import java.util.List;
+import java.util.zip.ZipInputStream;
+
 import io.helidon.logging.common.LogConfig;
 import io.helidon.service.registry.Service;
 import io.helidon.service.registry.ServiceRegistryManager;
 
 @Service.GenerateBinding
 public class ApplicationMain {
-    public static void main(String[] args) {
+    static void main() throws IOException {
         LogConfig.configureRuntime();
+        downloadEmbeddingsFile();
         // Start Helidon
         ServiceRegistryManager.start(ApplicationBinding.create());
         System.out.println("Helidon Assistant is running at http://localhost:8080");
+    }
+
+    private static void downloadEmbeddingsFile() throws IOException {
+        var missing = new HashSet<>(List.of("all-embeddings.json", "se-embeddings.json", "mp-embeddings.json"));
+        missing.removeIf(name -> Files.exists(Path.of(name)));
+        if (missing.isEmpty()) {
+            return;
+        }
+        System.out.println("Downloading embeddings.zip...");
+        try (var input = new ZipInputStream(new BufferedInputStream(
+                URI.create("https://objectstorage.us-chicago-1.oraclecloud.com/n/axh6g42yikfw/b/lc4j-agents-lab/o/embeddings.zip")
+                        .toURL().openStream()))) {
+            for (var entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {
+                if (!missing.remove(entry.getName())) {
+                    continue;
+                }
+                Path temporaryFile = Files.createTempFile(Path.of("."), ".embeddings-", ".tmp");
+                try {
+                    Files.copy(input, temporaryFile, StandardCopyOption.REPLACE_EXISTING);
+                    Files.move(temporaryFile, Path.of(entry.getName()));
+                    System.out.println("Extracted " + entry.getName());
+                } finally {
+                    Files.deleteIfExists(temporaryFile);
+                }
+            }
+        }
     }
 }

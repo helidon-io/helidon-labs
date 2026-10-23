@@ -34,7 +34,7 @@ langchain4j:
     open-ai:
       # Using OpenAI provider to call OCI GenAI model over OpenAI compatible API
       api-key: "${OCI_API_KEY}"
-      base-url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions
+      base-url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/v1
       log-requests: false
       log-responses: false
 
@@ -55,7 +55,7 @@ langchain4j:
   embedding-stores:
     basic-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/all-embeddings.json
+      from-file: all-embeddings.json
 
   content-retrievers:
     basic-content-retriever:

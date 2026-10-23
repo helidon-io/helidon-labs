@@ -12,13 +12,15 @@ In this section, we will:
 
 ## 1. Verify Java
 
-Use Java 21+ (Java 25 recommended).
+Use Java 27 or newer.
 
 ```sh
 java --version
 ```
 
 This lab uses the maven wrapper (`mvnw`) so that you do not need to install maven on your system if you do not have it already.
+
+The examples use `./mvnw` for Linux and macOS. In Windows Command Prompt, use `mvnw.cmd`; in PowerShell, use `.\mvnw.cmd` with the same arguments.
 
 ## 2. Set OCI API key
 
@@ -29,14 +31,20 @@ Set the `OCI_API_KEY` environment variable before running the app:
 export OCI_API_KEY="<your-oci-api-key>"
 ```
 
-For Windows:
+For Windows Command Prompt:
 
-```sh
-set OCI_API_KEY="<your-oci-api-key>"
+```bat
+set "OCI_API_KEY=<your-oci-api-key>"
+```
+
+For PowerShell:
+
+```powershell
+$env:OCI_API_KEY = "<your-oci-api-key>"
 ```
 
 Make sure to do this in all terminals where you will be running the app.
 
 ---
 
-### Next Step -> [Preparing Embeddings with Embedding Ingestor](01_preparing_embeddings_with_embedding_ingestor.md)
+### Next Step -> [Preparing Embeddings with Embedding Ingestor (Optional)](01_preparing_embeddings_with_embedding_ingestor.md)

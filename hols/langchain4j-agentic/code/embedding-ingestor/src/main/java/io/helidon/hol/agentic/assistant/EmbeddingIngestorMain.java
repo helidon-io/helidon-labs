@@ -16,10 +16,15 @@
 
 package io.helidon.hol.agentic.assistant;
 
+import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import io.helidon.config.Config;
 import io.helidon.config.ConfigException;
@@ -35,48 +40,53 @@ public final class EmbeddingIngestorMain {
     private EmbeddingIngestorMain() {
     }
 
-    public static void main(String[] args) {
+    static void main() throws IOException {
         var config = Config.create();
 
         var ingestorConfig = config.get("ingestor");
-        var docsZipPath = getPathFromConfig(ingestorConfig, "docs-zip-path");
+        var docsZipUri = URI.create(ingestorConfig.get("docs-zip-uri").asString().get());
         var sePath = getPathFromConfig(ingestorConfig, "se-embeddings-path");
         var mpPath = getPathFromConfig(ingestorConfig, "mp-embeddings-path");
         var allPath = getPathFromConfig(ingestorConfig, "all-embeddings-path");
+        var embeddingsZipPath = getPathFromConfig(ingestorConfig, "embeddings-zip-path");
 
-        if (Files.notExists(docsZipPath)) {
-            System.out.println("ERROR: file " + docsZipPath + " does not exist. Skipping ingestion.");
-            System.exit(1);
+        var docsZipPath = Files.createTempFile("helidon-markdown-docs-", ".zip");
+        try {
+            downloadArchive(docsZipUri, docsZipPath);
+            System.out.println("Ingesting " + docsZipPath);
+
+            var seStore = new InMemoryEmbeddingStore<TextSegment>();
+            var mpStore = new InMemoryEmbeddingStore<TextSegment>();
+            var embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
+
+            var ingestor = new DocsIngestor(docsZipPath, seStore, mpStore, embeddingModel);
+            try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                var ingestFuture = CompletableFuture.runAsync(ingestor::ingestAll, executor);
+                renderProgressUntilDone(ingestor, ingestFuture);
+                ingestFuture.join();
+            }
+            var allStore = InMemoryEmbeddingStore.merge(seStore, mpStore);
+
+            System.out.println();
+            serializeToFile(seStore, sePath);
+            serializeToFile(mpStore, mpPath);
+            serializeToFile(allStore, allPath);
+            zipEmbeddings(embeddingsZipPath, sePath, mpPath, allPath);
+
+            System.out.printf(
+                    """
+                            Embeddings serialized successfully.
+                            SE  -> %s
+                            MP  -> %s
+                            ALL -> %s
+                            ZIP -> %s
+                            Total files processed: %d
+                            """,
+                    sePath, mpPath, allPath, embeddingsZipPath, ingestor.progressTotal()
+            );
+        } finally {
+            Files.deleteIfExists(docsZipPath);
         }
-
-        System.out.println("Ingesting " + docsZipPath);
-
-        var seStore = new InMemoryEmbeddingStore<TextSegment>();
-        var mpStore = new InMemoryEmbeddingStore<TextSegment>();
-        var embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
-
-        var ingestor = new DocsIngestor(docsZipPath, seStore, mpStore, embeddingModel);
-        var ingestFuture = CompletableFuture.runAsync(ingestor::ingestAll,
-                                                      Executors.newVirtualThreadPerTaskExecutor());
-        renderProgressUntilDone(ingestor, ingestFuture);
-        ingestFuture.join();
-        var allStore = InMemoryEmbeddingStore.merge(seStore, mpStore);
-
-        System.out.println();
-        serializeToFile(seStore, sePath);
-        serializeToFile(mpStore, mpPath);
-        serializeToFile(allStore, allPath);
-
-        System.out.printf(
-                """
-                        Embeddings serialized successfully.
-                        SE  -> %s
-                        MP  -> %s
-                        ALL -> %s
-                        Total files processed: %d
-                        """,
-                sePath, mpPath, allPath, ingestor.progressTotal()
-        );
     }
 
     private static Path getPathFromConfig(Config config, String key) {
@@ -85,14 +95,29 @@ public final class EmbeddingIngestorMain {
                 .orElseThrow(() -> new ConfigException("Missing ingestor." + key));
     }
 
-    private static void serializeToFile(InMemoryEmbeddingStore<TextSegment> store, Path jsonPath) {
-        try {
-            Files.createDirectories(jsonPath.toAbsolutePath().getParent());
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to prepare output directories", e);
+    private static void downloadArchive(URI uri, Path destination) throws IOException {
+        System.out.println("Downloading " + uri);
+        try (var input = uri.toURL().openStream()) {
+            Files.copy(input, destination, StandardCopyOption.REPLACE_EXISTING);
         }
+    }
 
+    private static void serializeToFile(InMemoryEmbeddingStore<TextSegment> store, Path jsonPath) throws IOException {
+        Files.createDirectories(jsonPath.toAbsolutePath().getParent());
         store.serializeToFile(jsonPath);
+    }
+
+    private static void zipEmbeddings(Path destination, Path sePath, Path mpPath, Path allPath) throws IOException {
+        Files.createDirectories(destination.toAbsolutePath().getParent());
+        try (var zip = new ZipOutputStream(Files.newOutputStream(destination))) {
+            var paths = new Path[]{sePath, mpPath, allPath};
+            var names = new String[]{"se-embeddings.json", "mp-embeddings.json", "all-embeddings.json"};
+            for (int i = 0; i < paths.length; i++) {
+                zip.putNextEntry(new ZipEntry(names[i]));
+                Files.copy(paths[i], zip);
+                zip.closeEntry();
+            }
+        }
     }
 
     private static void renderProgressUntilDone(DocsIngestor ingestor, CompletableFuture<Void> ingestFuture) {

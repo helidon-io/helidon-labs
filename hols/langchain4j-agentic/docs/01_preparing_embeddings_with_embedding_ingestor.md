@@ -1,4 +1,8 @@
-# 2. Preparing Embeddings with Embedding Ingestor
+# 2. Preparing Embeddings with Embedding Ingestor (Optional)
+
+> [!NOTE]
+> Embeddings are already prepared for this lab. The applications download `embeddings.zip` and extract missing ALL, SE, and MP embedding files automatically.
+> You can skip this step and continue to [Setting Up the Bootstrap Project](02_setting_up_the_bootstrap_project.md). Run the ingestor only if you want to regenerate the embeddings yourself.
 
 In this HOL we use LangChain4j `InMemoryEmbeddingStore` instances for RAG (one store for Helidon SE and one for Helidon MP).
 `InMemoryEmbeddingStore` keeps vectors in RAM for fast retrieval, and it also supports loading persisted state from JSON via `from-file`.
@@ -14,7 +18,7 @@ Reference: [LangChain4j In-Memory Embedding Store](https://docs.langchain4j.dev/
 In this section, we will:
 
 - Build and run `embedding-ingestor`.
-- Generate `se-embeddings.json` and `mp-embeddings.json` in `langchain4j-agentic/data`.
+- Generate `se-embeddings.json`, `mp-embeddings.json`, and `all-embeddings.json`, bundled in `embeddings.zip`, in `langchain4j-agentic/data`.
 - Reuse these files in later HOL steps by setting `from-file` in `application.yaml`.
 
 ---
@@ -30,7 +34,7 @@ cd langchain4j-agentic/code/embedding-ingestor
 ## 2. Build the ingestor
 
 ```sh
-mvnw clean package
+./mvnw clean package
 ```
 
 ## 3. Run ingestion and serialize embeddings
@@ -38,38 +42,42 @@ mvnw clean package
 We use the maven `exec` plugin to simplify running the `java` command:
 
 ```sh
-mvnw exec:exec
+./mvnw exec:exec
 ```
 
 What this does:
 
-- Opens and reads `langchain4j-agentic/data/helidon-docs.zip`.
-- Chunks and embeds documents for SE and MP.
-- Serializes both in-memory stores to:
+- Downloads [helidon-markdown-docs.zip](https://objectstorage.us-chicago-1.oraclecloud.com/n/axh6g42yikfw/b/lc4j-agents-lab/o/helidon-markdown-docs.zip) to a temporary file, then opens and reads it. The temporary file is deleted afterward.
+- Chunks and embeds Markdown documents from Helidon core and extensions for SE, and Helidon MicroProfile for MP.
+- Serializes the SE, MP, and combined ALL in-memory stores to:
   - `langchain4j-agentic/data/se-embeddings.json`
   - `langchain4j-agentic/data/mp-embeddings.json`
+  - `langchain4j-agentic/data/all-embeddings.json`
+- Bundles all three JSON files in `langchain4j-agentic/data/embeddings.zip`.
 
 ## 4. Verify generated files
 
 ```sh
-ls -lh ../../data/se-embeddings.json ../../data/mp-embeddings.json
+ls -lh ../../data/se-embeddings.json ../../data/mp-embeddings.json ../../data/all-embeddings.json ../../data/embeddings.zip
 ```
 
-You should see both files present and non-empty.
+You should see all four files present and non-empty.
 
 ## 5. Reuse JSON files later with `from-file`
 
 In a later step these generated files will be referenced in `application.yaml` using `from-file` for both embedding stores so the app loads vectors directly from persisted JSON:
+
+To use your generated files instead of the automatic downloads, copy all three JSON files from `data/` into `code/bootstrap/` (or `code/final/`) before starting the application from that directory. Existing files are reused. Bootstrap uses `all-embeddings.json`; the later SE and MP stores use the separate files shown below.
 
 ```yaml
 langchain4j:
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/se-embeddings.json
+      from-file: se-embeddings.json
     mp-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/mp-embeddings.json
+      from-file: mp-embeddings.json
 ```
 
 With this setup, HOL projects reuse persisted embeddings and skip embedding computation entirely.

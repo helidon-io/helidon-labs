@@ -13,7 +13,7 @@ In this section, we will:
 From `langchain4j-agentic/code/bootstrap`:
 
 ```sh
-mvnw clean package
+./mvnw clean package
 ```
 
 ```sh
@@ -28,7 +28,7 @@ You should see Helidon Expert Assistant prompt UI.
 
 ![hol-expert-ui.png](img/hol-expert-ui.png)
 
-This expert uses the previously created embeddings stores that were saved to JSON files on your local disk. There is one each for the SE and MP Experts.
+This expert uses embedding stores loaded from `se-embeddings.json` and `mp-embeddings.json` in the working directory. Startup downloads `embeddings.zip` to extract missing files and reuses existing ones. There is one each for the SE and MP Experts.
 
 Example prompt:
 ```
@@ -37,7 +37,7 @@ Show me how to create a new Helidon SE application named javaone-demo with cli s
 
 > [!NOTE]
 > Notice that the Helidon assistant now decides which Helidon flavor (SE/MP) the question is about and selects the
-> appropriate specialized agent to answer it. 
+> appropriate specialized agent to answer it.
 > Each specialized agent uses a separate embedding store with documents related to a single Helidon flavor, making
 > the response tailored to the correct product.
 

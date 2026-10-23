@@ -45,7 +45,7 @@ public class CliTools {
     @Tool("""
             Returns example of Helidon CLI command to create Helidon quickstart example with provided projectName,
             version, package name and Helidon flavor as parameters.
-            Resulting CLI command can be used for generating new quickstart project based on Helidon SE.
+            Resulting CLI command can be used for generating new quickstart project based on Helidon SE or MP.
             Version parameter should be the latest released version unless specified otherwise.
             """)
     String getInitHelidonSeProjectWithCliCmd(

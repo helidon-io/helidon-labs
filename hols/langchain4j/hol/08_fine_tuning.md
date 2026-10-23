@@ -4,28 +4,13 @@ Now that we have a working AI assistant, we can fine-tune it to provide better r
 
 In this section, we will: 
 
-- Add **chat memory** to maintain conversation context.  
 - Customize the assistant’s behavior using a **System Message**.
 
 ---
 
-## 1. Adding Chat Memory
+This example handles each request independently and does not configure conversation memory.
 
-**Chat Memory** is a mechanism that stores past interactions in a conversation, allowing an AI model to maintain context, recall previous exchanges, and generate coherent, context-aware responses.
-
-### Why Do We Need Chat Memory?
-
-By default, each user query is treated as an isolated request. This means the AI forgets previous interactions and lacks continuity in the conversation.
-
-In LangChain4J, **chat memory** helps the AI track ongoing discussions, making responses more cohesive and personalized.
-
-### Using `MessageWindowChatMemory`
-
-LangChain4J provides `MessageWindowChatMemory`, a sliding window memory mechanism that keeps only the most recent interactions.
-
-To enable chat memory, annotate the AI service with `@Ai.ChatMemoryWindow(10)`, where `10` is the number of messages to retain.
-
-## 2. Tuning the Prompt (System Message)
+## 1. Tuning the Prompt (System Message)
 
 ### Why Do We Need a System Message?
 
@@ -41,13 +26,20 @@ A **System Message** is a predefined instruction that sets rules for the AI mode
 
 We will use the `@SystemMessage` annotation to provide instructions to our AI assistant.
 
-## 3. Updating the AI Service
+## 2. Updating the AI Service
 
-Modify `ChatAiService.java` to include chat memory and a system message:
+Modify `ChatAiService.java` to include a system message:
 
 ```java
-@Ai.Service
-@Ai.ChatMemoryWindow(10)
+package io.helidon.hol.lc4j.ai;
+
+import io.helidon.extensions.langchain4j.Ai;
+
+import dev.langchain4j.service.SystemMessage;
+
+@Ai.Service("hol-model")
+@Ai.ChatModel("hol-model")
+@Ai.ContentRetriever("hol-content-retriever")
 public interface ChatAiService {
 
     @SystemMessage("""
@@ -59,14 +51,14 @@ public interface ChatAiService {
 ```
 
 **What This Does:**
-- 
-- **`@Ai.Service`** → Defines the interface as an AI service.
-- **`@Ai.ChatMemoryWindow(10)`** → Enables **chat memory** to retain the last **10 messages**.
+- **`@Ai.Service("hol-model")`** → Names the AI service.
+- **`@Ai.ChatModel("hol-model")`** → Selects the named chat model.
+- **`@Ai.ContentRetriever("hol-content-retriever")`** → Supplies relevant menu data.
 - **`@SystemMessage`** → Instructs the AI to:  
   - Adopt the persona of **Frank, a friendly coffee shop assistant**.  
   - **Politely refuse** unrelated questions.
 
-## 4. Testing the Fine-Tuned Assistant
+## 3. Testing the Fine-Tuned Assistant
 
 **Recompile and run the application:**
 

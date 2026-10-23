@@ -126,7 +126,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Logger;
 
-import io.helidon.common.config.Config;
+import io.helidon.config.Config;
 import io.helidon.service.registry.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;

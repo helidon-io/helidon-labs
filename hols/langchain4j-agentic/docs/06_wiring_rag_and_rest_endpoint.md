@@ -22,16 +22,16 @@ langchain4j:
   embedding-stores:
     se-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/se-embeddings.json
+      from-file: se-embeddings.json
     mp-embedding-store:
       provider: lc4j-in-memory
-      from-file: ../../data/mp-embeddings.json
+      from-file: mp-embeddings.json
 ```
 
-These embeddings files were created in the earlier step: Preparing Embeddings with Embedding Ingestor.
+These embeddings files are extracted from `embeddings.zip`, downloaded automatically at startup if any embedding file is missing. Existing files are reused.
 What these persisted JSON files are:
 
-- They are serialized snapshots of LangChain4j `InMemoryEmbeddingStore` data generated earlier by `embedding-ingestor` (step `2`).
+- They are serialized snapshots of LangChain4j `InMemoryEmbeddingStore` data, which you can also generate with `embedding-ingestor` (step `2`).
 - Each file contains precomputed embedding vectors together with their text segments and metadata.
 - `se-embeddings.json` contains only Helidon SE knowledge; `mp-embeddings.json` contains only Helidon MP knowledge.
 
@@ -43,8 +43,8 @@ How `from-file` works here:
 
 Important:
 
-- Paths in `from-file` are relative to the running application module (for example `code/bootstrap`).
-- Make sure step `2` completed and both JSON files exist in `langchain4j-agentic/data`.
+- Paths in `from-file` are relative to the working directory; run from the application module (for example `code/bootstrap`).
+- Startup extracts missing files from `embeddings.zip` into that directory. To use files generated in step `2`, copy the ALL, SE, and MP JSON files there from `langchain4j-agentic/data` before starting.
 
 ## 2. Replace `ChatBotEndpoint.java`
 

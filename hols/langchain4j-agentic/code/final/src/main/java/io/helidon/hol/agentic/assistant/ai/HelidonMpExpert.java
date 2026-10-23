@@ -16,8 +16,8 @@
 
 package io.helidon.hol.agentic.assistant.ai;
 
+import io.helidon.extensions.langchain4j.Ai;
 import io.helidon.hol.agentic.assistant.tools.CliTools;
-import io.helidon.integrations.langchain4j.Ai;
 
 import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.SystemMessage;
@@ -43,7 +43,7 @@ public interface HelidonMpExpert {
             If a tool returns a version string, repeat that exact version string verbatim.
             Never replace, normalize, infer, or update a tool-returned version using your own knowledge or retrieved content.
             If a tool returns a CLI command, copy that command exactly and do not modify the version inside it.
-            Analyze the user request about Helidon SE and provide the best possible answer.
+            Analyze the user request about Helidon MP and provide the best possible answer.
             """)
     @UserMessage("""
             The user request is {{question}}.

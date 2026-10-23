@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Oracle and/or its affiliates.
+ * Copyright (c) 2025, 2026 Oracle and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package io.helidon.hol.lc4j;
 
-import io.helidon.common.config.Config;
+import io.helidon.config.Config;
 import io.helidon.hol.lc4j.ai.MenuItemsIngestor;
 import io.helidon.hol.lc4j.rest.ChatBotService;
 import io.helidon.logging.common.LogConfig;

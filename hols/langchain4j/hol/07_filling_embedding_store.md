@@ -35,7 +35,7 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.segment.TextSegment;
-import io.helidon.common.config.Config;
+import io.helidon.config.Config;
 
 @Service.Singleton
 public class MenuItemsIngestor {
@@ -45,8 +45,8 @@ public class MenuItemsIngestor {
 
     @Service.Inject
     public MenuItemsIngestor(Config config,
-                             EmbeddingStore<TextSegment> embeddingStore,
-                             EmbeddingModel embeddingModel,
+                             @Service.Named("hol-embedding-store") EmbeddingStore<TextSegment> embeddingStore,
+                             @Service.Named("hol-embedding-model") EmbeddingModel embeddingModel,
                              MenuItemsService menuItemsService) {
         this.embeddingStore = embeddingStore;
         this.embeddingModel = embeddingModel;

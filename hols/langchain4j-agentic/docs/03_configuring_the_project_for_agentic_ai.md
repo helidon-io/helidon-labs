@@ -32,7 +32,7 @@ langchain4j:
     open-ai:
       # Using OpenAI provider to call OCI GenAI model over OpenAI compatible API
       api-key: "${OCI_API_KEY}"
-      base-url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions
+      base-url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/v1
       log-requests: false
       log-responses: false
 
@@ -51,7 +51,7 @@ langchain4j:
 
     expensive-model:
       provider: open-ai
-      model-name: "openai.gpt-oss-120b"
+      model-name: "xai.grok-4.7"
 
   embedding-stores:
     se-embedding-store:
@@ -149,6 +149,8 @@ This is what enables flavor-specific RAG in expert agents.
 This is an application-specific configuration consumed by local services/tools:
 
 - `latest-helidon-version` is used by the helper tool logic in later steps.
+- `4.4.0-FROM-TOOL` is a demo value that makes tool usage visible in responses. It is independent of the
+  Helidon 27 runtime used by this assistant.
 
 ### About MCP Client Configuration
 

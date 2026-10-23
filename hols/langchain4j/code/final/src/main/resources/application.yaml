@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,17 +18,34 @@ server:
   port: 8080
 
 langchain4j:
-  open-ai:
-    chat-model:
-      enabled: true
-      api-key: "demo"
-      model-name: "gpt-4o-mini"
-  rag:
-    embedding-store-content-retriever:
-      enabled: true
-      max-results: 10
+  providers:
+    open-ai:
+      api-key: "${OPENAI_API_KEY}"
+
+    lc4j-in-process:
+      type: all_minilm_l6_v2_q
+
+    lc4j-content-retriever:
+      embedding-model: hol-embedding-model
+      max-results: 20
       min-score: 0.6
-      embedding-model: "@default"
-      embedding-store: "@default"
+
+  models:
+    hol-embedding-model:
+      provider: lc4j-in-process
+
+    hol-model:
+      provider: open-ai
+      model-name: "gpt-4o-mini"
+
+  embedding-stores:
+    hol-embedding-store:
+      provider: lc4j-in-memory
+
+  content-retrievers:
+    hol-content-retriever:
+      provider: lc4j-content-retriever
+      embedding-store: hol-embedding-store
+
 app:
   menu-items: "../../data/menu.json"

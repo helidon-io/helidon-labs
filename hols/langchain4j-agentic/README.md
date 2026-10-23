@@ -1,7 +1,11 @@
 # HOL: Building Agentic AI Applications with Helidon and LangChain4J
 
-In this hands-on lab, you will build an **agentic AI assistant** with **Helidon** and **LangChain4J**.  
+In this hands-on lab, you will build an **agentic AI assistant** with **Helidon** and **LangChain4J**.
 Starting from the bootstrap project, you will evolve it into a multi-agent system that classifies user intent, routes requests to specialized experts, applies RAG, and returns summarized conversational context.
+
+The assistant runs on **Helidon 27.0.0** with **Java 27**, using the Helidon Extensions LangChain4j integration.
+Its SE and MP experts describe the documentation supplied to their embedding stores; the MP knowledge does not make
+the assistant itself an MP application. The demo versions returned by tools are independent of the assistant's runtime version.
 
 Note: if you have trouble viewing local markdown files, you can view this documentation
 [on GitHub](https://github.com/helidon-io/helidon-labs/blob/main/hols/langchain4j-agentic/README.md).
@@ -36,13 +40,13 @@ This orchestration is executed by **`HelidonExpertAgent`** as a sequence, giving
 ### Local Embeddings and RAG in This HOL
 
 The HOL uses a **local embedding model** (`all-minilm-l6-v2-q`, in-process) and **local in-memory embedding stores** (separate stores for SE and MP), loaded from persisted JSON files.
-Embeddings are generated only by the standalone `embedding-ingestor` project in step `2`.
+The applications download `embeddings.zip` at startup if any embedding file is missing and extract `all-embeddings.json`, `se-embeddings.json`, and `mp-embeddings.json`, preserving existing files; you can also generate them with the standalone `embedding-ingestor` project in step `2`.
 The HOL application projects do not compute embeddings at startup; they load prebuilt embeddings via `from-file`.
 
 ## Table of Contents
 
 1. [Setting Up the Environment](./docs/00_setting_up_the_environment.md)
-2. [Preparing Embeddings with Embedding Ingestor](./docs/01_preparing_embeddings_with_embedding_ingestor.md)
+2. [Preparing Embeddings with Embedding Ingestor (Optional)](./docs/01_preparing_embeddings_with_embedding_ingestor.md)
 3. [Setting Up the Bootstrap Project](./docs/02_setting_up_the_bootstrap_project.md)
 4. [Configuring the Project for Agentic AI](./docs/03_configuring_the_project_for_agentic_ai.md)
 5. [Creating the Orchestrator Agent](./docs/04_creating_the_orchestrator_agent.md)
