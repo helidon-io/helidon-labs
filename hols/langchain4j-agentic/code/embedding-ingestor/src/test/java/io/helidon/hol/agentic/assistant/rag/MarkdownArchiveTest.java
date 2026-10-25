@@ -71,6 +71,69 @@ class MarkdownArchiveTest {
     }
 
     @Test
+    void readsReleasedComponentsAndMpWithProvenance() throws Exception {
+        var documents = MarkdownArchive.read(archive(releasedManifest(), releasedContent()));
+
+        assertThat(documents.size(), is(4));
+        assertThat(documents.getFirst().path(), is(CORE_PATH));
+        var extension = documents.get(1);
+        assertThat(extension.flavor(), is("SE"));
+        assertThat(extension.text(), is("# LangChain4j\n"));
+        assertThat(extension.metadata().get("extension"), is("langchain4j"));
+        assertThat(extension.metadata().get("source"), is("https://github.com/helidon-io/helidon-extensions/blob/"
+                                                                + "b".repeat(40) + "/extensions/langchain4j/docs/README.md"));
+        var messaging = documents.get(2);
+        assertThat(messaging.flavor(), is("SE"));
+        assertThat(messaging.metadata().get("extension"), is("messaging/kafka"));
+        assertThat(messaging.metadata().get("commit"), is("c".repeat(40)));
+        var mp = documents.get(3);
+        assertThat(mp.flavor(), is("MP"));
+        assertThat(mp.text(), is("# MP Configuration\n"));
+        assertThat(mp.metadata().get("repository"), is("helidon-io/helidon"));
+        assertThat(mp.metadata().get("path"), is("docs/mp/config.md"));
+        assertThat(mp.metadata().get("source"), is("https://github.com/helidon-io/helidon/blob/"
+                                                         + COMMIT + "/docs/mp/config.md"));
+    }
+
+    @Test
+    void rejectsExtensionComponentWithMismatchedRoot() throws Exception {
+        var manifest = releasedManifest();
+        ((ObjectNode) manifest.path("sources").get(1)).put("source_path", "extensions/gson");
+        Path archive = archive(manifest, releasedContent());
+        var error = assertThrows(IllegalArgumentException.class, () -> MarkdownArchive.read(archive));
+        assertThat(error.getMessage(), containsString("Invalid Markdown source: helidon-extensions-langchain4j"));
+    }
+
+    @Test
+    void rejectsTraversalInExtensionComponentRoot() throws Exception {
+        var manifest = releasedManifest();
+        ((ObjectNode) manifest.path("sources").get(1))
+                .put("id", "helidon-extensions-..-langchain4j")
+                .put("source_path", "extensions/../langchain4j");
+        Path archive = archive(manifest, releasedContent());
+        var error = assertThrows(IllegalArgumentException.class, () -> MarkdownArchive.read(archive));
+        assertThat(error.getMessage(), containsString("Invalid Markdown source"));
+    }
+
+    @Test
+    void rejectsExtensionComponentFromWrongRepository() throws Exception {
+        var manifest = releasedManifest();
+        ((ObjectNode) manifest.path("sources").get(1)).put("repository", "helidon-io/helidon");
+        Path archive = archive(manifest, releasedContent());
+        var error = assertThrows(IllegalArgumentException.class, () -> MarkdownArchive.read(archive));
+        assertThat(error.getMessage(), containsString("Invalid Markdown source: helidon-extensions-langchain4j"));
+    }
+
+    @Test
+    void rejectsCoreDocsClassifiedAsReleasedMp() throws Exception {
+        var manifest = releasedManifest();
+        ((ObjectNode) manifest.path("sources").get(3)).put("source_path", "docs");
+        Path archive = archive(manifest, releasedContent());
+        var error = assertThrows(IllegalArgumentException.class, () -> MarkdownArchive.read(archive));
+        assertThat(error.getMessage(), containsString("Invalid Markdown source: helidon-microprofile"));
+    }
+
+    @Test
     void rejectsMissingFile() throws Exception {
         var files = content();
         files.remove(CORE_PATH);
@@ -150,8 +213,47 @@ class MarkdownArchiveTest {
                     .put("source_path", id.equals("helidon-extensions") ? "extensions" : "docs")
                     .put("archive_prefix", flavor.toLowerCase(Locale.ROOT) + "/" + id);
         }
+        return withFiles(manifest, content());
+    }
+
+    private static Map<String, byte[]> releasedContent() {
+        var content = new LinkedHashMap<String, byte[]>();
+        content.put(CORE_PATH, "# Configuration\n".getBytes(StandardCharsets.UTF_8));
+        content.put("se/helidon-extensions-langchain4j/extensions/langchain4j/docs/README.md",
+                    "# LangChain4j\n".getBytes(StandardCharsets.UTF_8));
+        content.put("se/helidon-extensions-messaging-kafka/extensions/messaging/kafka/docs/README.md",
+                    "# Kafka\n".getBytes(StandardCharsets.UTF_8));
+        content.put("mp/helidon-microprofile/docs/mp/config.md", "# MP Configuration\n".getBytes(StandardCharsets.UTF_8));
+        return content;
+    }
+
+    private static ObjectNode releasedManifest() throws Exception {
+        var manifest = MAPPER.createObjectNode().put("format_version", 1);
+        var sources = manifest.putArray("sources");
+        sources.addObject().put("id", "helidon")
+                .put("repository", "helidon-io/helidon").put("commit", COMMIT)
+                .put("flavor", "SE").put("source_path", "docs").put("archive_prefix", "se/helidon")
+                .put("ref", "27.0.1").put("release", "27.0.1");
+        sources.addObject().put("id", "helidon-extensions-langchain4j")
+                .put("repository", "helidon-io/helidon-extensions").put("commit", "b".repeat(40))
+                .put("flavor", "SE").put("source_path", "extensions/langchain4j")
+                .put("archive_prefix", "se/helidon-extensions-langchain4j")
+                .put("ref", "langchain4j/27.0.0").put("release", "27.0.0");
+        sources.addObject().put("id", "helidon-extensions-messaging-kafka")
+                .put("repository", "helidon-io/helidon-extensions").put("commit", "c".repeat(40))
+                .put("flavor", "SE").put("source_path", "extensions/messaging/kafka")
+                .put("archive_prefix", "se/helidon-extensions-messaging-kafka")
+                .put("ref", "messaging/kafka/27.0.0").put("release", "27.0.0");
+        sources.addObject().put("id", "helidon-microprofile")
+                .put("repository", "helidon-io/helidon").put("commit", COMMIT)
+                .put("flavor", "MP").put("source_path", "docs/mp").put("archive_prefix", "mp/helidon-microprofile")
+                .put("ref", "4.5.6").put("release", "4.5.6");
+        return withFiles(manifest, releasedContent());
+    }
+
+    private static ObjectNode withFiles(ObjectNode manifest, Map<String, byte[]> content) throws Exception {
         var files = manifest.putArray("files");
-        for (var entry : content().entrySet()) {
+        for (var entry : content.entrySet()) {
             String[] path = entry.getKey().split("/", 3);
             files.addObject().put("path", entry.getKey())
                     .put("source", path[1])

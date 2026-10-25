@@ -48,14 +48,33 @@ final class MarkdownArchive {
             var sources = new HashMap<String, JsonNode>();
             for (var source : manifest.path("sources")) {
                 String id = required(source, "id");
+                boolean extensionComponent = id.startsWith("helidon-extensions-");
                 String flavor = switch (id) {
                     case "helidon", "helidon-extensions" -> "SE";
                     case "helidon-microprofile" -> "MP";
-                    default -> throw new IllegalArgumentException("Unknown Markdown source: " + id);
+                    default -> {
+                        if (!extensionComponent) {
+                            throw new IllegalArgumentException("Unknown Markdown source: " + id);
+                        }
+                        yield "SE";
+                    }
                 };
+                String repository = "helidon-io/" + id;
                 String root = id.equals("helidon-extensions") ? "extensions" : "docs";
+                if (extensionComponent) {
+                    repository = "helidon-io/helidon-extensions";
+                    root = required(source, "source_path");
+                    if (!validPath(root) || !root.startsWith("extensions/")
+                            || !id.equals("helidon-extensions-" + root.substring("extensions/".length()).replace('/', '-'))) {
+                        throw new IllegalArgumentException("Invalid Markdown source: " + id);
+                    }
+                } else if (id.equals("helidon-microprofile")
+                        && source.path("repository").asText().equals("helidon-io/helidon")) {
+                    repository = "helidon-io/helidon";
+                    root = "docs/mp";
+                }
                 if (!required(source, "flavor").equals(flavor)
-                        || !required(source, "repository").equals("helidon-io/" + id)
+                        || !required(source, "repository").equals(repository)
                         || !required(source, "source_path").equals(root)
                         || !required(source, "archive_prefix").equals(flavor.toLowerCase(Locale.ROOT) + "/" + id)
                         || !required(source, "commit").matches("[0-9a-f]{40}")
@@ -95,6 +114,8 @@ final class MarkdownArchive {
                     if (components.length > 2) {
                         metadata.put("extension", components[1]);
                     }
+                } else if (source.path("id").asText().startsWith("helidon-extensions-")) {
+                    metadata.put("extension", source.path("source_path").asText().substring("extensions/".length()));
                 }
                 documents.add(new SourceDocument(path, new String(content, StandardCharsets.UTF_8), flavor,
                                                  Map.copyOf(metadata)));
