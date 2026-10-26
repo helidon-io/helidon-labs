@@ -1,0 +1,134 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "init\\.sql"
+      },
+      {
+        "pattern": "org/eclipse/persistence/internal/helper/VendorNameToPlatformMapping\\.properties"
+      },
+      {
+        "pattern": "org/eclipse/persistence/version\\.properties"
+      },
+      {
+        "pattern": "org/eclipse/persistence/jpa/jpql/jpa_jpql_validation\\.properties"
+      }
+    ]
+  },
+  "bundles": [
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.BeanValidationExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.CommunicationExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.ConcurrencyExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.ConversionExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.DBWSExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.DatabaseExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.DescriptorExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.DiscoveryExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.EISExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.EntityManagerSetupExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.ExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.JAXBExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.JMSProcessingExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.JPARSExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.JPQLExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.JSONExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.OptimisticLockExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.PersistenceUnitLoadingExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.QueryExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.RemoteCommandManagerExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.SDOExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.ServerPlatformExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.SessionLoaderExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.StaticWeaveExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.TransactionExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.ValidationExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.XMLConversionExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.XMLMarshalExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.XMLParseExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.exceptions.i18n.XMLPlatformExceptionResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.DMSLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.EclipseLinkLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.ExceptionLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.JAXBLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.LoggingLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.ToStringLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.internal.localization.i18n.TraceLocalizationResource"
+    },
+    {
+      "name": "org.eclipse.persistence.jpa.jpql.JPQLQueryProblemResourceBundle"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+[
+  {
+    "name": "com.zaxxer.hikari.HikariConfig",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "io.helidon.benchmark.Pokemon",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "io.helidon.benchmark.Type",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "org.eclipse.persistence.internal.libraries.asm.ClassVisitor"
+  },
+  {
+    "name": "org.eclipse.persistence.internal.libraries.asm.ClassReader",
+    "allPublicFields": true
+  },
+  {
+    "name": "org.eclipse.persistence.internal.libraries.asm.ClassWriter",
+    "allPublicFields": true
+  },
+  {
+    "name": "org.eclipse.persistence.internal.libraries.asm.Opcodes",
+    "allPublicFields": true
+  },
+  {
+    "name": "org.eclipse.persistence.internal.libraries.asm.Type",
+    "allPublicFields": true
+  },
+  {
+    "name": "org.eclipse.persistence.platform.database.H2Platform",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "org.eclipse.persistence.internal.jpa.jpql.HermesParser",
+    "allPublicConstructors": true
+  },
+  {
+    "name": "java.sql.Statement[]"
+  },
+  {
+    "name": "com.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry[]"
+  }
+]

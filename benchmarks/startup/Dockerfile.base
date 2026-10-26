@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ ENV AOT_TIME_FORMAT=%e
 
 RUN microdnf -y update && \
     microdnf --enablerepo ol9_codeready_builder install -y \
+        jq \
         time wget procps tar git unzip perl glibc-devel bzip2-devel ed gcc gcc-c++ gcc-gfortran gzip file fontconfig less \
         libcurl-devel make openssl openssl-devel readline-devel tar glibc-langpack-en vi which xz-devel zlib-devel \
         findutils glibc-static libstdc++ libstdc++-devel libstdc++-static zlib-static libxcrypt-compat && \
     microdnf clean all
-
 RUN fc-cache -f -v
 
 # Install Maven
@@ -69,12 +69,12 @@ RUN <<END_OF_SCRIPT
 cat <<EOF > warmup.sh
 #!/bin/bash
 # Wait until the connection is opened
-until curl --output /dev/null --silent --fail $ENDPOINT; do
+until curl --output /dev/null --silent --fail $ENDPOINT/observe/health; do
     sleep 0.1;
 done
 
 # Warm-up the server
-wrk -c ${WARMUP_CONNECTIONS} -t ${WARMUP_THREADS} -d ${WARMUP_DURATION} $ENDPOINT |& tee wrk-warmup.log
+wrk -c ${WARMUP_CONNECTIONS} -t ${WARMUP_THREADS} -d ${WARMUP_DURATION} $ENDPOINT/pokemon/Snorlax |& tee wrk-warmup.log
 
 if [ -f after-warmup.sh ]; then
     source after-warmup.sh
@@ -90,12 +90,12 @@ RUN <<END_OF_SCRIPT
 cat <<EOF > benchmark.sh
 #!/bin/bash -e
 # Wait until the connection is opened
-until curl --output /dev/null --silent --fail \$ENDPOINT; do
+until curl --output /dev/null --silent --fail \$ENDPOINT/observe/health; do
     sleep 0.1;
 done
 
-RESP=\$(curl \$ENDPOINT)
-if [ "\$RESP" = "Hello World!" ];
+RESP=\$(curl -o /dev/null -s -w "%{http_code}\n" \${ENDPOINT}/observe/health)
+if [ "\$RESP" = "204" ];
 then
   echo "Response check ... OK"
 else
@@ -104,10 +104,10 @@ else
 fi
 
 # Test the server - run 1
-wrk -c \${WRK_RUN_1_CONNECTIONS} -t \${WRK_RUN_1_THREADS} -d \${WRK_RUN_1_DURATION} \$ENDPOINT |& tee wrk-run-1.log
+wrk -c \${WRK_RUN_1_CONNECTIONS} -t \${WRK_RUN_1_THREADS} -d \${WRK_RUN_1_DURATION} \$ENDPOINT/pokemon/Snorlax |& tee wrk-run-1.log
 
 # Test the server - run 2
-wrk -c \${WRK_RUN_2_CONNECTIONS} -t \${WRK_RUN_2_THREADS} -d \${WRK_RUN_2_DURATION} \$ENDPOINT |& tee wrk-run-2.log
+wrk -c \${WRK_RUN_2_CONNECTIONS} -t \${WRK_RUN_2_THREADS} -d \${WRK_RUN_2_DURATION} \$ENDPOINT/pokemon/Snorlax |& tee wrk-run-2.log
 
 kill \$PID
 

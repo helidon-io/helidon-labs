@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2025 Oracle and/or its affiliates.
+# Copyright (c) 2025, 2026 Oracle and/or its affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,30 @@
 server:
   port: 8080
   host: 0.0.0.0
+  features:
+    observe:
+      observers:
+        health:
+          details: false
 
+declarative:
+  ignore-incubating: true
+
+data:
+  sources:
+    sql:
+      - name: "pokemon"
+        provider.hikari:
+          username: "sa"
+          password: ""
+          url: "jdbc:h2:file:./pokemons;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;DATABASE_TO_UPPER=FALSE"
+          jdbc-driver-class-name: "org.h2.Driver"
+  persistence-units:
+    jakarta:
+      - data-source: "pokemon"
+        properties:
+          eclipselink.target-database: "org.eclipse.persistence.platform.database.H2Platform"
+          eclipselink.target-server: "None"
+#          jakarta.persistence.schema-generation.create-source: "metadata"
+#          jakarta.persistence.schema-generation.drop-source: "metadata"
+#          jakarta.persistence.schema-generation.database.action: "create"
