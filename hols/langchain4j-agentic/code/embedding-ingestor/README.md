@@ -49,7 +49,7 @@ Configuration file: `src/main/resources/application.yaml`
 ```yaml
 data-dir: ../../data
 ingestor:
-  docs-zip-uri: https://objectstorage.us-chicago-1.oraclecloud.com/n/axh6g42yikfw/b/lc4j-agents-lab/o/helidon-markdown-docs.zip
+  docs-zip-uri: https://github.com/helidon-io/helidon-labs/releases/download/ai-world-2026/helidon-markdown-docs.zip
   se-embeddings-path: ${data-dir}/se-embeddings.json
   mp-embeddings-path: ${data-dir}/mp-embeddings.json
   all-embeddings-path: ${data-dir}/all-embeddings.json
