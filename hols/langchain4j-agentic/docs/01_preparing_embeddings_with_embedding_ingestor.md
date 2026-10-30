@@ -47,7 +47,9 @@ We use the maven `exec` plugin to simplify running the `java` command:
 
 What this does:
 
-- Downloads [helidon-markdown-docs.zip](https://objectstorage.us-chicago-1.oraclecloud.com/n/axh6g42yikfw/b/lc4j-agents-lab/o/helidon-markdown-docs.zip) to a temporary file, then opens and reads it. The temporary file is deleted afterward.
+- Downloads [`helidon-markdown-docs.zip`][markdown-docs-asset] from the AI World
+  2026 GitHub release to a temporary file, then opens and reads it. The
+  temporary file is deleted afterward.
 - Chunks and embeds Markdown documents from Helidon core and extensions for SE, and Helidon MicroProfile for MP.
 - Serializes the SE, MP, and combined ALL in-memory stores to:
   - `langchain4j-agentic/data/se-embeddings.json`
@@ -89,3 +91,5 @@ This will happen in a later step. You do not need to do anything at this time.
 ---
 
 ### Next Step -> [Setting Up the Bootstrap Project](02_setting_up_the_bootstrap_project.md)
+
+[markdown-docs-asset]: https://github.com/helidon-io/helidon-labs/releases/download/ai-world-2026/helidon-markdown-docs.zip

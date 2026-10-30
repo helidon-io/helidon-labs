@@ -48,7 +48,7 @@ public class ApplicationMain {
         }
         System.out.println("Downloading embeddings.zip...");
         try (var input = new ZipInputStream(new BufferedInputStream(
-                URI.create("https://objectstorage.us-chicago-1.oraclecloud.com/n/axh6g42yikfw/b/lc4j-agents-lab/o/embeddings.zip")
+                URI.create("https://github.com/helidon-io/helidon-labs/releases/download/ai-world-2026/embeddings.zip")
                         .toURL().openStream()))) {
             for (var entry = input.getNextEntry(); entry != null; entry = input.getNextEntry()) {
                 if (!missing.remove(entry.getName())) {
